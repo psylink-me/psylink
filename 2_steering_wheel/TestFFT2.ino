@@ -16,26 +16,20 @@ double vImag2[SAMPLES];
  
 void setup() {
     Serial.begin(115200);
-    //Serial.println("1");
     sampling_period_us = round(1000000*(1.0/SAMPLING_FREQUENCY));
 }
  
 void loop() {
-   
     /*SAMPLING*/
-    for(int i=0; i<SAMPLES; i++)
-    {
-        //Serial.println("1");
+    for(int i=0; i<SAMPLES; i++) {
         microseconds = micros();    //Overflows after around 70 minutes!
 
-        //Serial.println("2");
         vReal[i] = analogRead(A0) - analogRead(A1);
         vImag[i] = 0;
         vReal2[i] = analogRead(A2) - analogRead(A3);
         vImag2[i] = 0;
 
-        //Serial.println("3");
-        while(micros() < (microseconds + sampling_period_us)){
+        while(micros() < (microseconds + sampling_period_us)) {
         }
     }
  
