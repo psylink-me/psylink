@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #
 # Workflow:
 # 1. start recording signals
@@ -14,8 +14,9 @@ import csv
 import pprint
 import sys
 from collections import deque
-from tkinter import * 
+from tkinter import *
 from lib import KeyDebouncer, KeyTracker
+from ai import MyoAI
 #from matplotlib.figure import Figure
 #from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
@@ -30,6 +31,7 @@ class Backend:
         self.baudrate = 115200
         self.num_signals = num_signals
         self.recordings = []  # a list of lists like [label, signal1, signal2, ...] 
+        self.ai = None
 
         # We keep the last SAMPLE_WINDOW_SIZE samples for each signal
         self.sample_buffer = []
@@ -98,6 +100,13 @@ class Backend:
                 row[i] = float(row[i])
             self.recordings.append(row)
 
+    def start_train(self):
+        if not self.ai:
+            self.ai = MyoAI(self.num_signals, SAMPLE_WINDOW_SIZE)
+        self.ai.generate_training_data(self.recordings)
+        self.ai.generate_nn()
+        self.ai.nn_fit()
+
     @staticmethod
     def keys_to_label(key_list):
         label = '|'.join(sorted(key_list))
@@ -121,12 +130,13 @@ class Window(Frame):
         fileMenu = Menu(menu)
         fileMenu.add_command(label="Start/Resume Recording", command=self.start_recording, accelerator='F1')
         fileMenu.add_command(label="Stop Recording", command=self.stop_recording, accelerator='Esc')
-        fileMenu.add_command(label="Start training")
+        fileMenu.add_command(label="Train artificial neural network", command=self.start_train, accelerator='Ctrl+a')
         #fileMenu.add_command(label="Save neural network", accelerator='Ctrl+S')
         fileMenu.add_command(label="Save recorded data", command=self.save_record, accelerator='Ctrl+Shift+S')
         fileMenu.add_command(label="Load recorded data", command=self.load_record, accelerator='Ctrl+Shift+L')
         fileMenu.add_command(label="Exit", command=self.quit, accelerator='Ctrl+Q')
         menu.add_cascade(label="File", menu=fileMenu)
+        self.bind_all("<Control-a>", self.start_train)
         self.bind_all("<Control-q>", self.quit)
         self.bind_all("<Control-S>", self.save_record)
         self.bind_all("<Control-L>", self.load_record)
@@ -175,6 +185,9 @@ class Window(Frame):
             self.myo.unserialize_recordings(stream)
         #pprint.pprint(self.myo.recordings)
         print(f'Loaded {len(self.myo.recordings)} data points')
+
+    def start_train(self, event=None):
+        self.myo.start_train()
 
 #    def plot(self):
 #        fig = Figure(figsize=(5, 5),
