@@ -12,66 +12,98 @@
 import serial
 import csv
 import pprint
+import sys
+from collections import deque
 from tkinter import * 
 from lib import KeyDebouncer, KeyTracker
 #from matplotlib.figure import Figure
 #from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 KEY_DEBOUNCER_DELAY = 0.05
+SAMPLE_WINDOW_SIZE = 64
+NUM_SIGNALS = 8
 
 class Backend:
-    def __init__(self):
+    def __init__(self, num_signals=NUM_SIGNALS):
         self.serial_connection = None
         self.serial_port = '/dev/ttyACM0'
         self.baudrate = 115200
-        self.recording = []  # a list of lists like [label, signal1, signal2, ...] 
+        self.num_signals = num_signals
+        self.recordings = []  # a list of lists like [label, signal1, signal2, ...] 
+
+        # We keep the last SAMPLE_WINDOW_SIZE samples for each signal
+        self.sample_buffer = []
+        for _ in range(self.num_signals):
+            channel = deque(maxlen=SAMPLE_WINDOW_SIZE)
+            self.sample_buffer.append(channel)
 
     def connect_serial(self):
         if not self.serial_connection:
             self.serial_connection = serial.Serial(
                 port=self.serial_port,
                 baudrate=self.baudrate,
-                timeout=.1
+                timeout=.01
             )
 
     def record(self, label):
-        self.recording.append([label] + self.parse())
+        self.read_data()
+        if len(self.sample_buffer[0]) < SAMPLE_WINDOW_SIZE:
+            # Sample buffer not full yet
+            return
+        record = [label]
+        record.extend(self.flatten_sample_buffer())
+        self.recordings.append(record)
+        if '-v' in sys.argv:
+            print(label)
+
+    def stop_recording(self):
+        for channel in self.sample_buffer:
+            channel.clear()
 
     def throw_away_first_line(self):
         # because we may start reading in the middle of a line
         self.serial_connection.readline()
 
-    def parse(self):
+    def read_data(self):
         line = self.serial_connection.readline()
         decoded = line.decode('utf-8').strip()
         elements = decoded.strip().split('\t')
         signals = []
-        for element in elements:
+        for channel, element in enumerate(elements):
             try:
                 key, value = element.split(':')
             except ValueError as e:
                 print(e)
                 print(f'element was: {element}')
             else:
-                signals.append(float(value))
-        return signals
+                # This automatically throws away the oldest sample due to collections.deque:
+                self.sample_buffer[channel].append(float(value))
 
-    def serialize_recording(self, stream):
+    def flatten_sample_buffer(self):
+        data_points = []
+        for channel in self.sample_buffer:
+            data_points.extend(channel)
+        return data_points
+
+    def serialize_recordings(self, stream):
         writer = csv.writer(stream)
-        for record in self.recording:
+        for record in self.recordings:
             writer.writerow(record)
 
-    def unserialize_recording(self, stream):
-        self.recording = []
+    def unserialize_recordings(self, stream):
+        self.recordings = []
         reader = csv.reader(stream)
         for row in reader:
             for i in range(1, len(row)):
                 row[i] = float(row[i])
-            self.recording.append(row)
+            self.recordings.append(row)
 
     @staticmethod
     def keys_to_label(key_list):
-        return '|'.join(sorted(key_list))
+        label = '|'.join(sorted(key_list))
+        if len(label) == 0:
+            return 'null'
+        return label
 
 class Window(Frame):
     DATA_FILE = 'records.csv'
@@ -130,19 +162,19 @@ class Window(Frame):
         if not self.do_record:
             print('Not recording.')
             return
-        print(f'Paused recording. Got {len(self.myo.recording)} data points so far.')
+        print(f'Paused recording. Got {len(self.myo.recordings)} data points so far.')
         self.do_record = False
 
     def save_record(self, event=None):
         with open(self.DATA_FILE, 'w') as stream:
-            self.myo.serialize_recording(stream)
-        print(f'Saved {len(self.myo.recording)} data points')
+            self.myo.serialize_recordings(stream)
+        print(f'Saved {len(self.myo.recordings)} data points')
 
     def load_record(self, event=None):
         with open(self.DATA_FILE, 'r') as stream:
-            self.myo.unserialize_recording(stream)
-        pprint.pprint(self.myo.recording)
-        print(f'Loaded {len(self.myo.recording)} data points')
+            self.myo.unserialize_recordings(stream)
+        #pprint.pprint(self.myo.recordings)
+        print(f'Loaded {len(self.myo.recordings)} data points')
 
 #    def plot(self):
 #        fig = Figure(figsize=(5, 5),
