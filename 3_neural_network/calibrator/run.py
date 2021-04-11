@@ -1,4 +1,14 @@
 #!/usr/bin/python
+#
+# Workflow:
+# 1. start recording signals
+# 2. make movements with arm, and at the same time, press the keys that the
+#    movements should represent
+# 3. stop recording, save data
+# 4. TODO
+# 5. Profit
+#
+
 import serial
 import csv
 import pprint
