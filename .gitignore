@@ -4,3 +4,5 @@ __pycache__
 tmp
 venv
 records.csv
+model.tf
+model.tf.labels
