@@ -1,6 +1,6 @@
 from threading import Timer
 
-
+# Based on: https://github.com/adamheins/tk-debouncer/blob/d0987b4f855f99cf2c9e3613a7c3992c8d303f7e/debouncer.py
 class KeyDebouncer:
     ''' Debounces key events for Tkinter apps, so that press-and-hold works. '''
     def __init__(self, pressed_cb, released_cb, max_delay=0.05):
