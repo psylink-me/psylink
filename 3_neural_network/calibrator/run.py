@@ -23,6 +23,8 @@ from ai import MyoAI
 KEY_DEBOUNCER_DELAY = 0.05
 SAMPLE_WINDOW_SIZE = 64
 NUM_SIGNALS = 8
+DATA_FILE = 'records.csv'
+MODEL_FILE = 'model.tf'
 
 class Backend:
     def __init__(self, num_signals=NUM_SIGNALS):
@@ -107,6 +109,14 @@ class Backend:
         self.ai.generate_nn()
         self.ai.nn_fit()
 
+    def save_model(self, path=MODEL_FILE):
+        self.ai.save_model(path)
+
+    def load_model(self, path=MODEL_FILE):
+        if not self.ai:
+            self.ai = MyoAI(self.num_signals, SAMPLE_WINDOW_SIZE)
+        self.ai.load_model(path)
+
     @staticmethod
     def keys_to_label(key_list):
         label = '|'.join(sorted(key_list))
@@ -115,7 +125,6 @@ class Backend:
         return label
 
 class Window(Frame):
-    DATA_FILE = 'records.csv'
 
     def __init__(self, master=None):
         self.myo = Backend()
@@ -131,13 +140,16 @@ class Window(Frame):
         fileMenu.add_command(label="Start/Resume Recording", command=self.start_recording, accelerator='F1')
         fileMenu.add_command(label="Stop Recording", command=self.stop_recording, accelerator='Esc')
         fileMenu.add_command(label="Train artificial neural network", command=self.start_train, accelerator='Ctrl+a')
-        #fileMenu.add_command(label="Save neural network", accelerator='Ctrl+S')
+        fileMenu.add_command(label="Save neural network", command=self.myo.save_model, accelerator='Ctrl+S')
+        fileMenu.add_command(label="Load neural network", command=self.myo.load_model, accelerator='Ctrl+L')
         fileMenu.add_command(label="Save recorded data", command=self.save_record, accelerator='Ctrl+Shift+S')
         fileMenu.add_command(label="Load recorded data", command=self.load_record, accelerator='Ctrl+Shift+L')
         fileMenu.add_command(label="Exit", command=self.quit, accelerator='Ctrl+Q')
         menu.add_cascade(label="File", menu=fileMenu)
         self.bind_all("<Control-a>", self.start_train)
         self.bind_all("<Control-q>", self.quit)
+        self.bind_all("<Control-s>", lambda event: self.myo.save_model())
+        self.bind_all("<Control-l>", lambda event: self.myo.load_model())
         self.bind_all("<Control-S>", self.save_record)
         self.bind_all("<Control-L>", self.load_record)
         self.bind_all("<F1>", self.start_recording)
@@ -176,12 +188,14 @@ class Window(Frame):
         self.do_record = False
 
     def save_record(self, event=None):
-        with open(self.DATA_FILE, 'w') as stream:
+        print(f'Saving {len(self.myo.recordings)} data points...')
+        with open(DATA_FILE, 'w') as stream:
             self.myo.serialize_recordings(stream)
         print(f'Saved {len(self.myo.recordings)} data points')
 
     def load_record(self, event=None):
-        with open(self.DATA_FILE, 'r') as stream:
+        print(f'Loading data points...')
+        with open(DATA_FILE, 'r') as stream:
             self.myo.unserialize_recordings(stream)
         #pprint.pprint(self.myo.recordings)
         print(f'Loaded {len(self.myo.recordings)} data points')

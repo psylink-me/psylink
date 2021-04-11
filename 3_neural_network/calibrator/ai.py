@@ -1,10 +1,14 @@
 # Inspired by https://colab.research.google.com/github/tensorflow/tensorflow/blob/8855f56500ff8efa449662a95fe69f24bb78c0a6/tensorflow/lite/micro/examples/hello_world/train/train_hello_world_model.ipynb
 import tensorflow as tf
 from tensorflow import keras
+from tensorflow.keras.models import load_model
 import numpy as np
 #import pandas as pd
 #import matplotlib.pyplot as plt
 import math
+
+LABEL_SEPARATOR = ','
+DEFAULT_EPOCHS = 30
 
 class MyoAI:
     BATCH_SIZE = 64
@@ -66,7 +70,7 @@ class MyoAI:
         #input_shape = (self.BATCH_SIZE, self.num_channels, self.window_size)
         input_shape = (self.num_channels, self.window_size)
         conv_layer_1 = tf.keras.layers.Conv1D(
-                filters=64,  # number of outputs
+                filters=128,  # number of outputs
                 kernel_size=5,
                 strides=1,
                 padding='same',
@@ -84,6 +88,9 @@ class MyoAI:
         dense_layer_2 = tf.keras.layers.Dense(64, activation='relu')
         model.add(dense_layer_2)
 
+        dense_layer_3 = tf.keras.layers.Dense(64, activation='relu')
+        model.add(dense_layer_3)
+
         output_layer = tf.keras.layers.Dense(len(self.possible_labels), activation='softmax')
         model.add(output_layer)
 
@@ -97,15 +104,29 @@ class MyoAI:
 
         return model
 
-    def nn_fit(self):
+    def nn_fit(self, epochs=DEFAULT_EPOCHS):
         print(f'samples_train shape: {self.samples_train.shape}')
         print(f'labels_train shape: {self.labels_train.shape}')
         history = self.model.fit(
                 self.samples_train,
                 self.labels_train,
                 batch_size=self.BATCH_SIZE,
-                epochs=300,
+                epochs=epochs,
+                validation_data=(self.samples_validate, self.labels_validate),
         )
+
+    def save_model(self, filepath):
+        self.model.save(filepath)
+        filepath_labels = filepath + '.labels'
+        with open(filepath_labels, 'w') as f:
+            f.write(LABEL_SEPARATOR.join(self.possible_labels))
+
+    def load_model(self, filepath):
+        self.model = load_model(filepath)
+        filepath_labels = filepath + '.labels'
+        with open(filepath_labels, 'r') as f:
+            self.possible_labels = f.read().strip().split(LABEL_SEPARATOR)
+
 
 def unison_shuffled_copies(a, b):
     # https://stackoverflow.com/a/4602224
