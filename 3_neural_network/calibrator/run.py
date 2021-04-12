@@ -42,6 +42,7 @@ class Backend:
         self.reads_per_second_time = 0
         self.reads_per_second_counter = 0
         self.keypress_manager = KeyPressManagerXDoTool()
+        self.need_to_rebuild_training_data = True
 
         # We keep the last SAMPLE_WINDOW_SIZE samples for each signal
         self.sample_buffer = []
@@ -93,6 +94,11 @@ class Backend:
         self.recordings.append(record)
         if '-v' in sys.argv:
             print(label)
+
+    def start_recording(self):
+        self.connect_serial()
+        self.throw_away_first_line()
+        self.need_to_rebuild_training_data = True
 
     def stop_recording(self):
         self._flush_sample_buffer()
@@ -148,11 +154,14 @@ class Backend:
             for i in range(1, len(row)):
                 row[i] = float(row[i])
             self.recordings.append(row)
+        self.need_to_rebuild_training_data = True
 
     def start_train(self):
         if not self.ai:
             self.ai = MyoAI(self.num_signals, SAMPLE_WINDOW_SIZE)
-        self.ai.generate_training_data(self.recordings)
+        if self.need_to_rebuild_training_data:
+            self.ai.generate_training_data(self.recordings)
+            self.need_to_rebuild_training_data = False
         if not self.ai.model:
             self.ai.generate_nn()
         self.ai.nn_fit()
@@ -164,6 +173,7 @@ class Backend:
         if not self.ai:
             self.ai = MyoAI(self.num_signals, SAMPLE_WINDOW_SIZE)
         self.ai.load_model(path)
+        self.need_to_rebuild_training_data = True
 
     @staticmethod
     def keys_to_label(key_list):
@@ -229,8 +239,7 @@ class Window(Frame):
             return
         print('Start/Resume recording!')
         self.do_record = True
-        self.myo.connect_serial()
-        self.myo.throw_away_first_line()
+        self.myo.start_recording()
         self.record_tick()
 
     def record_tick(self):
