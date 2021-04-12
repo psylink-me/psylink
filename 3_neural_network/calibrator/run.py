@@ -14,6 +14,7 @@ import serial
 import csv
 import pprint
 import sys
+import time
 from collections import deque
 from tkinter import *
 from lib import KeyDebouncer, KeyTracker, KeyPressManagerXDoTool
@@ -22,11 +23,12 @@ from ai import MyoAI
 #from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 KEY_DEBOUNCER_DELAY = 0.05
-SAMPLE_WINDOW_SIZE = 256
+SAMPLE_WINDOW_SIZE = 16
 NUM_SIGNALS = 8
 DATA_FILE = 'records.csv'
 MODEL_FILE = 'model.tf'
 LABEL_NO_KEY = 'null'
+TICKS_PER_PREDICTION = 32
 
 class Backend:
     def __init__(self, num_signals=NUM_SIGNALS):
@@ -36,6 +38,9 @@ class Backend:
         self.num_signals = num_signals
         self.recordings = []  # a list of lists like [label, signal1, signal2, ...] 
         self.ai = None
+        self._ai_tick = 0
+        self.reads_per_second_time = 0
+        self.reads_per_second_counter = 0
         self.keypress_manager = KeyPressManagerXDoTool()
 
         # We keep the last SAMPLE_WINDOW_SIZE samples for each signal
@@ -45,8 +50,7 @@ class Backend:
             self.sample_buffer.append(channel)
 
     def reset(self):
-        for channel in self.sample_buffer:
-            channel.clean()
+        self._flush_sample_buffer()
 
     def connect_serial(self):
         if not self.serial_connection:
@@ -69,16 +73,21 @@ class Backend:
             # Sample buffer not full yet
             return
 
-        label = self.ai.predict(self.sample_buffer)
-        print(label)
-        keys = self.label_to_keys(label)
-        self.keypress_manager.press(keys)
+        if self._ai_tick == 0:
+            label = self.ai.predict(self.sample_buffer)
+            print(label)
+            keys = self.label_to_keys(label)
+            self.keypress_manager.press(keys)
+        self._ai_tick += 1
+        if self._ai_tick > TICKS_PER_PREDICTION:
+            self._ai_tick = 0
 
     def record(self, label):
         self.read_data()
         if len(self.sample_buffer[0]) < SAMPLE_WINDOW_SIZE:
             # Sample buffer not full yet
             return
+
         record = [label]
         record.extend(self.flatten_sample_buffer())
         self.recordings.append(record)
@@ -94,9 +103,18 @@ class Backend:
 
     def throw_away_first_line(self):
         # because we may start reading in the middle of a line
+        self.serial_connection.reset_input_buffer()
         self.serial_connection.readline()
+        self.reads_per_second_time = time.time()
+        self.reads_per_second_counter = 0
 
     def read_data(self):
+        if time.time() > self.reads_per_second_time + 1:
+            print("Serial port reads per second: %d" % self.reads_per_second_counter)
+            self.reads_per_second_time = time.time()
+            self.reads_per_second_counter = 0
+        self.reads_per_second_counter += 1
+
         line = self.serial_connection.readline()
         decoded = line.decode('utf-8').strip()
         elements = decoded.strip().split('\t')
@@ -110,6 +128,7 @@ class Backend:
             else:
                 # This automatically throws away the oldest sample due to collections.deque:
                 self.sample_buffer[channel].append(float(value))
+        #print([channel[-1] for channel in self.sample_buffer])
 
     def flatten_sample_buffer(self):
         data_points = []
@@ -236,8 +255,9 @@ class Window(Frame):
         self.ai_tick()
 
     def ai_tick(self):
-        self.myo.ai_tick()
-        self.after(10, self.ai_tick)
+        if self.ai_active:
+            self.myo.ai_tick()
+            self.after(1, self.ai_tick)
 
     def save_record(self, event=None):
         print(f'Saving {len(self.myo.recordings)} data points...')

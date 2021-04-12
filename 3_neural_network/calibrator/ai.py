@@ -8,10 +8,10 @@ import numpy as np
 import math
 
 LABEL_SEPARATOR = ','
-DEFAULT_EPOCHS = 100
+DEFAULT_EPOCHS = 50
 
 class MyoAI:
-    BATCH_SIZE = 64
+    BATCH_SIZE = 128
     def __init__(self, num_channels, window_size):
         # Set seed for experiment reproducibility
         seed = 1
@@ -21,7 +21,7 @@ class MyoAI:
         self.window_size = window_size
         self.training_data_generated = False
 
-    def generate_training_data(self, values, train_split=0.6, test_split=0.2):
+    def generate_training_data(self, values, train_split=0.8, test_split=0.2):
         # "values" is a flat array of [label, v1c1, v2c1, v3c1, ..., v1c2, ...]
         # where "v1c2" means "signal value at time step 1 of channel/electrode 2"
 
@@ -80,6 +80,16 @@ class MyoAI:
                 input_shape=input_shape,
         )
         model.add(conv_layer_1)
+
+        conv_layer_2 = tf.keras.layers.Conv1D(
+                filters=128,
+                kernel_size=5,
+                strides=1,
+                padding='same',
+                activation='relu',
+        )
+        model.add(conv_layer_2)
+
         model.add(tf.keras.layers.Flatten())
 
         dense_layer_1 = tf.keras.layers.Dense(128, activation='relu')
