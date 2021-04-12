@@ -23,7 +23,7 @@ from ai import MyoAI
 #from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 KEY_DEBOUNCER_DELAY = 0.05
-SAMPLE_WINDOW_SIZE = 16
+SAMPLE_WINDOW_SIZE = 32
 NUM_SIGNALS = 8
 DATA_FILE = 'records.csv'
 MODEL_FILE = 'model.tf'
@@ -153,7 +153,8 @@ class Backend:
         if not self.ai:
             self.ai = MyoAI(self.num_signals, SAMPLE_WINDOW_SIZE)
         self.ai.generate_training_data(self.recordings)
-        self.ai.generate_nn()
+        if not self.ai.model:
+            self.ai.generate_nn()
         self.ai.nn_fit()
 
     def save_model(self, path=MODEL_FILE):
@@ -166,7 +167,7 @@ class Backend:
 
     @staticmethod
     def keys_to_label(key_list):
-        label = '|'.join(sorted(key_list))
+        label = '|'.join(sorted([key for key in key_list if not key.startswith('Alt_')]))
         if len(label) == 0:
             return LABEL_NO_KEY
         return label

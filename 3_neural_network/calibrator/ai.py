@@ -8,7 +8,7 @@ import numpy as np
 import math
 
 LABEL_SEPARATOR = ','
-DEFAULT_EPOCHS = 50
+DEFAULT_EPOCHS = 100
 
 class MyoAI:
     BATCH_SIZE = 128
@@ -18,6 +18,7 @@ class MyoAI:
         np.random.seed(seed)
         tf.random.set_seed(seed)
         self.num_channels = num_channels
+        self.model = None
         self.window_size = window_size
         self.training_data_generated = False
 
@@ -70,8 +71,8 @@ class MyoAI:
         #input_shape = (self.BATCH_SIZE, self.num_channels, self.window_size)
         input_shape = (self.num_channels, self.window_size)
         conv_layer_1 = tf.keras.layers.Conv1D(
-                filters=128,  # number of outputs
-                kernel_size=5,
+                filters=64,  # number of outputs
+                kernel_size=3,
                 strides=1,
                 padding='same',
                 #dilation_rate=????,
@@ -82,7 +83,7 @@ class MyoAI:
         model.add(conv_layer_1)
 
         conv_layer_2 = tf.keras.layers.Conv1D(
-                filters=128,
+                filters=64,
                 kernel_size=5,
                 strides=1,
                 padding='same',
@@ -126,7 +127,9 @@ class MyoAI:
         )
 
     def predict(self, sample):
-        sample_array = np.array([sample])
+        sample_array = np.array(sample).reshape((1, self.num_channels, self.window_size))
+        #print(sample_array.shape)
+        #raise SystemExit()
         prediction = self.model.predict(sample_array)
         label_id = np.argmax(prediction)
         return self.possible_labels[label_id]
