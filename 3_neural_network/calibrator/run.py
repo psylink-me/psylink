@@ -5,8 +5,9 @@
 # 2. make movements with arm, and at the same time, press the keys that the
 #    movements should represent
 # 3. stop recording, save data
-# 4. TODO
-# 5. Profit
+# 4. train AI
+# 5. activate AI-enhanced action mapper
+# 6. make movements with arm, and watch the corresponding keys getting magically pressed
 #
 
 import serial
@@ -15,16 +16,17 @@ import pprint
 import sys
 from collections import deque
 from tkinter import *
-from lib import KeyDebouncer, KeyTracker
+from lib import KeyDebouncer, KeyTracker, KeyPressManagerXDoTool
 from ai import MyoAI
 #from matplotlib.figure import Figure
 #from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 KEY_DEBOUNCER_DELAY = 0.05
-SAMPLE_WINDOW_SIZE = 64
+SAMPLE_WINDOW_SIZE = 256
 NUM_SIGNALS = 8
 DATA_FILE = 'records.csv'
 MODEL_FILE = 'model.tf'
+LABEL_NO_KEY = 'null'
 
 class Backend:
     def __init__(self, num_signals=NUM_SIGNALS):
@@ -34,12 +36,17 @@ class Backend:
         self.num_signals = num_signals
         self.recordings = []  # a list of lists like [label, signal1, signal2, ...] 
         self.ai = None
+        self.keypress_manager = KeyPressManagerXDoTool()
 
         # We keep the last SAMPLE_WINDOW_SIZE samples for each signal
         self.sample_buffer = []
         for _ in range(self.num_signals):
             channel = deque(maxlen=SAMPLE_WINDOW_SIZE)
             self.sample_buffer.append(channel)
+
+    def reset(self):
+        for channel in self.sample_buffer:
+            channel.clean()
 
     def connect_serial(self):
         if not self.serial_connection:
@@ -48,6 +55,24 @@ class Backend:
                 baudrate=self.baudrate,
                 timeout=.01
             )
+
+    def ai_activate(self):
+        self.connect_serial()
+        self.throw_away_first_line()
+
+    def ai_deactivate(self):
+        self._flush_sample_buffer()
+
+    def ai_tick(self):
+        self.read_data()
+        if len(self.sample_buffer[0]) < SAMPLE_WINDOW_SIZE:
+            # Sample buffer not full yet
+            return
+
+        label = self.ai.predict(self.sample_buffer)
+        print(label)
+        keys = self.label_to_keys(label)
+        self.keypress_manager.press(keys)
 
     def record(self, label):
         self.read_data()
@@ -61,6 +86,9 @@ class Backend:
             print(label)
 
     def stop_recording(self):
+        self._flush_sample_buffer()
+
+    def _flush_sample_buffer(self):
         for channel in self.sample_buffer:
             channel.clear()
 
@@ -121,8 +149,14 @@ class Backend:
     def keys_to_label(key_list):
         label = '|'.join(sorted(key_list))
         if len(label) == 0:
-            return 'null'
+            return LABEL_NO_KEY
         return label
+
+    @staticmethod
+    def label_to_keys(label):
+        if label == LABEL_NO_KEY:
+            return None
+        return label.split('|')
 
 class Window(Frame):
 
@@ -132,28 +166,33 @@ class Window(Frame):
         self.master = master
 
         self.do_record = False
+        self.ai_active = False
 
         menu = Menu(self.master)
         self.master.config(menu=menu)
 
         fileMenu = Menu(menu)
         fileMenu.add_command(label="Start/Resume Recording", command=self.start_recording, accelerator='F1')
-        fileMenu.add_command(label="Stop Recording", command=self.stop_recording, accelerator='Esc')
-        fileMenu.add_command(label="Train artificial neural network", command=self.start_train, accelerator='Ctrl+a')
+        fileMenu.add_command(label="Stop Recording or AI", command=self.stop, accelerator='Esc')
+        fileMenu.add_command(label="Train AI", command=self.start_train, accelerator='Ctrl+w')
+        fileMenu.add_command(label="Activate AI", command=self.start_ai, accelerator='Ctrl+a')
         fileMenu.add_command(label="Save neural network", command=self.myo.save_model, accelerator='Ctrl+S')
         fileMenu.add_command(label="Load neural network", command=self.myo.load_model, accelerator='Ctrl+L')
         fileMenu.add_command(label="Save recorded data", command=self.save_record, accelerator='Ctrl+Shift+S')
         fileMenu.add_command(label="Load recorded data", command=self.load_record, accelerator='Ctrl+Shift+L')
+        fileMenu.add_command(label="Reset recordings", command=self.reset, accelerator='Ctrl+R')
         fileMenu.add_command(label="Exit", command=self.quit, accelerator='Ctrl+Q')
         menu.add_cascade(label="File", menu=fileMenu)
-        self.bind_all("<Control-a>", self.start_train)
+        self.bind_all("<Control-a>", self.start_ai)
+        self.bind_all("<Control-w>", self.start_train)
         self.bind_all("<Control-q>", self.quit)
         self.bind_all("<Control-s>", lambda event: self.myo.save_model())
         self.bind_all("<Control-l>", lambda event: self.myo.load_model())
         self.bind_all("<Control-S>", self.save_record)
         self.bind_all("<Control-L>", self.load_record)
+        self.bind_all("<Control-r>", self.reset)
         self.bind_all("<F1>", self.start_recording)
-        self.bind_all("<Escape>", self.stop_recording)
+        self.bind_all("<Escape>", self.stop)
 
         self.keytracker = KeyTracker()
         self.keydebouncer = KeyDebouncer(self.keytracker.keypress,
@@ -180,12 +219,25 @@ class Window(Frame):
             self.myo.record(label)
             self.after(1, self.record_tick)
 
-    def stop_recording(self, event=None):
-        if not self.do_record:
-            print('Not recording.')
-            return
-        print(f'Paused recording. Got {len(self.myo.recordings)} data points so far.')
-        self.do_record = False
+    def stop(self, event=None):
+        if self.ai_active:
+            print(f'Disabling AI')
+            self.myo.ai_deactivate()
+            self.ai_active = False
+        elif self.do_record:
+            print(f'Paused recording. Got {len(self.myo.recordings)} data points so far.')
+            self.do_record = False
+        else:
+            print('Not recording, AI not running either. Nothing to do.')
+
+    def start_ai(self, event=None):
+        self.ai_active = True
+        self.myo.ai_activate()
+        self.ai_tick()
+
+    def ai_tick(self):
+        self.myo.ai_tick()
+        self.after(10, self.ai_tick)
 
     def save_record(self, event=None):
         print(f'Saving {len(self.myo.recordings)} data points...')
@@ -199,6 +251,11 @@ class Window(Frame):
             self.myo.unserialize_recordings(stream)
         #pprint.pprint(self.myo.recordings)
         print(f'Loaded {len(self.myo.recordings)} data points')
+
+    def reset(self, event=None):
+        self.stop()
+        print('Clearing recorded datapoints')
+        self.myo.reset()
 
     def start_train(self, event=None):
         self.myo.start_train()

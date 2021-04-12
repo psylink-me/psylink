@@ -8,7 +8,7 @@ import numpy as np
 import math
 
 LABEL_SEPARATOR = ','
-DEFAULT_EPOCHS = 30
+DEFAULT_EPOCHS = 100
 
 class MyoAI:
     BATCH_SIZE = 64
@@ -82,10 +82,10 @@ class MyoAI:
         model.add(conv_layer_1)
         model.add(tf.keras.layers.Flatten())
 
-        dense_layer_1 = tf.keras.layers.Dense(64, activation='relu')
+        dense_layer_1 = tf.keras.layers.Dense(128, activation='relu')
         model.add(dense_layer_1)
 
-        dense_layer_2 = tf.keras.layers.Dense(64, activation='relu')
+        dense_layer_2 = tf.keras.layers.Dense(128, activation='relu')
         model.add(dense_layer_2)
 
         dense_layer_3 = tf.keras.layers.Dense(64, activation='relu')
@@ -114,6 +114,12 @@ class MyoAI:
                 epochs=epochs,
                 validation_data=(self.samples_validate, self.labels_validate),
         )
+
+    def predict(self, sample):
+        sample_array = np.array([sample])
+        prediction = self.model.predict(sample_array)
+        label_id = np.argmax(prediction)
+        return self.possible_labels[label_id]
 
     def save_model(self, filepath):
         self.model.save(filepath)

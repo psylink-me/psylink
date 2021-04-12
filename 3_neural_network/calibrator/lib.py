@@ -1,4 +1,5 @@
 from threading import Timer
+import subprocess
 
 # Based on: https://github.com/adamheins/tk-debouncer/blob/d0987b4f855f99cf2c9e3613a7c3992c8d303f7e/debouncer.py
 class KeyDebouncer:
@@ -50,3 +51,29 @@ class KeyTracker:
             self.pressed_keys.remove(event.keysym)
         except KeyError:
             pass
+
+class KeyPressManagerXDoTool:
+    def __init__(self):
+        self.pressed_keys = set()
+
+    def press(self, keys):
+        if keys == None:
+            keys = set()
+        else:
+            keys = set(keys)
+        down = keys - self.pressed_keys
+        up = self.pressed_keys - keys
+        self.pressed_keys = keys
+
+        for key in down:
+            self.raw_keydown(key)
+        for key in up:
+            self.raw_keyup(key)
+
+    def raw_keydown(self, key):
+        # TODO: Fork process to avoid block
+        subprocess.call(['xdotool', 'keydown', key])
+
+    def raw_keyup(self, key):
+        # TODO: Fork process to avoid block
+        subprocess.call(['xdotool', 'keyup', key])
