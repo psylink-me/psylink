@@ -22,7 +22,7 @@ class MyoAI:
         self.window_size = window_size
         self.training_data_generated = False
 
-    def generate_training_data(self, values, train_split=0.8, test_split=0.2):
+    def generate_training_data(self, values, train_split=0.8):
         # "values" is a flat array of [label, v1c1, v2c1, v3c1, ..., v1c2, ...]
         # where "v1c2" means "signal value at time step 1 of channel/electrode 2"
 
@@ -49,14 +49,11 @@ class MyoAI:
         #import pprint; pprint.pprint(self.labels)
 
         train_split_index = int(len(self.samples) * train_split)
-        test_split_index = int(len(self.samples) * test_split) + train_split_index
 
         self.labels, self.samples = unison_shuffled_copies(self.labels, self.samples)
 
-        self.labels_train, self.labels_test, self.labels_validate = np.split(
-                self.labels, [train_split_index, test_split_index])
-        self.samples_train, self.samples_test, self.samples_validate = np.split(
-                self.samples, [train_split_index, test_split_index])
+        self.labels_train, self.labels_validate = np.split(self.labels, [train_split_index])
+        self.samples_train, self.samples_validate = np.split(self.samples, [train_split_index])
 
         print('Generating training data... DONE')
         self.training_data_generated = True
