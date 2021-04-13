@@ -119,21 +119,27 @@ class Backend:
             print("Serial port reads per second: %d" % self.reads_per_second_counter)
             self.reads_per_second_time = time.time()
             self.reads_per_second_counter = 0
-        self.reads_per_second_counter += 1
 
         line = self.serial_connection.readline()
+        if not line:
+            # No data received
+            return
+
+        self.reads_per_second_counter += 1
+
         decoded = line.decode('utf-8').strip()
         elements = decoded.strip().split('\t')
         signals = []
         for channel, element in enumerate(elements):
             try:
-                key, value = element.split(':')
+                value = float(element)
+                #key, value = element.split(':')
             except ValueError as e:
                 print(e)
                 print(f'element was: {element}')
             else:
                 # This automatically throws away the oldest sample due to collections.deque:
-                self.sample_buffer[channel].append(float(value))
+                self.sample_buffer[channel].append(value)
         #print([channel[-1] for channel in self.sample_buffer])
 
     def flatten_sample_buffer(self):
