@@ -67,37 +67,54 @@ class MyoAI:
 
         #input_shape = (self.BATCH_SIZE, self.num_channels, self.window_size)
         input_shape = (self.num_channels, self.window_size)
-        conv_layer_1 = tf.keras.layers.Conv1D(
-                filters=64,  # number of outputs
-                kernel_size=3,
-                strides=1,
-                padding='same',
-                #dilation_rate=????,
-                groups=1,
-                activation='relu',
-                input_shape=input_shape,
-        )
-        model.add(conv_layer_1)
 
-        conv_layer_2 = tf.keras.layers.Conv1D(
-                filters=64,
-                kernel_size=5,
-                strides=1,
-                padding='same',
-                activation='relu',
-        )
-        model.add(conv_layer_2)
+        model.add(tf.keras.layers.SeparableConv1D(
+            filters=64,
+            kernel_size=5,
+            input_shape=input_shape,
+            #activation='selu',
+        ))
+
+        model.add(tf.keras.layers.SeparableConv1D(
+            filters=64,
+            kernel_size=3,
+            #activation='relu',
+        ))
+
+        #conv_layer_1 = tf.keras.layers.Conv1D(
+        #        filters=128,  # number of outputs
+        #        kernel_size=5,
+        #        strides=1,
+        #        padding='same',
+        #        groups=1,
+        #        #activation='selu',
+        #        input_shape=input_shape,
+        #)
+        #model.add(conv_layer_1)
+
+        #conv_layer_2 = tf.keras.layers.Conv1D(
+        #        filters=128,
+        #        kernel_size=5,
+        #        strides=1,
+        #        padding='same',
+        #        activation='selu',
+        #)
+        #model.add(conv_layer_2)
 
         model.add(tf.keras.layers.Flatten())
 
-        dense_layer_1 = tf.keras.layers.Dense(128, activation='relu')
-        model.add(dense_layer_1)
+        #model.add(tf.keras.layers.Dense(128, activation='relu', input_shape=input_shape))
 
-        dense_layer_2 = tf.keras.layers.Dense(128, activation='relu')
-        model.add(dense_layer_2)
+        for _ in range(2):
+            model.add(tf.keras.layers.Dense(
+                units=128,
+                activation='relu',
+                bias_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                activity_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                kernel_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4),
+            ))
 
-        dense_layer_3 = tf.keras.layers.Dense(64, activation='relu')
-        model.add(dense_layer_3)
+        model.add(tf.keras.layers.Dense(64, activation='relu'))
 
         output_layer = tf.keras.layers.Dense(len(self.possible_labels), activation='softmax')
         model.add(output_layer)
