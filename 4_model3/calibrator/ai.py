@@ -8,10 +8,10 @@ import numpy as np
 import math
 
 LABEL_SEPARATOR = ','
-DEFAULT_EPOCHS = 100
+DEFAULT_EPOCHS = 50
 
 class MyoAI:
-    BATCH_SIZE = 128
+    BATCH_SIZE = 64
     def __init__(self, num_channels, window_size):
         # Set seed for experiment reproducibility
         seed = 1
