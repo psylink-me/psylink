@@ -105,7 +105,7 @@ class MyoAI:
         model.compile(
                 optimizer='adam', 
                 loss='binary_crossentropy',
-                metrics=['accuracy']
+                metrics=['binary_accuracy']
         )
         #model.compile(optimizer='adam', loss='mse', metrics=['mae'])
         print(model)
