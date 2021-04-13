@@ -32,14 +32,14 @@ class MyoAI:
 
         self.possible_labels = list(sorted(set(item[0] for item in values)))
 
-        self.labels = np.zeros([len(values), len(self.possible_labels)])
+        self.labels = np.full([len(values), len(self.possible_labels)], False, dtype=bool)
         #self.samples = np.zeros([len(values), len(values[0])-1])
         self.samples = np.zeros([len(values), self.num_channels, self.window_size])
         # Index meanings: self.samples[which_sample][which_signal][which_time_step] = signal_value
 
         # Split up the flat "values" list into distinct channels
         for sample_id, sample in enumerate(values):
-            self.labels[sample_id][self.possible_labels.index(sample[0])] = 1
+            self.labels[sample_id][self.possible_labels.index(sample[0])] = True
             for channel in range(self.num_channels):
                 start = 1 + channel * self.window_size
                 end = 1 + (channel + 1) * self.window_size
