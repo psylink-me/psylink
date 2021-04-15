@@ -34,10 +34,8 @@ void loop() {
         for (int pin = 0; pin < NPINS; pin++) {
             if (pin == 2) {
                 digitalWrite(2, LOW);
-                delay(3);
                 vReal[pin][i] = analogRead(pins[1]);
                 vImag[pin][i] = 0;
-                delay(3);
             }
             else {
                 vReal[pin][i] = analogRead(pins[pin]);
