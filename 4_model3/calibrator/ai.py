@@ -8,7 +8,7 @@ import numpy as np
 import math
 
 LABEL_SEPARATOR = ','
-DEFAULT_EPOCHS = 50
+DEFAULT_EPOCHS = 100
 
 class MyoAI:
     BATCH_SIZE = 64
@@ -69,14 +69,14 @@ class MyoAI:
         input_shape = (self.num_channels, self.window_size)
 
         model.add(tf.keras.layers.SeparableConv1D(
-            filters=64,
+            filters=128,
             kernel_size=5,
             input_shape=input_shape,
             #activation='selu',
         ))
 
         model.add(tf.keras.layers.SeparableConv1D(
-            filters=64,
+            filters=128,
             kernel_size=3,
             #activation='relu',
         ))
@@ -105,13 +105,13 @@ class MyoAI:
 
         #model.add(tf.keras.layers.Dense(128, activation='relu', input_shape=input_shape))
 
-        for _ in range(2):
+        for _ in range(3):
             model.add(tf.keras.layers.Dense(
                 units=128,
                 activation='relu',
-                bias_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4),
-                activity_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4),
-                kernel_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                #bias_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                #activity_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4),
+                #kernel_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4),
             ))
 
         model.add(tf.keras.layers.Dense(64, activation='relu'))

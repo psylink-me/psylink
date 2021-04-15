@@ -23,12 +23,12 @@ from ai import MyoAI
 #from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 KEY_DEBOUNCER_DELAY = 0.05
-SAMPLE_WINDOW_SIZE = 128
+SAMPLE_WINDOW_SIZE = 32
 NUM_SIGNALS = 8
 DATA_FILE = 'records.csv'
 MODEL_FILE = 'model.tf'
 LABEL_NO_KEY = 'null'
-TICKS_PER_PREDICTION = 25
+TICKS_PER_PREDICTION = 3
 
 class Backend:
     def __init__(self, num_signals=NUM_SIGNALS):
