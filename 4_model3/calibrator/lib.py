@@ -1,5 +1,16 @@
-from threading import Timer
+import serial.threaded
 import subprocess
+import numpy
+import time
+from collections import deque
+from threading import Timer
+
+from config import (
+        SAMPLE_WINDOW_SIZE,
+        SERIAL_PORT,
+        SERIAL_BAUDRATE,
+        SAMPLES_PER_SECOND_PRINT_INTERVAL,
+)
 
 # Based on: https://github.com/adamheins/tk-debouncer/blob/d0987b4f855f99cf2c9e3613a7c3992c8d303f7e/debouncer.py
 class KeyDebouncer:
@@ -77,3 +88,76 @@ class KeyPressManagerXDoTool:
     def raw_keyup(self, key):
         # TODO: Fork process to avoid block
         subprocess.call(['xdotool', 'keyup', key])
+
+
+class SerialReader(serial.threaded.LineReader):
+    TERMINATOR = b'\n'
+    read_first_line = False
+    signal_count = None
+    signals_per_second_counter = 0
+    sample_buffer = None
+    #connection = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.next_print = time.time() + 1
+        self._init_buffer()
+
+    def reset(self):
+        #if self.connection:
+            #self.connection.reset_input_buffer()
+        self._init_buffer()
+
+    def handle_line(self, line):
+        signals = line.split(' ')
+        if self.signal_count is None:
+            self.signal_count = len(signals)
+            self._init_buffer()
+        elif not self.read_first_line:
+            # Throw away first line so that we don't count signals in a half-read line
+            self.read_first_line = True
+            return
+        for i, signal in enumerate(signals):
+            self.sample_buffer[i].append(int(signal))
+
+        if time.time() >= self.next_print:
+            print("Serial signals per second: %d" %
+                    (self.signals_per_second_counter / SAMPLES_PER_SECOND_PRINT_INTERVAL))
+            self.signals_per_second_counter = 0
+            self.next_print = time.time() + SAMPLES_PER_SECOND_PRINT_INTERVAL
+        self.signals_per_second_counter += 1
+
+        #if self.connection.in_waiting > 0:
+            #print("WARNING: SERIAL BUFFER IS OVERFLOWING")
+            #self.connection.reset_input_buffer()
+
+    def get_flattened_buffer(self):
+        data_points = []
+        for channel in self.sample_buffer:
+            data_points.extend(channel)
+        return data_points
+
+    def is_buffer_ready(self):
+        try:
+            return self.sample_buffer and len(self.sample_buffer[0]) == SAMPLE_WINDOW_SIZE
+        except TypeError:
+            import pprint; pprint.pprint(len(self.sample_buffer))
+
+    def _init_buffer(self):
+        if self.signal_count is None:
+            self.sample_buffer = []
+        else:
+            self.sample_buffer = []
+            for _ in range(self.signal_count):
+                # We keep the last SAMPLE_WINDOW_SIZE samples for each signal
+                self.sample_buffer.append(deque(maxlen=SAMPLE_WINDOW_SIZE))
+
+    @staticmethod
+    def activate():
+        connection = serial.Serial(port=SERIAL_PORT, baudrate=SERIAL_BAUDRATE, timeout=.1)
+        thread = serial.threaded.ReaderThread(connection, SerialReader)
+        thread.start()
+        for _ in range(50):
+            if not thread.protocol:
+                time.sleep(0.1)
+        return thread.protocol

@@ -10,32 +10,26 @@
 # 6. make movements with arm, and watch the corresponding keys getting magically pressed
 #
 
-import serial
 import csv
 import pprint
 import sys
 import time
-from collections import deque
 from tkinter import *
-from lib import KeyDebouncer, KeyTracker, KeyPressManagerXDoTool
+from lib import KeyDebouncer, KeyTracker, KeyPressManagerXDoTool, SerialReader
 from ai import MyoAI
 #from matplotlib.figure import Figure
 #from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+from config import *
+
 KEY_DEBOUNCER_DELAY = 0.05
-SAMPLE_WINDOW_SIZE = 32
-NUM_SIGNALS = 8
 DATA_FILE = 'records.csv'
 MODEL_FILE = 'model.tf'
 LABEL_NO_KEY = 'null'
-TICKS_PER_PREDICTION = 3
 
 class Backend:
-    def __init__(self, num_signals=NUM_SIGNALS):
+    def __init__(self):
         self.serial_connection = None
-        self.serial_port = '/dev/ttyACM0'
-        self.baudrate = 115200
-        self.num_signals = num_signals
         self.recordings = []  # a list of lists like [label, signal1, signal2, ...] 
         self.ai = None
         self._ai_tick = 0
@@ -43,110 +37,80 @@ class Backend:
         self.reads_per_second_counter = 0
         self.keypress_manager = KeyPressManagerXDoTool()
         self.need_to_rebuild_training_data = True
-
-        # We keep the last SAMPLE_WINDOW_SIZE samples for each signal
-        self.sample_buffer = []
-        for _ in range(self.num_signals):
-            channel = deque(maxlen=SAMPLE_WINDOW_SIZE)
-            self.sample_buffer.append(channel)
+        self.next_recording_time = 0
+        self.next_prediction_time = 0
+        self.actions_per_second_counter = 0
+        self.next_print = 0
 
     def reset(self):
-        self._flush_sample_buffer()
-
-    def connect_serial(self):
-        if not self.serial_connection:
-            self.serial_connection = serial.Serial(
-                port=self.serial_port,
-                baudrate=self.baudrate,
-                timeout=.01
-            )
+        self.serial_connection.reset()
 
     def ai_activate(self):
         self.connect_serial()
-        self.throw_away_first_line()
 
     def ai_deactivate(self):
-        self._flush_sample_buffer()
+        self.serial_connection.reset()
 
     def ai_tick(self):
-        self.read_data()
-        if len(self.sample_buffer[0]) < SAMPLE_WINDOW_SIZE:
+        if not self.serial_connection.is_buffer_ready():
             # Sample buffer not full yet
             return
 
-        if self._ai_tick == 0:
-            label = self.ai.predict(self.sample_buffer)
-            print(label)
-            keys = self.label_to_keys(label)
-            self.keypress_manager.press(keys)
-        self._ai_tick += 1
-        if self._ai_tick > TICKS_PER_PREDICTION:
-            self._ai_tick = 0
+        if time.time() <= self.next_prediction_time:
+            return
+        if time.time() > self.next_prediction_time + 1:
+            self.next_prediction_time = time.time() + 1.0 / PREDICTIONS_PER_SECOND
+        else:
+            self.next_prediction_time += 1.0 / PREDICTIONS_PER_SECOND
+
+        label = self.ai.predict(self.serial_connection.sample_buffer, self.serial_connection.signal_count)
+        print(label)
+        keys = self.label_to_keys(label)
+        self.keypress_manager.press(keys)
+
+        if time.time() >= self.next_print:
+            print("Predictions per second: %d" % self.actions_per_second_counter)
+            self.actions_per_second_counter = 0
+            self.next_print = time.time() + 1
+        self.actions_per_second_counter += 1
 
     def record(self, label):
-        self.read_data()
-        if len(self.sample_buffer[0]) < SAMPLE_WINDOW_SIZE:
+        if not self.serial_connection.is_buffer_ready():
             # Sample buffer not full yet
             return
 
+        if time.time() <= self.next_recording_time:
+            return
+        if time.time() > self.next_recording_time + 1:
+            self.next_recording_time = time.time() + 1.0 / RECORDS_PER_SECOND
+        else:
+            self.next_recording_time += 1.0 / RECORDS_PER_SECOND
+
         record = [label]
-        record.extend(self.flatten_sample_buffer())
+        record.extend(self.serial_connection.get_flattened_buffer())
         self.recordings.append(record)
         if '-v' in sys.argv:
             print(label)
 
+        if time.time() >= self.next_print:
+            print("Records per second: %d" % self.actions_per_second_counter)
+            self.actions_per_second_counter = 0
+            self.next_print = time.time() + 1
+        self.actions_per_second_counter += 1
+
+    def connect_serial(self):
+        if self.serial_connection is None:
+            self.serial_connection = SerialReader.activate()
+        else:
+            self.serial_connection.reset()
+
     def start_recording(self):
         self.connect_serial()
-        self.throw_away_first_line()
+        self.next_recording_time = time.time()
         self.need_to_rebuild_training_data = True
 
     def stop_recording(self):
-        self._flush_sample_buffer()
-
-    def _flush_sample_buffer(self):
-        for channel in self.sample_buffer:
-            channel.clear()
-
-    def throw_away_first_line(self):
-        # because we may start reading in the middle of a line
-        self.serial_connection.reset_input_buffer()
-        self.serial_connection.readline()
-        self.reads_per_second_time = time.time()
-        self.reads_per_second_counter = 0
-
-    def read_data(self):
-        if time.time() > self.reads_per_second_time + 1:
-            print("Serial port reads per second: %d" % self.reads_per_second_counter)
-            self.reads_per_second_time = time.time()
-            self.reads_per_second_counter = 0
-
-        line = self.serial_connection.readline()
-        if not line:
-            # No data received
-            return
-
-        self.reads_per_second_counter += 1
-
-        decoded = line.decode('utf-8').strip()
-        elements = decoded.strip().split('\t')
-        signals = []
-        for channel, element in enumerate(elements):
-            try:
-                value = float(element)
-                #key, value = element.split(':')
-            except ValueError as e:
-                print(e)
-                print(f'element was: {element}')
-            else:
-                # This automatically throws away the oldest sample due to collections.deque:
-                self.sample_buffer[channel].append(value)
-        #print([channel[-1] for channel in self.sample_buffer])
-
-    def flatten_sample_buffer(self):
-        data_points = []
-        for channel in self.sample_buffer:
-            data_points.extend(channel)
-        return data_points
+        self.serial_connection.reset()
 
     def serialize_recordings(self, stream):
         writer = csv.writer(stream)
@@ -164,7 +128,7 @@ class Backend:
 
     def start_train(self):
         if not self.ai:
-            self.ai = MyoAI(self.num_signals, SAMPLE_WINDOW_SIZE)
+            self.ai = MyoAI(SAMPLE_WINDOW_SIZE)
         if self.need_to_rebuild_training_data:
             self.ai.generate_training_data(self.recordings)
             self.need_to_rebuild_training_data = False
@@ -177,7 +141,7 @@ class Backend:
 
     def load_model(self, path=MODEL_FILE):
         if not self.ai:
-            self.ai = MyoAI(self.num_signals, SAMPLE_WINDOW_SIZE)
+            self.ai = MyoAI(SAMPLE_WINDOW_SIZE)
         self.ai.load_model(path)
         self.need_to_rebuild_training_data = True
 

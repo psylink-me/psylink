@@ -6,18 +6,18 @@ import numpy as np
 #import pandas as pd
 #import matplotlib.pyplot as plt
 import math
+from config import DEFAULT_EPOCHS
 
 LABEL_SEPARATOR = ','
-DEFAULT_EPOCHS = 100
 
 class MyoAI:
     BATCH_SIZE = 64
-    def __init__(self, num_channels, window_size):
+    def __init__(self, window_size):
         # Set seed for experiment reproducibility
         seed = 1
         np.random.seed(seed)
         tf.random.set_seed(seed)
-        self.num_channels = num_channels
+        self.num_channels = None
         self.model = None
         self.window_size = window_size
         self.training_data_generated = False
@@ -25,6 +25,9 @@ class MyoAI:
     def generate_training_data(self, values, train_split=0.8):
         # "values" is a flat array of [label, v1c1, v2c1, v3c1, ..., v1c2, ...]
         # where "v1c2" means "signal value at time step 1 of channel/electrode 2"
+
+        self.num_channels = int((len(values[0]) - 1) / self.window_size)
+        print('Found %d channels' % self.num_channels)
 
         print('Generating training data...')
 
@@ -140,8 +143,8 @@ class MyoAI:
                 validation_data=(self.samples_validate, self.labels_validate),
         )
 
-    def predict(self, sample):
-        sample_array = np.array(sample).reshape((1, self.num_channels, self.window_size))
+    def predict(self, sample, num_channels):
+        sample_array = np.array(sample).reshape((1, num_channels, self.window_size))
         #print(sample_array.shape)
         #raise SystemExit()
         prediction = self.model.predict(sample_array)
