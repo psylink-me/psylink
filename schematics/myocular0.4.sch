@@ -1,0 +1,762 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Device:R R1
+U 1 1 6084FC80
+P 1150 3350
+F 0 "R1" H 1220 3396 50  0001 L CNN
+F 1 "560k/5%" V 1220 3350 50  0000 C TNN
+F 2 "" V 1080 3350 50  0001 C CNN
+F 3 "~" H 1150 3350 50  0001 C CNN
+	1    1150 3350
+	0    1    1    0   
+$EndComp
+$Comp
+L Amplifier_Operational:LM324 U?
+U 5 1 60856203
+P 2200 3450
+F 0 "U?" H 2158 3496 50  0001 L CNN
+F 1 "LM324" H 2158 3405 50  0001 L CNN
+F 2 "" H 2150 3550 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2902-n.pdf" H 2250 3650 50  0001 C CNN
+	5    2200 3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L MCU_Module:Arduino_Nano_v3.x A?
+U 1 1 60849281
+P 4350 2900
+F 0 "A?" H 4350 1811 50  0001 C CNN
+F 1 "Arduino_Nano_v3.x" H 4350 1720 50  0001 C CNN
+F 2 "Module:Arduino_Nano" H 4350 2900 50  0001 C CIN
+F 3 "http://www.mouser.com/pdfdocs/Gravitech_Arduino_Nano3_0.pdf" H 4350 2900 50  0001 C CNN
+	1    4350 2900
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 60853C24
+P 1450 3500
+F 0 "R?" H 1520 3546 50  0001 L CNN
+F 1 "560k/5%" H 1520 3500 50  0000 L CNN
+F 2 "" V 1380 3500 50  0001 C CNN
+F 3 "~" H 1450 3500 50  0001 C CNN
+	1    1450 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 6086178C
+P 3700 3800
+F 0 "#PWR?" H 3700 3650 50  0001 C CNN
+F 1 "+5V" H 3715 3973 50  0000 C CNN
+F 2 "" H 3700 3800 50  0001 C CNN
+F 3 "" H 3700 3800 50  0001 C CNN
+	1    3700 3800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 60862309
+P 2100 3150
+F 0 "#PWR?" H 2100 3000 50  0001 C CNN
+F 1 "+5V" H 2115 3323 50  0000 C TNN
+F 2 "" H 2100 3150 50  0001 C CNN
+F 3 "" H 2100 3150 50  0001 C CNN
+	1    2100 3150
+	1    0    0    -1  
+$EndComp
+Connection ~ 1450 3350
+$Comp
+L power:+5V #PWR?
+U 1 1 6086442E
+P 1000 3350
+F 0 "#PWR?" H 1000 3200 50  0001 C CNN
+F 1 "+5V" H 1015 3523 50  0000 C CNN
+F 2 "" H 1000 3350 50  0001 C CNN
+F 3 "" H 1000 3350 50  0001 C CNN
+	1    1000 3350
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:Earth #PWR?
+U 1 1 60864F96
+P 1450 3650
+F 0 "#PWR?" H 1450 3400 50  0001 C CNN
+F 1 "Earth" H 1450 3500 50  0001 C CNN
+F 2 "" H 1450 3650 50  0001 C CNN
+F 3 "~" H 1450 3650 50  0001 C CNN
+	1    1450 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C?
+U 1 1 6086BD5C
+P 2700 4050
+F 0 "C?" H 2815 4096 50  0001 L CNN
+F 1 "220uF" V 2818 4050 50  0000 C TNN
+F 2 "" H 2738 3900 50  0001 C CNN
+F 3 "~" H 2700 4050 50  0001 C CNN
+	1    2700 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 6086D8F2
+P 2100 4050
+F 0 "C?" H 2215 4096 50  0001 L CNN
+F 1 "47nF" V 2215 4050 50  0000 C TNN
+F 2 "" H 2138 3900 50  0001 C CNN
+F 3 "~" H 2100 4050 50  0001 C CNN
+	1    2100 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 6086DC96
+P 1800 4050
+F 0 "C?" H 1915 4096 50  0001 L CNN
+F 1 "100pF" V 1915 4050 50  0000 C TNN
+F 2 "" H 1838 3900 50  0001 C CNN
+F 3 "~" H 1800 4050 50  0001 C CNN
+	1    1800 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 6086B37B
+P 2400 4050
+F 0 "C?" H 2515 4096 50  0001 L CNN
+F 1 "220nF" V 2515 4050 50  0000 C TNN
+F 2 "" H 2438 3900 50  0001 C CNN
+F 3 "~" H 2400 4050 50  0001 C CNN
+	1    2400 4050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2700 3450 2900 3450
+$Comp
+L Device:R R?
+U 1 1 608772AE
+P 3050 3450
+F 0 "R?" V 2843 3450 50  0001 C CNN
+F 1 "100k/5%" V 2935 3450 50  0000 C CNN
+F 2 "" V 2980 3450 50  0001 C CNN
+F 3 "~" H 3050 3450 50  0001 C CNN
+	1    3050 3450
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector:Conn_01x01_Female J?
+U 1 1 6088CF1C
+P 3350 3650
+F 0 "J?" H 3378 3676 50  0001 L CNN
+F 1 "Electrode GND" H 3378 3630 50  0000 L CNN
+F 2 "" H 3350 3650 50  0001 C CNN
+F 3 "~" H 3350 3650 50  0001 C CNN
+	1    3350 3650
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2500 3450 2700 3450
+Wire Wire Line
+	2700 3450 2700 3650
+Connection ~ 2700 3450
+Wire Wire Line
+	3000 3650 2700 3650
+$Comp
+L Connector:Conn_01x01_Female J?
+U 1 1 6093A7BF
+P 1150 2600
+F 0 "J?" H 1178 2626 50  0001 L CNN
+F 1 "Electrode 2" H 1178 2580 50  0000 L CNN
+F 2 "" H 1150 2600 50  0001 C CNN
+F 3 "~" H 1150 2600 50  0001 C CNN
+	1    1150 2600
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 6093EE1D
+P 1500 1500
+F 0 "C?" H 1615 1546 50  0001 L CNN
+F 1 "100pF" V 1615 1500 50  0000 C TNN
+F 2 "" H 1538 1350 50  0001 C CNN
+F 3 "~" H 1500 1500 50  0001 C CNN
+	1    1500 1500
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 60941D1F
+P 1650 1650
+F 0 "R?" H 1720 1696 50  0001 L CNN
+F 1 "1M/5%" V 1720 1650 50  0000 C TNN
+F 2 "" V 1580 1650 50  0001 C CNN
+F 3 "~" H 1650 1650 50  0001 C CNN
+	1    1650 1650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1650 1500 1900 1500
+Connection ~ 1650 1500
+Wire Wire Line
+	2150 1850 1900 1850
+Wire Wire Line
+	1900 1850 1900 1700
+Wire Wire Line
+	2450 1850 2500 1850
+Wire Wire Line
+	2500 1850 2500 1600
+$Comp
+L Device:R R?
+U 1 1 60945E35
+P 1900 2050
+F 0 "R?" H 1970 2096 50  0001 L CNN
+F 1 "1M/5%" V 1970 2050 50  0000 C TNN
+F 2 "" V 1830 2050 50  0001 C CNN
+F 3 "~" H 1900 2050 50  0001 C CNN
+	1    1900 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 60951A71
+P 2300 2250
+F 0 "R?" H 2370 2296 50  0001 L CNN
+F 1 "1M/5%" V 2370 2250 50  0000 C TNN
+F 2 "" V 2230 2250 50  0001 C CNN
+F 3 "~" H 2300 2250 50  0001 C CNN
+	1    2300 2250
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	2150 2250 1900 2250
+Wire Wire Line
+	2450 2250 2500 2250
+Wire Wire Line
+	1900 2250 1900 2400
+Wire Wire Line
+	1900 1900 1900 1850
+Connection ~ 1900 1850
+Wire Wire Line
+	1900 2250 1900 2200
+Connection ~ 1900 2250
+$Comp
+L Device:C C?
+U 1 1 6095A525
+P 1500 2600
+F 0 "C?" H 1615 2646 50  0001 L CNN
+F 1 "100pF" V 1615 2600 50  0000 C TNN
+F 2 "" H 1538 2450 50  0001 C CNN
+F 3 "~" H 1500 2600 50  0001 C CNN
+	1    1500 2600
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6095A52B
+P 1650 2450
+F 0 "R?" H 1720 2496 50  0001 L CNN
+F 1 "1M/5%" V 1720 2450 50  0000 C TNN
+F 2 "" V 1580 2450 50  0001 C CNN
+F 3 "~" H 1650 2450 50  0001 C CNN
+	1    1650 2450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1650 2600 1900 2600
+$Comp
+L Device:R R?
+U 1 1 609441DE
+P 2300 1850
+F 0 "R?" H 2370 1896 50  0001 L CNN
+F 1 "1M/5%" V 2370 1850 50  0000 C TNN
+F 2 "" V 2230 1850 50  0001 C CNN
+F 3 "~" H 2300 1850 50  0001 C CNN
+	1    2300 1850
+	0    1    1    0   
+$EndComp
+$Comp
+L Amplifier_Operational:LM324 U1
+U 2 1 6092B3CA
+P 2200 1600
+F 0 "U1" H 2200 1967 50  0000 C TNN
+F 1 "LM324" H 2200 1876 50  0000 C TNN
+F 2 "" H 2150 1700 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2902-n.pdf" H 2250 1800 50  0001 C CNN
+	2    2200 1600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 609606DE
+P 2650 1850
+F 0 "R?" H 2720 1896 50  0001 L CNN
+F 1 "1K/5%" V 2720 1850 50  0000 C TNN
+F 2 "" V 2580 1850 50  0001 C CNN
+F 3 "~" H 2650 1850 50  0001 C CNN
+	1    2650 1850
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 60960FB6
+P 2650 2250
+F 0 "R?" H 2720 2296 50  0001 L CNN
+F 1 "1K/5%" V 2720 2250 50  0000 C TNN
+F 2 "" V 2580 2250 50  0001 C CNN
+F 3 "~" H 2650 2250 50  0001 C CNN
+	1    2650 2250
+	0    1    1    0   
+$EndComp
+Connection ~ 2500 1850
+Wire Wire Line
+	2800 1850 2900 1850
+Wire Wire Line
+	2900 1850 2900 1950
+Wire Wire Line
+	2800 2250 2900 2250
+Wire Wire Line
+	2900 2250 2900 2150
+$Comp
+L Device:R R?
+U 1 1 6096B20E
+P 3350 1600
+F 0 "R?" H 3420 1646 50  0001 L CNN
+F 1 "22K/5%" V 3420 1600 50  0000 C TNN
+F 2 "" V 3280 1600 50  0001 C CNN
+F 3 "~" H 3350 1600 50  0001 C CNN
+	1    3350 1600
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	2950 1950 2900 1950
+Wire Wire Line
+	2900 2150 2950 2150
+Connection ~ 1650 2600
+$Comp
+L Connector:Conn_01x01_Female J?
+U 1 1 6093A0A6
+P 1150 1500
+F 0 "J?" H 1178 1526 50  0001 L CNN
+F 1 "Electrode 1" H 1178 1480 50  0000 L CNN
+F 2 "" H 1150 1500 50  0001 C CNN
+F 3 "~" H 1150 1500 50  0001 C CNN
+	1    1150 1500
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	1800 3550 1900 3550
+$Comp
+L Device:C C?
+U 1 1 60865BD7
+P 2400 3650
+F 0 "C?" H 2515 3696 50  0001 L CNN
+F 1 "10pF" V 2515 3650 50  0000 C TNN
+F 2 "" H 2438 3500 50  0001 C CNN
+F 3 "~" H 2400 3650 50  0001 C CNN
+	1    2400 3650
+	0    1    1    0   
+$EndComp
+$Comp
+L power:Earth #PWR?
+U 1 1 608629D5
+P 2550 3650
+F 0 "#PWR?" H 2550 3400 50  0001 C CNN
+F 1 "Earth" H 2550 3500 50  0001 C CNN
+F 2 "" H 2550 3650 50  0001 C CNN
+F 3 "~" H 2550 3650 50  0001 C CNN
+	1    2550 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Amplifier_Operational:LM324 U1
+U 4 1 609A852B
+P 3250 2050
+F 0 "U1" H 3250 2417 50  0000 C TNN
+F 1 "LM324" H 3250 2326 50  0000 C TNN
+F 2 "" H 3200 2150 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2902-n.pdf" H 3300 2250 50  0001 C CNN
+	4    3250 2050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2500 2250 2500 2500
+$Comp
+L Device:R R?
+U 1 1 609B32C1
+P 3350 2500
+F 0 "R?" H 3420 2546 50  0001 L CNN
+F 1 "22K/5%" V 3420 2500 50  0000 C TNN
+F 2 "" V 3280 2500 50  0001 C CNN
+F 3 "~" H 3350 2500 50  0001 C CNN
+	1    3350 2500
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3200 1600 2900 1600
+Wire Wire Line
+	2900 1600 2900 1850
+Connection ~ 2900 1850
+Wire Wire Line
+	3200 2500 2900 2500
+Wire Wire Line
+	2900 2500 2900 2250
+Connection ~ 2900 2250
+Wire Wire Line
+	3550 2050 3650 2050
+Wire Wire Line
+	3650 2050 3650 2500
+Wire Wire Line
+	3650 2500 3500 2500
+$Comp
+L Device:R R?
+U 1 1 60920C09
+P 2950 1000
+F 0 "R?" H 3020 1046 50  0001 L CNN
+F 1 "560k/5%" V 3020 1000 50  0000 C TNN
+F 2 "" V 2880 1000 50  0001 C CNN
+F 3 "~" H 2950 1000 50  0001 C CNN
+	1    2950 1000
+	0    1    1    0   
+$EndComp
+$Comp
+L power:Earth #PWR?
+U 1 1 6091F63D
+P 3200 1300
+F 0 "#PWR?" H 3200 1050 50  0001 C CNN
+F 1 "Earth" H 3200 1150 50  0001 C CNN
+F 2 "" H 3200 1300 50  0001 C CNN
+F 3 "~" H 3200 1300 50  0001 C CNN
+	1    3200 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 6091F637
+P 2400 1000
+F 0 "#PWR?" H 2400 850 50  0001 C CNN
+F 1 "+5V" V 2415 1173 50  0000 C CNN
+F 2 "" H 2400 1000 50  0001 C CNN
+F 3 "" H 2400 1000 50  0001 C CNN
+	1    2400 1000
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6091F630
+P 3200 1150
+F 0 "R?" H 3270 1196 50  0001 L CNN
+F 1 "560k/5%" H 3270 1150 50  0000 L CNN
+F 2 "" V 3130 1150 50  0001 C CNN
+F 3 "~" H 3200 1150 50  0001 C CNN
+	1    3200 1150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Amplifier_Operational:LM324 U2
+U 5 1 608C0B19
+P 4100 1100
+F 0 "U2" H 4058 1146 50  0001 L CNN
+F 1 "LM324" H 4058 1100 50  0001 L CNN
+F 2 "" H 4050 1200 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2902-n.pdf" H 4150 1300 50  0001 C CNN
+	5    4100 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Amplifier_Operational:LM324 U2
+U 1 1 60877ADA
+P 4100 1100
+F 0 "U2" H 4100 1467 50  0000 L CNN
+F 1 "LM324" H 4100 1376 50  0000 L CNN
+F 2 "" H 4050 1200 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2902-n.pdf" H 4150 1300 50  0001 C CNN
+	1    4100 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:Earth #PWR?
+U 1 1 608C33C7
+P 4000 1400
+F 0 "#PWR?" H 4000 1150 50  0001 C CNN
+F 1 "Earth" H 4000 1250 50  0001 C CNN
+F 2 "" H 4000 1400 50  0001 C CNN
+F 3 "~" H 4000 1400 50  0001 C CNN
+	1    4000 1400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6091F628
+P 2550 1000
+F 0 "R?" H 2620 1046 50  0001 L CNN
+F 1 "560k/5%" V 2620 1000 50  0000 C TNN
+F 2 "" V 2480 1000 50  0001 C CNN
+F 3 "~" H 2550 1000 50  0001 C CNN
+	1    2550 1000
+	0    1    1    0   
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 608C2D73
+P 4000 800
+F 0 "#PWR?" H 4000 650 50  0001 C CNN
+F 1 "+5V" H 4015 973 50  0000 C CNN
+F 2 "" H 4000 800 50  0001 C CNN
+F 3 "" H 4000 800 50  0001 C CNN
+	1    4000 800 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3200 1000 3100 1000
+Wire Wire Line
+	4150 3900 4150 3950
+Wire Wire Line
+	4150 3950 3700 3950
+Wire Wire Line
+	3700 3950 3700 3800
+$Comp
+L power:Earth #PWR?
+U 1 1 609F64A2
+P 3850 1900
+F 0 "#PWR?" H 3850 1650 50  0001 C CNN
+F 1 "Earth" H 3850 1750 50  0001 C CNN
+F 2 "" H 3850 1900 50  0001 C CNN
+F 3 "~" H 3850 1900 50  0001 C CNN
+	1    3850 1900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2700 1000 2800 1000
+Connection ~ 3800 1000
+Wire Wire Line
+	3800 1000 3850 1000
+Wire Wire Line
+	3800 1200 3800 1600
+Wire Wire Line
+	4400 1100 4500 1100
+Wire Wire Line
+	3350 3450 3200 3450
+Wire Wire Line
+	1300 3350 1450 3350
+$Comp
+L Amplifier_Operational:LM324 U1
+U 1 1 609A41F2
+P 2200 3450
+F 0 "U1" H 2200 3817 50  0000 L TNN
+F 1 "LM324" H 2200 3726 50  0000 L TNN
+F 2 "" H 2150 3550 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2902-n.pdf" H 2250 3650 50  0001 C CNN
+	1    2200 3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint_Probe TP?
+U 1 1 60A4A307
+P 4500 1100
+F 0 "TP?" H 4653 1201 50  0001 L CNN
+F 1 "1.66V" H 4652 1155 50  0000 L CNN
+F 2 "" H 4700 1100 50  0001 C CNN
+F 3 "~" H 4700 1100 50  0001 C CNN
+	1    4500 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint_Probe TP?
+U 1 1 60A4C531
+P 2500 3350
+F 0 "TP?" H 2653 3451 50  0001 L CNN
+F 1 "2.5V" H 2652 3405 50  0000 L CNN
+F 2 "" H 2700 3350 50  0001 C CNN
+F 3 "~" H 2700 3350 50  0001 C CNN
+	1    2500 3350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2500 3350 2500 3450
+Connection ~ 2500 3450
+Wire Wire Line
+	1450 3350 1900 3350
+$Comp
+L power:Earth #PWR?
+U 1 1 60A56E8A
+P 2700 4200
+F 0 "#PWR?" H 2700 3950 50  0001 C CNN
+F 1 "Earth" H 2700 4050 50  0001 C CNN
+F 2 "" H 2700 4200 50  0001 C CNN
+F 3 "~" H 2700 4200 50  0001 C CNN
+	1    2700 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:Earth #PWR?
+U 1 1 60A59887
+P 2400 4200
+F 0 "#PWR?" H 2400 3950 50  0001 C CNN
+F 1 "Earth" H 2400 4050 50  0001 C CNN
+F 2 "" H 2400 4200 50  0001 C CNN
+F 3 "~" H 2400 4200 50  0001 C CNN
+	1    2400 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:Earth #PWR?
+U 1 1 60A5A486
+P 2100 4200
+F 0 "#PWR?" H 2100 3950 50  0001 C CNN
+F 1 "Earth" H 2100 4050 50  0001 C CNN
+F 2 "" H 2100 4200 50  0001 C CNN
+F 3 "~" H 2100 4200 50  0001 C CNN
+	1    2100 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:Earth #PWR?
+U 1 1 60A5B0E8
+P 1800 4200
+F 0 "#PWR?" H 1800 3950 50  0001 C CNN
+F 1 "Earth" H 1800 4050 50  0001 C CNN
+F 2 "" H 1800 4200 50  0001 C CNN
+F 3 "~" H 1800 4200 50  0001 C CNN
+	1    1800 4200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2250 3650 2250 3750
+Wire Wire Line
+	2250 3750 2100 3750
+Wire Wire Line
+	1800 3550 1800 3900
+Wire Wire Line
+	2700 3900 2700 3650
+Connection ~ 2700 3650
+Wire Wire Line
+	1800 3900 2100 3900
+Connection ~ 1800 3900
+Wire Wire Line
+	2400 3900 2100 3900
+Connection ~ 2100 3900
+Wire Wire Line
+	2400 3900 2700 3900
+Connection ~ 2400 3900
+Connection ~ 2700 3900
+$Comp
+L Amplifier_Operational:LM324 U1
+U 3 1 60854854
+P 2200 2500
+F 0 "U1" H 2200 2867 50  0000 C TNN
+F 1 "LM324" H 2200 2776 50  0000 C TNN
+F 2 "" H 2150 2600 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2902-n.pdf" H 2250 2700 50  0001 C CNN
+	3    2200 2500
+	1    0    0    1   
+$EndComp
+Wire Notes Line
+	1800 1200 1800 2900
+Wire Notes Line
+	2500 1450 2500 1200
+Wire Notes Line
+	2500 1200 1800 1200
+Text Notes 2600 2900 0    50   ~ 0
+Instrumentational Amplifier\nGain = 66 (36.4dB)
+Wire Wire Line
+	3200 1000 3800 1000
+Connection ~ 3200 1000
+Wire Wire Line
+	3500 1600 3800 1600
+Wire Wire Line
+	3650 2500 3750 2500
+Wire Wire Line
+	3750 2500 3750 2900
+Wire Wire Line
+	3750 2900 3850 2900
+Connection ~ 3650 2500
+Wire Notes Line
+	1800 2900 3700 2900
+Wire Notes Line
+	2500 1450 3700 1450
+Wire Notes Line
+	3700 1450 3700 2900
+Text Notes 2600 3200 0    50   ~ 0
+Fake a "ground" between\n+5V and Arduino's GND
+Text Notes 950  3100 0    50   ~ 0
+Capacitors\nto remove\nVoltage offset\nbetween\nElectrodes
+Connection ~ 4400 1100
+Text Notes 1850 850  0    50   ~ 0
+Output voltage of LM324 OpAmp cuts off at 3.6V.\nTo capture most of the signal, we need a\nreference voltage near the middle of that. (1.66V)
+Wire Wire Line
+	4400 1100 4400 1600
+Connection ~ 3800 1600
+Wire Wire Line
+	3800 1600 4050 1600
+$Comp
+L Device:CP C?
+U 1 1 60ABD0B3
+P 4050 1750
+F 0 "C?" H 4165 1796 50  0001 L CNN
+F 1 "220uF" V 4168 1750 50  0000 C TNN
+F 2 "" H 4088 1600 50  0001 C CNN
+F 3 "~" H 4050 1750 50  0001 C CNN
+	1    4050 1750
+	1    0    0    -1  
+$EndComp
+Connection ~ 4050 1600
+Wire Wire Line
+	4050 1600 4400 1600
+Wire Wire Line
+	3850 1900 4050 1900
+Connection ~ 4050 1900
+Wire Wire Line
+	4050 1900 4250 1900
+Text Notes 4850 4300 2    50   ~ 0
+Myocular V0.4\nhttps://hut.pm/myocular.html
+$Comp
+L power:+2V5 #PWR?
+U 1 1 60850F16
+P 3000 3650
+F 0 "#PWR?" H 3000 3500 50  0001 C CNN
+F 1 "+2V5" H 3015 3823 50  0000 C CNN
+F 2 "" H 3000 3650 50  0001 C CNN
+F 3 "" H 3000 3650 50  0001 C CNN
+	1    3000 3650
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:+2V5 #PWR?
+U 1 1 608538B9
+P 1650 2300
+F 0 "#PWR?" H 1650 2150 50  0001 C CNN
+F 1 "+2V5" H 1665 2473 50  0000 C CNN
+F 2 "" H 1650 2300 50  0001 C CNN
+F 3 "" H 1650 2300 50  0001 C CNN
+	1    1650 2300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+2V5 #PWR?
+U 1 1 608547EC
+P 1650 1800
+F 0 "#PWR?" H 1650 1650 50  0001 C CNN
+F 1 "+2V5" H 1665 1973 50  0000 C CNN
+F 2 "" H 1650 1800 50  0001 C CNN
+F 3 "" H 1650 1800 50  0001 C CNN
+	1    1650 1800
+	-1   0    0    1   
+$EndComp
+Connection ~ 2500 2250
+$EndSCHEMATC
