@@ -1,0 +1,216 @@
+options:
+  parameters:
+    author: ''
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: grcmyocular
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: Not titled yet
+    window_size: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '1000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 12]
+    rotation: 0
+    state: enabled
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: "import numpy as np\nimport math\nimport gatt\nimport time\nfrom\
+      \ threading import Thread\nfrom queue import Queue\nfrom gnuradio import gr\n\
+      \n\nBLUETOOTH_ADAPTER = 'hci0'\nMY_MAC = 'A6:B7:D0:AE:C2:76'\nMY_SVC_UUID =\
+      \ '0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e4'\nMY_CHR_UUID = '0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'\n\
+      SIGNAL_COUNT = 1\nSAMPLE_RATE = 1000\nUSE_BLE = True\n\n\ndef run_bluetooth_loop(manager,\
+      \ device, signal_pipe):\n    device.signal_pipe = signal_pipe\n    device.connect()\n\
+      \    try:\n        manager.run()\n    finally:\n        device.disconnect()\n\
+      \n\nclass BLESource(gr.basic_block):\n    def __init__(self, ble_mac=MY_MAC,\
+      \ service_uuid=MY_SVC_UUID, characteristic_uuid=MY_CHR_UUID):\n        gr.basic_block.__init__(self,\
+      \ name='BLE Source', in_sig=[], out_sig=[np.float32] * SIGNAL_COUNT)\n     \
+      \   self.ble_mac = ble_mac\n        self.service_uuid = service_uuid\n     \
+      \   self.characteristic_uuid = characteristic_uuid\n        self.signal_pipe\
+      \ = Queue()\n        self.manager = gatt.DeviceManager(adapter_name='hci0')\n\
+      \        self.device = BLEDevice(mac_address=MY_MAC, manager=self.manager)\n\
+      \        self._bt_thread = None\n\n    def general_work(self, input_items, output_items):\n\
+      \        count = 0\n        if USE_BLE:\n            for i in range(min(100,\
+      \ len(output_items[0]))):\n                if self.signal_pipe.empty():\n  \
+      \                  break\n                data = self.signal_pipe.get()\n  \
+      \              output_items[0][i] = data\n                count += 1\n     \
+      \   else:\n            for i in range(min(100, len(output_items[0]))):\n   \
+      \             output_items[0][i] = math.sin(i)\n                count += 1\n\
+      \        return count\n\n    def start(self):\n        if not USE_BLE:\n   \
+      \         return True\n        if self._bt_thread:\n            print(\"Error:\
+      \ Bluetooth Thread already running!\")\n            return False\n\n       \
+      \ self._bt_thread = Thread(target=run_bluetooth_loop, args=(\n            self.manager,\
+      \ self.device, self.signal_pipe, ))\n        self._bt_thread.start()\n     \
+      \   return True\n\n    def stop(self):\n        if not USE_BLE:\n          \
+      \  return True\n        self.manager.stop()\n        return True\n\n\nclass\
+      \ BLEDevice(gatt.Device):\n    signal_pipe = None\n    last_samplepersecond_time\
+      \ = 0\n    samples_per_second = 0\n\n    def connect_succeeded(self):\n    \
+      \    super().connect_succeeded()\n        print(\"[%s] Connected\" % (self.mac_address))\n\
+      \n    def services_resolved(self):\n        super().services_resolved()\n\n\
+      \        print(\"[%s] Resolved services\" % (self.mac_address))\n        for\
+      \ service in self.services:\n            print(\"[%s]  Service [%s]\" % (self.mac_address,\
+      \ service.uuid))\n            for characteristic in service.characteristics:\n\
+      \                print(\"[%s]    Characteristic [%s]\" % (self.mac_address,\
+      \ characteristic.uuid))\n\n        svc = next(s for s in self.services if s.uuid\
+      \ == MY_SVC_UUID)\n        chrc = next(c for c in  svc.characteristics if c.uuid\
+      \ == MY_CHR_UUID)\n        chrc.enable_notifications()\n\n    def characteristic_value_updated(self,\
+      \ characteristic, value):\n        if self.signal_pipe:\n            data =\
+      \ int.from_bytes(value, 'big')\n            self.samples_per_second += 1\n \
+      \           for i in range(10):\n                self.signal_pipe.put(data)\n\
+      \            if time.time() > self.last_samplepersecond_time + 1:\n        \
+      \        print('[%s] Samples per second: %d' % (self.mac_address, self.samples_per_second))\n\
+      \                self.samples_per_second = 0\n                self.last_samplepersecond_time\
+      \ = time.time()\n"
+    affinity: ''
+    alias: ''
+    ble_mac: '''A6:B7:D0:AE:C2:76'''
+    characteristic_uuid: '''0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    service_uuid: '''0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e4'''
+  states:
+    _io_cache: ('BLE Source', 'BLESource', [('ble_mac', "'A6:B7:D0:AE:C2:76'"), ('service_uuid',
+      "'0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e4'"), ('characteristic_uuid', "'0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'")],
+      [], [('0', 'float', 1)], '', ['ble_mac', 'characteristic_uuid', 'service_uuid'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [25, 115]
+    rotation: 0
+    state: enabled
+- name: qtgui_time_sink_x_0
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: ''
+    ctrlpanel: 'True'
+    entags: 'False'
+    grid: 'True'
+    gui_hint: ''
+    label1: Signal 1
+    label10: Signal 10
+    label2: Signal 2
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '""'
+    nconnections: '1'
+    size: '50'
+    srate: '10'
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '0.1'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '4096'
+    ymin: '0'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [297, 111]
+    rotation: 0
+    state: enabled
+
+connections:
+- [epy_block_0, '0', qtgui_time_sink_x_0, '0']
+
+metadata:
+  file_format: 1
