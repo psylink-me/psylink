@@ -123,8 +123,6 @@ F 3 "~" H 3650 3200 50  0001 C CNN
 	1    3450 3200
 	1    0    0    -1  
 $EndComp
-Text Notes 2600 2450 0    50   ~ 0
-Instrumentational\namplifier,\ngain = 50 (34dB)
 Text Notes 2450 3800 0    50   ~ 0
 Fake a "ground" between\nthe batteries' 6V and 0V
 Text Notes 1600 2550 0    50   ~ 0
@@ -236,32 +234,25 @@ $EndComp
 $Comp
 L Device:C C?
 U 1 1 608CA25E
-P 3050 1400
-F 0 "C?" H 3165 1446 50  0001 L CNN
-F 1 "100nF" V 3165 1400 50  0000 C TNN
-F 2 "" H 3088 1250 50  0001 C CNN
-F 3 "~" H 3050 1400 50  0001 C CNN
-	1    3050 1400
+P 2750 1300
+F 0 "C?" H 2865 1346 50  0001 L CNN
+F 1 "100nF" V 2865 1300 50  0000 C TNN
+F 2 "" H 2788 1150 50  0001 C CNN
+F 3 "~" H 2750 1300 50  0001 C CNN
+	1    2750 1300
 	0    1    1    0   
 $EndComp
 $Comp
 L power:Earth #PWR?
 U 1 1 608D13B5
-P 3200 1400
-F 0 "#PWR?" H 3200 1150 50  0001 C CNN
-F 1 "Earth" H 3200 1250 50  0001 C CNN
-F 2 "" H 3200 1400 50  0001 C CNN
-F 3 "~" H 3200 1400 50  0001 C CNN
-	1    3200 1400
+P 2600 1300
+F 0 "#PWR?" H 2600 1050 50  0001 C CNN
+F 1 "Earth" H 2600 1150 50  0001 C CNN
+F 2 "" H 2600 1300 50  0001 C CNN
+F 3 "~" H 2600 1300 50  0001 C CNN
+	1    2600 1300
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	2900 1300 2900 1400
-Connection ~ 2900 1400
-Wire Wire Line
-	2900 1400 2900 1500
-Wire Wire Line
-	3050 2100 3000 2100
 $Comp
 L Device:CP C?
 U 1 1 608DD1DD
@@ -337,39 +328,6 @@ Wire Wire Line
 	2950 2900 3000 2900
 Connection ~ 3000 2900
 $Comp
-L power:GNDS #PWR?
-U 1 1 608F17B2
-P 3450 2100
-F 0 "#PWR?" H 3450 1850 50  0001 C CNN
-F 1 "GNDS" H 3455 1927 50  0000 C CNN
-F 2 "" H 3450 2100 50  0001 C CNN
-F 3 "" H 3450 2100 50  0001 C CNN
-	1    3450 2100
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:Earth #PWR?
-U 1 1 608D7F4C
-P 2900 2100
-F 0 "#PWR?" H 2900 1850 50  0001 C CNN
-F 1 "Earth" H 2900 1950 50  0001 C CNN
-F 2 "" H 2900 2100 50  0001 C CNN
-F 3 "~" H 2900 2100 50  0001 C CNN
-	1    2900 2100
-	-1   0    0    -1  
-$EndComp
-$Comp
-L Device:C C?
-U 1 1 608D7F46
-P 3200 2100
-F 0 "C?" H 3315 2146 50  0001 L CNN
-F 1 "100nF" V 3315 2100 50  0000 C TNN
-F 2 "" H 3238 1950 50  0001 C CNN
-F 3 "~" H 3200 2100 50  0001 C CNN
-	1    3200 2100
-	0    -1   -1   0   
-$EndComp
-$Comp
 L Amplifier_Instrumentation:INA128 U?
 U 1 1 6089F0CF
 P 2900 1800
@@ -411,17 +369,6 @@ F 1 "GNDS" H 3455 3077 50  0000 C CNN
 F 2 "" H 3450 3250 50  0001 C CNN
 F 3 "" H 3450 3250 50  0001 C CNN
 	1    3450 3250
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GNDS #PWR?
-U 1 1 608FD740
-P 2100 2850
-F 0 "#PWR?" H 2100 2600 50  0001 C CNN
-F 1 "GNDS" H 2105 2677 50  0000 C CNN
-F 2 "" H 2100 2850 50  0001 C CNN
-F 3 "" H 2100 2850 50  0001 C CNN
-	1    2100 2850
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -521,8 +468,6 @@ Wire Wire Line
 Wire Wire Line
 	2100 2850 2000 2850
 Wire Wire Line
-	3450 2100 3350 2100
-Wire Wire Line
 	2800 3300 2650 3300
 Wire Wire Line
 	3600 1800 3600 2150
@@ -551,6 +496,73 @@ F 1 "2.2mF" V 1818 3400 50  0000 C TNN
 F 2 "" H 1738 3250 50  0001 C CNN
 F 3 "~" H 1700 3400 50  0001 C CNN
 	1    1700 3400
+	1    0    0    -1  
+$EndComp
+Text Notes 2950 1600 0    50   ~ 0
+Instrumentational\namplifier,\ngain = 50 (34dB)
+$Comp
+L power:GNDS #PWR?
+U 1 1 608F17B2
+P 3000 2200
+F 0 "#PWR?" H 3000 1950 50  0001 C CNN
+F 1 "GNDS" H 3005 2027 50  0000 C CNN
+F 2 "" H 3000 2200 50  0001 C CNN
+F 3 "" H 3000 2200 50  0001 C CNN
+	1    3000 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 608D7F46
+P 3150 2150
+F 0 "C?" H 3265 2196 50  0001 L CNN
+F 1 "100nF" V 3265 2150 50  0000 C TNN
+F 2 "" H 3188 2000 50  0001 C CNN
+F 3 "~" H 3150 2150 50  0001 C CNN
+	1    3150 2150
+	0    -1   -1   0   
+$EndComp
+$Comp
+L power:Earth #PWR?
+U 1 1 608D7F4C
+P 2900 2100
+F 0 "#PWR?" H 2900 1850 50  0001 C CNN
+F 1 "Earth" H 2900 1950 50  0001 C CNN
+F 2 "" H 2900 2100 50  0001 C CNN
+F 3 "~" H 2900 2100 50  0001 C CNN
+	1    2900 2100
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	3000 2100 3000 2150
+Connection ~ 3000 2150
+Wire Wire Line
+	3000 2150 3000 2200
+$Comp
+L power:Earth #PWR?
+U 1 1 608B0EA2
+P 3300 2200
+F 0 "#PWR?" H 3300 1950 50  0001 C CNN
+F 1 "Earth" H 3300 2050 50  0001 C CNN
+F 2 "" H 3300 2200 50  0001 C CNN
+F 3 "~" H 3300 2200 50  0001 C CNN
+	1    3300 2200
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	3300 2200 3300 2150
+Connection ~ 2900 1300
+Wire Wire Line
+	2900 1300 2900 1500
+$Comp
+L power:GNDS #PWR?
+U 1 1 608FD740
+P 2100 2850
+F 0 "#PWR?" H 2100 2600 50  0001 C CNN
+F 1 "GNDS" H 2105 2677 50  0000 C CNN
+F 2 "" H 2100 2850 50  0001 C CNN
+F 3 "" H 2100 2850 50  0001 C CNN
+	1    2100 2850
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC
