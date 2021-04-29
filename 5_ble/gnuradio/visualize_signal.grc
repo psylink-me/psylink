@@ -41,7 +41,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [282, 11]
+    coordinate: [282, 18]
     rotation: 0
     state: true
 - name: points
@@ -65,27 +65,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [184, 12]
+    coordinate: [188, 17]
     rotation: 0
     state: enabled
-- name: blocks_repeat_0
-  id: blocks_repeat
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    interp: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [112, 326]
-    rotation: 0
-    state: disabled
 - name: block_BLE_source
   id: epy_block
   parameters:
@@ -142,8 +124,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [25, 115]
-    rotation: 0
+    coordinate: [89, 122]
+    rotation: 180
     state: enabled
 - name: block_shift
   id: epy_block
@@ -173,7 +155,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [288, 129]
+    coordinate: [88, 190]
     rotation: 0
     state: true
 - name: qtgui_freq_sink_x_0
@@ -191,8 +173,8 @@ blocks:
     alpha7: '1.0'
     alpha8: '1.0'
     alpha9: '1.0'
-    autoscale: 'True'
-    average: '1.0'
+    autoscale: 'False'
+    average: '0.2'
     axislabels: 'True'
     bw: samp_rate
     color1: '"blue"'
@@ -209,7 +191,7 @@ blocks:
     ctrlpanel: 'False'
     fc: '0'
     fftsize: fft_size
-    freqhalf: 'True'
+    freqhalf: 'False'
     grid: 'True'
     gui_hint: ''
     label: Relative Gain
@@ -253,7 +235,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [334, 367]
+    coordinate: [380, 226]
     rotation: 0
     state: true
 - name: qtgui_time_sink_x_0
@@ -350,12 +332,13 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [517, 111]
+    coordinate: [382, 103]
     rotation: 0
     state: enabled
 
 connections:
 - [block_BLE_source, '0', block_shift, '0']
+- [block_shift, '0', qtgui_freq_sink_x_0, '0']
 - [block_shift, '0', qtgui_time_sink_x_0, '0']
 
 metadata:
