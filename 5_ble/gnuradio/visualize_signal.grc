@@ -44,6 +44,18 @@ blocks:
     coordinate: [282, 11]
     rotation: 0
     state: true
+- name: points
+  id: variable
+  parameters:
+    comment: ''
+    value: '1024'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [387, 20]
+    rotation: 0
+    state: true
 - name: samp_rate
   id: variable
   parameters:
@@ -56,7 +68,25 @@ blocks:
     coordinate: [184, 12]
     rotation: 0
     state: enabled
-- name: epy_block_0
+- name: blocks_repeat_0
+  id: blocks_repeat
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    interp: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [112, 326]
+    rotation: 0
+    state: disabled
+- name: block_BLE_source
   id: epy_block
   parameters:
     _source_code: "import numpy as np\nimport math\nimport BLE_GATT\nimport time\n\
@@ -115,6 +145,37 @@ blocks:
     coordinate: [25, 115]
     rotation: 0
     state: enabled
+- name: block_shift
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nKeeps a copy of the last N signals and outputs them at\
+      \ a constant rate,\nso that you can use QT GUI sinks in a \"rolling\" mode.\n\
+      \"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\n\n\nclass ShiftBlock(gr.interp_block):\n\
+      \    def __init__(self, number_of_points=1024):\n        gr.interp_block.__init__(\n\
+      \            self,\n            name='Shifting Block',\n            interp=10\
+      \ * number_of_points,  # a large number to ensure that output_items is large\
+      \ enough\n            in_sig=[np.float32],\n            out_sig=[np.float32]\n\
+      \        )\n        self.number_of_points = number_of_points\n        self.buffer\
+      \ = np.zeros(self.number_of_points, dtype=np.float64)\n\n    def work(self,\
+      \ input_items, output_items):\n        n_inputs = min(self.number_of_points,\
+      \ len(input_items[0]))\n        self.buffer = np.roll(self.buffer, -n_inputs)\n\
+      \        self.buffer[-n_inputs:] = input_items[0][:n_inputs]\n        output_items[0][:self.number_of_points]\
+      \ = self.buffer\n        self.consume(0, n_inputs)\n        return self.number_of_points\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    number_of_points: points
+  states:
+    _io_cache: ('Shifting Block', 'ShiftBlock', [('number_of_points', '1024')], [('0',
+      'float', 1)], [('0', 'float', 1)], '', ['number_of_points'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [288, 129]
+    rotation: 0
+    state: true
 - name: qtgui_freq_sink_x_0
   id: qtgui_freq_sink_x
   parameters:
@@ -192,7 +253,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [293, 235]
+    coordinate: [334, 367]
     rotation: 0
     state: true
 - name: qtgui_time_sink_x_0
@@ -250,8 +311,8 @@ blocks:
     marker9: '-1'
     name: '""'
     nconnections: '1'
-    size: '1000'
-    srate: '200'
+    size: points
+    srate: samp_rate
     stemplot: 'False'
     style1: '1'
     style10: '1'
@@ -289,13 +350,13 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [310, 119]
+    coordinate: [517, 111]
     rotation: 0
     state: enabled
 
 connections:
-- [epy_block_0, '0', qtgui_freq_sink_x_0, '0']
-- [epy_block_0, '0', qtgui_time_sink_x_0, '0']
+- [block_BLE_source, '0', block_shift, '0']
+- [block_shift, '0', qtgui_time_sink_x_0, '0']
 
 metadata:
   file_format: 1
