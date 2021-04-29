@@ -4,14 +4,16 @@
 // Configuration
 #define SAMPLE_RATE 500
 #define BLE_NOTIFY_RATE 10 // DO NOT exceed BLE characteristic length limit of 512 (255?) bytes
-#define CHANNELS 8
+#define CHANNELS 1
+#define CHANNEL_PIN_OFFSET 1
 #define BUFFERS 2
+#define METADATA_BYTES 1
 
 // Constants
 const int SAMPLE_INTERVAL_uS = 1000000 / SAMPLE_RATE;
 const int BLE_NOTIFY_INTERVAL_MS = 1000 / BLE_NOTIFY_RATE;
 const int SAMPLES_PER_INTERVAL = SAMPLE_RATE / BLE_NOTIFY_RATE;
-const int BLE_CHARACTERISTIC_SIZE = CHANNELS * SAMPLES_PER_INTERVAL;
+const int BLE_CHARACTERISTIC_SIZE = METADATA_BYTES + CHANNELS * SAMPLES_PER_INTERVAL;
 const int NO_BUFFER = -1;
 
 NRF52_MBED_Timer samplingTimer(NRF_TIMER_3);
@@ -32,7 +34,7 @@ unsigned int nextframe = 0;
 volatile int tick1, tick2, tick3;
 
 void setup() {
-  Serial.begin(115200);
+  //Serial.begin(115200);
   analogReadResolution(12);
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(LEDR, OUTPUT);
@@ -93,8 +95,8 @@ void samplingTimerHandler() {
 
 void readSamples() {
   doSampling = false;
-  for (int channel = 0; channel < 0; channel++)
-    samples[currentBuffer][channel][currentSample] = analogRead(channel);
+  for (int channel = 0; channel < CHANNELS; channel++)
+    samples[currentBuffer][channel][currentSample] = analogRead(channel + CHANNEL_PIN_OFFSET);
   currentSample++;
   if (currentSample >= SAMPLES_PER_INTERVAL) {
     sendBuffer = currentBuffer;
@@ -103,19 +105,24 @@ void readSamples() {
   }
   fps++;
   if (millis() > nextframe) {
-    Serial.println(fps);
+    //Serial.println(fps);
     fps = 0;
     nextframe += 1000;
   }
 }
 
 void updateSensorCharacteristic() {
-  sensorCharacteristic.writeValue(bleString); return;
   if (sendBuffer == NO_BUFFER) return;
   int pos = 0;
+
+  // Metadata
+  bleString[pos++] = CHANNELS;
+
+  // Sample data
   for (int sample = 0; sample < SAMPLES_PER_INTERVAL; sample++) {
     for (int channel = 0; channel < CHANNELS; channel++) {
-      bleString[pos++] = map(samples[sendBuffer][channel][sample], 0, 4095, 0, 254) + 1;
+      // Avoid writing 0x00 since that denotes the end of the string
+      bleString[pos++] = map(samples[sendBuffer][channel][sample], 1536, 3071, 1, 255);
     }
   }
   bleString[pos] = 0;
