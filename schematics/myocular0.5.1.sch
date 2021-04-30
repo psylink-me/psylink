@@ -1,0 +1,529 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Device:R R1
+U 1 1 6084FC80
+P 2500 2950
+F 0 "R1" H 2570 2996 50  0001 L CNN
+F 1 "1M/5%" V 2570 2950 50  0000 C TNN
+F 2 "" V 2430 2950 50  0001 C CNN
+F 3 "~" H 2500 2950 50  0001 C CNN
+	1    2500 2950
+	-1   0    0    1   
+$EndComp
+$Comp
+L Amplifier_Operational:LM324 U?
+U 5 1 60856203
+P 3100 3200
+F 0 "U?" H 3058 3246 50  0001 L CNN
+F 1 "LM324" H 3058 3155 50  0001 L CNN
+F 2 "" H 3050 3300 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2902-n.pdf" H 3150 3400 50  0001 C CNN
+	5    3100 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:Earth #PWR?
+U 1 1 60864F96
+P 2500 3400
+F 0 "#PWR?" H 2500 3150 50  0001 C CNN
+F 1 "Earth" H 2500 3250 50  0001 C CNN
+F 2 "" H 2500 3400 50  0001 C CNN
+F 3 "~" H 2500 3400 50  0001 C CNN
+	1    2500 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 608772AE
+P 1850 2850
+F 0 "R?" V 1643 2850 50  0001 C CNN
+F 1 "100k/5%" V 1735 2850 50  0000 C CNN
+F 2 "" V 1780 2850 50  0001 C CNN
+F 3 "~" H 1850 2850 50  0001 C CNN
+	1    1850 2850
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector:Conn_01x01_Female J?
+U 1 1 6088CF1C
+P 1500 2850
+F 0 "J?" H 1528 2876 50  0001 L CNN
+F 1 "Electrode GND" H 1528 2830 50  0000 L CNN
+F 2 "" H 1500 2850 50  0001 C CNN
+F 3 "~" H 1500 2850 50  0001 C CNN
+	1    1500 2850
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector:Conn_01x01_Female J?
+U 1 1 6093A7BF
+P 1450 1900
+F 0 "J?" H 1478 1926 50  0001 L CNN
+F 1 "Electrode 2" H 1478 1880 50  0000 L CNN
+F 2 "" H 1450 1900 50  0001 C CNN
+F 3 "~" H 1450 1900 50  0001 C CNN
+	1    1450 1900
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 6095A525
+P 1800 1900
+F 0 "C?" H 1915 1946 50  0001 L CNN
+F 1 "100pF" V 1915 1900 50  0000 C TNN
+F 2 "" H 1838 1750 50  0001 C CNN
+F 3 "~" H 1800 1900 50  0001 C CNN
+	1    1800 1900
+	0    1    1    0   
+$EndComp
+$Comp
+L power:Earth #PWR?
+U 1 1 608629D5
+P 3000 3500
+F 0 "#PWR?" H 3000 3250 50  0001 C CNN
+F 1 "Earth" H 3000 3350 50  0001 C CNN
+F 2 "" H 3000 3500 50  0001 C CNN
+F 3 "~" H 3000 3500 50  0001 C CNN
+	1    3000 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Amplifier_Operational:LM324 U1
+U 1 1 609A41F2
+P 3100 3200
+F 0 "U1" H 3100 3567 50  0000 L TNN
+F 1 "LM324" H 3100 3476 50  0000 L TNN
+F 2 "" H 3050 3300 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/lm2902-n.pdf" H 3150 3400 50  0001 C CNN
+	1    3100 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:TestPoint_Probe TP?
+U 1 1 60A4C531
+P 3450 3200
+F 0 "TP?" H 3603 3301 50  0001 L CNN
+F 1 "3V" H 3602 3255 50  0000 L CNN
+F 2 "" H 3650 3200 50  0001 C CNN
+F 3 "~" H 3650 3200 50  0001 C CNN
+	1    3450 3200
+	1    0    0    -1  
+$EndComp
+Text Notes 2450 3800 0    50   ~ 0
+Fake a "ground" between\nthe batteries' 6V and 0V
+Text Notes 1250 2450 0    50   ~ 0
+Capacitors\nto remove\nvoltage offset\nbetween\nelectrodes
+Text Notes 4750 3800 2    50   ~ 0
+Myocular V0.5.1\nhttps://hut.pm/myocular.html
+$Comp
+L Device:R R?
+U 1 1 6095A52B
+P 2000 2050
+F 0 "R?" H 2070 2096 50  0001 L CNN
+F 1 "1M/5%" V 2070 2050 50  0000 C TNN
+F 2 "" V 1930 2050 50  0001 C CNN
+F 3 "~" H 2000 2050 50  0001 C CNN
+	1    2000 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 60941D1F
+P 2000 1350
+F 0 "R?" H 2070 1396 50  0001 L CNN
+F 1 "1M/5%" V 2070 1350 50  0000 C TNN
+F 2 "" V 1930 1350 50  0001 C CNN
+F 3 "~" H 2000 1350 50  0001 C CNN
+	1    2000 1350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Conn_01x01_Female J?
+U 1 1 6093A0A6
+P 1450 1500
+F 0 "J?" H 1478 1526 50  0001 L CNN
+F 1 "Electrode 1" H 1478 1480 50  0000 L CNN
+F 2 "" H 1450 1500 50  0001 C CNN
+F 3 "~" H 1450 1500 50  0001 C CNN
+	1    1450 1500
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 6093EE1D
+P 1800 1500
+F 0 "C?" H 1915 1546 50  0001 L CNN
+F 1 "100pF" V 1915 1500 50  0000 C TNN
+F 2 "" H 1838 1350 50  0001 C CNN
+F 3 "~" H 1800 1500 50  0001 C CNN
+	1    1800 1500
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	2250 1500 2000 1500
+Connection ~ 2000 1500
+Wire Wire Line
+	2000 1500 1950 1500
+Wire Wire Line
+	1950 1900 2000 1900
+Connection ~ 2000 1900
+Wire Wire Line
+	2000 1900 2250 1900
+$Comp
+L Device:R R?
+U 1 1 608BC652
+P 2100 1800
+F 0 "R?" H 2170 1846 50  0001 L CNN
+F 1 "1K/1%" V 2170 1800 50  0000 C TNN
+F 2 "" V 2030 1800 50  0001 C CNN
+F 3 "~" H 2100 1800 50  0001 C CNN
+	1    2100 1800
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	1950 1800 1950 1600
+Wire Wire Line
+	1950 1600 2250 1600
+$Comp
+L power:Earth #PWR?
+U 1 1 60A5B0E8
+P 2650 3300
+F 0 "#PWR?" H 2650 3050 50  0001 C CNN
+F 1 "Earth" H 2650 3150 50  0001 C CNN
+F 2 "" H 2650 3300 50  0001 C CNN
+F 3 "~" H 2650 3300 50  0001 C CNN
+	1    2650 3300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 608CA25E
+P 2400 1200
+F 0 "C?" H 2515 1246 50  0001 L CNN
+F 1 "100nF" V 2515 1200 50  0000 C TNN
+F 2 "" H 2438 1050 50  0001 C CNN
+F 3 "~" H 2400 1200 50  0001 C CNN
+	1    2400 1200
+	0    1    1    0   
+$EndComp
+$Comp
+L power:Earth #PWR?
+U 1 1 608D13B5
+P 2250 1200
+F 0 "#PWR?" H 2250 950 50  0001 C CNN
+F 1 "Earth" H 2250 1050 50  0001 C CNN
+F 2 "" H 2250 1200 50  0001 C CNN
+F 3 "~" H 2250 1200 50  0001 C CNN
+	1    2250 1200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C?
+U 1 1 608DD1DD
+P 2800 2900
+F 0 "C?" V 2545 2900 50  0001 C CNN
+F 1 "220uF" V 2637 2900 50  0000 C CNN
+F 2 "" H 2838 2750 50  0001 C CNN
+F 3 "~" H 2800 2900 50  0001 C CNN
+	1    2800 2900
+	0    1    1    0   
+$EndComp
+$Comp
+L power:Earth #PWR?
+U 1 1 608E21E1
+P 2650 2900
+F 0 "#PWR?" H 2650 2650 50  0001 C CNN
+F 1 "Earth" H 2650 2750 50  0001 C CNN
+F 2 "" H 2650 2900 50  0001 C CNN
+F 3 "~" H 2650 2900 50  0001 C CNN
+	1    2650 2900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 608E42F4
+P 2500 3250
+F 0 "R?" H 2570 3296 50  0001 L CNN
+F 1 "1M/5%" V 2570 3250 50  0000 C TNN
+F 2 "" V 2430 3250 50  0001 C CNN
+F 3 "~" H 2500 3250 50  0001 C CNN
+	1    2500 3250
+	-1   0    0    1   
+$EndComp
+Connection ~ 2500 3100
+Wire Wire Line
+	2500 3100 2800 3100
+$Comp
+L power:+BATT #PWR?
+U 1 1 608E87CC
+P 2500 2800
+F 0 "#PWR?" H 2500 2650 50  0001 C CNN
+F 1 "+BATT" H 2515 2973 50  0000 C CNN
+F 2 "" H 2500 2800 50  0001 C CNN
+F 3 "" H 2500 2800 50  0001 C CNN
+	1    2500 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+BATT #PWR?
+U 1 1 608EA8CA
+P 2550 1200
+F 0 "#PWR?" H 2550 1050 50  0001 C CNN
+F 1 "+BATT" H 2565 1373 50  0000 C CNN
+F 2 "" H 2550 1200 50  0001 C CNN
+F 3 "" H 2550 1200 50  0001 C CNN
+	1    2550 1200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+BATT #PWR?
+U 1 1 608EB130
+P 3000 2800
+F 0 "#PWR?" H 3000 2650 50  0001 C CNN
+F 1 "+BATT" H 3015 2973 50  0000 C CNN
+F 2 "" H 3000 2800 50  0001 C CNN
+F 3 "" H 3000 2800 50  0001 C CNN
+	1    3000 2800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3000 2800 3000 2900
+Wire Wire Line
+	2950 2900 3000 2900
+Connection ~ 3000 2900
+$Comp
+L power:GNDS #PWR?
+U 1 1 608F6785
+P 2000 1200
+F 0 "#PWR?" H 2000 950 50  0001 C CNN
+F 1 "GNDS" H 2005 1027 50  0000 C CNN
+F 2 "" H 2000 1200 50  0001 C CNN
+F 3 "" H 2000 1200 50  0001 C CNN
+	1    2000 1200
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:GNDS #PWR?
+U 1 1 608F7294
+P 2000 2200
+F 0 "#PWR?" H 2000 1950 50  0001 C CNN
+F 1 "GNDS" H 2005 2027 50  0000 C CNN
+F 2 "" H 2000 2200 50  0001 C CNN
+F 3 "" H 2000 2200 50  0001 C CNN
+	1    2000 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDS #PWR?
+U 1 1 608F7B0A
+P 3450 3250
+F 0 "#PWR?" H 3450 3000 50  0001 C CNN
+F 1 "GNDS" H 3455 3077 50  0000 C CNN
+F 2 "" H 3450 3250 50  0001 C CNN
+F 3 "" H 3450 3250 50  0001 C CNN
+	1    3450 3250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3450 3250 3450 3200
+Wire Wire Line
+	3400 3200 3450 3200
+Connection ~ 3450 3200
+$Comp
+L MCU_Module:Arduino_Nano_v3.x A?
+U 1 1 60849281
+P 4250 2250
+F 0 "A?" H 4250 1161 50  0001 C CNN
+F 1 "Arduino_Nano_v3.x" H 4250 1070 50  0001 C CNN
+F 2 "Module:Arduino_Nano" H 4250 2250 50  0001 C CIN
+F 3 "http://www.mouser.com/pdfdocs/Gravitech_Arduino_Nano3_0.pdf" H 4250 2250 50  0001 C CNN
+	1    4250 2250
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:Battery BT?
+U 1 1 6090704F
+P 1250 3400
+F 0 "BT?" H 1358 3446 50  0001 L CNN
+F 1 "6V" H 1358 3400 50  0000 L CNN
+F 2 "" V 1250 3460 50  0001 C CNN
+F 3 "~" V 1250 3460 50  0001 C CNN
+	1    1250 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_DPST_x2 SW?
+U 1 1 6090AB67
+P 1450 3200
+F 0 "SW?" H 1450 3435 50  0001 C CNN
+F 1 "SW_DPST_x2" H 1450 3344 50  0001 C CNN
+F 2 "" H 1450 3200 50  0001 C CNN
+F 3 "~" H 1450 3200 50  0001 C CNN
+	1    1450 3200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:Earth #PWR?
+U 1 1 6090DEAB
+P 1250 3600
+F 0 "#PWR?" H 1250 3350 50  0001 C CNN
+F 1 "Earth" H 1250 3450 50  0001 C CNN
+F 2 "" H 1250 3600 50  0001 C CNN
+F 3 "~" H 1250 3600 50  0001 C CNN
+	1    1250 3600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1700 3250 1700 3200
+Wire Wire Line
+	1700 3200 1650 3200
+$Comp
+L power:Earth #PWR?
+U 1 1 609157E7
+P 1700 3600
+F 0 "#PWR?" H 1700 3350 50  0001 C CNN
+F 1 "Earth" H 1700 3450 50  0001 C CNN
+F 2 "" H 1700 3600 50  0001 C CNN
+F 3 "~" H 1700 3600 50  0001 C CNN
+	1    1700 3600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1700 3550 1700 3600
+$Comp
+L power:Earth #PWR?
+U 1 1 6091D90C
+P 4000 1150
+F 0 "#PWR?" H 4000 900 50  0001 C CNN
+F 1 "Earth" H 4000 1000 50  0001 C CNN
+F 2 "" H 4000 1150 50  0001 C CNN
+F 3 "~" H 4000 1150 50  0001 C CNN
+	1    4000 1150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4000 1150 4150 1150
+Wire Wire Line
+	4150 1150 4150 1250
+$Comp
+L power:+BATT #PWR?
+U 1 1 6091E947
+P 4150 3250
+F 0 "#PWR?" H 4150 3100 50  0001 C CNN
+F 1 "+BATT" H 4165 3423 50  0000 C CNN
+F 2 "" H 4150 3250 50  0001 C CNN
+F 3 "" H 4150 3250 50  0001 C CNN
+	1    4150 3250
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	2100 2850 2000 2850
+Wire Wire Line
+	2800 3300 2650 3300
+Connection ~ 1700 3200
+Wire Wire Line
+	1750 3200 1700 3200
+$Comp
+L power:+BATT #PWR?
+U 1 1 609113AC
+P 1750 3200
+F 0 "#PWR?" H 1750 3050 50  0001 C CNN
+F 1 "+BATT" V 1765 3373 50  0000 C CNN
+F 2 "" H 1750 3200 50  0001 C CNN
+F 3 "" H 1750 3200 50  0001 C CNN
+	1    1750 3200
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:CP C?
+U 1 1 609131A6
+P 1700 3400
+F 0 "C?" V 1445 3400 50  0001 C CNN
+F 1 "2.2mF" V 1818 3400 50  0000 C TNN
+F 2 "" H 1738 3250 50  0001 C CNN
+F 3 "~" H 1700 3400 50  0001 C CNN
+	1    1700 3400
+	1    0    0    -1  
+$EndComp
+Text Notes 2600 1500 0    50   ~ 0
+Instrumentational\namplifier,\ngain = 50 (34dB)
+$Comp
+L power:Earth #PWR?
+U 1 1 608D7F4C
+P 2550 2000
+F 0 "#PWR?" H 2550 1750 50  0001 C CNN
+F 1 "Earth" H 2550 1850 50  0001 C CNN
+F 2 "" H 2550 2000 50  0001 C CNN
+F 3 "~" H 2550 2000 50  0001 C CNN
+	1    2550 2000
+	-1   0    0    -1  
+$EndComp
+Connection ~ 2550 1200
+Wire Wire Line
+	2550 1200 2550 1400
+$Comp
+L power:GNDS #PWR?
+U 1 1 608FD740
+P 2100 2850
+F 0 "#PWR?" H 2100 2600 50  0001 C CNN
+F 1 "GNDS" H 2105 2677 50  0000 C CNN
+F 2 "" H 2100 2850 50  0001 C CNN
+F 3 "" H 2100 2850 50  0001 C CNN
+	1    2100 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Amplifier_Instrumentation:INA128 U?
+U 1 1 6089F0CF
+P 2550 1700
+F 0 "U?" H 2994 1746 50  0001 L CNN
+F 1 "INA128" H 2994 1655 50  0000 C TNN
+F 2 "" H 2650 1700 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/ina128.pdf" H 2650 1700 50  0001 C CNN
+	1    2550 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDS #PWR?
+U 1 1 608F17B2
+P 2650 2050
+F 0 "#PWR?" H 2650 1800 50  0001 C CNN
+F 1 "GNDS" H 2655 1877 50  0000 C CNN
+F 2 "" H 2650 2050 50  0001 C CNN
+F 3 "" H 2650 2050 50  0001 C CNN
+	1    2650 2050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2650 2000 2650 2050
+Wire Wire Line
+	3750 2250 3600 2250
+Wire Wire Line
+	3600 2250 3600 1700
+Wire Wire Line
+	2950 1700 3600 1700
+Wire Notes Line
+	950  950  950  2500
+Wire Notes Line
+	950  2500 3350 2500
+Wire Notes Line
+	3350 2500 3350 950 
+Wire Notes Line
+	3350 950  950  950 
+Text Notes 1000 1150 0    50   ~ 0
+One of these\nper electrode pair
+$EndSCHEMATC
