@@ -1,5 +1,7 @@
 import numpy as np
 
+SAMPLE_VALUE_OFFSET = -127
+
 def decode_ble_packet(bytes_):
     """
     Takes bytes as argument, as received from the BLE characteristic of Myocular
@@ -18,7 +20,7 @@ def decode_ble_packet(bytes_):
     channel = 0
     sample_id = 0
     for sample_value in sample_values:
-        samples[sample_id][channel] = sample_value
+        samples[sample_id][channel] = sample_value + SAMPLE_VALUE_OFFSET
         channel += 1
         if channel >= channels:
             channel = 0

@@ -32,35 +32,23 @@ options:
     state: enabled
 
 blocks:
-- name: fft_size
-  id: variable
-  parameters:
-    comment: ''
-    value: '1024'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [282, 18]
-    rotation: 0
-    state: true
 - name: points
   id: variable
   parameters:
     comment: ''
-    value: '1024'
+    value: '2048'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [387, 20]
+    coordinate: [284, 16]
     rotation: 0
     state: true
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: '500'
+    value: '1000'
   states:
     bus_sink: false
     bus_source: false
@@ -174,7 +162,7 @@ blocks:
     alpha8: '1.0'
     alpha9: '1.0'
     autoscale: 'False'
-    average: '0.2'
+    average: '1.0'
     axislabels: 'True'
     bw: samp_rate
     color1: '"blue"'
@@ -190,7 +178,7 @@ blocks:
     comment: ''
     ctrlpanel: 'False'
     fc: '0'
-    fftsize: fft_size
+    fftsize: points
     freqhalf: 'False'
     grid: 'True'
     gui_hint: ''
@@ -217,7 +205,7 @@ blocks:
     tr_tag: '""'
     type: float
     units: dB
-    update_time: '0.10'
+    update_time: '0.05'
     width1: '1'
     width10: '1'
     width2: '1'
@@ -229,8 +217,8 @@ blocks:
     width8: '1'
     width9: '1'
     wintype: firdes.WIN_BLACKMAN_hARRIS
-    ymax: '10'
-    ymin: '-140'
+    ymax: '40'
+    ymin: '-100'
   states:
     bus_sink: false
     bus_source: false
@@ -266,7 +254,7 @@ blocks:
     color8: dark red
     color9: dark green
     comment: ''
-    ctrlpanel: 'True'
+    ctrlpanel: 'False'
     entags: 'False'
     grid: 'True'
     gui_hint: ''
@@ -313,7 +301,7 @@ blocks:
     tr_slope: qtgui.TRIG_SLOPE_POS
     tr_tag: '""'
     type: float
-    update_time: '0.03'
+    update_time: '0.05'
     width1: '1'
     width10: '1'
     width2: '1'
@@ -325,8 +313,8 @@ blocks:
     width8: '1'
     width9: '1'
     ylabel: Amplitude
-    ymax: '256'
-    ymin: '0'
+    ymax: '128'
+    ymin: '-128'
     yunit: '""'
   states:
     bus_sink: false
