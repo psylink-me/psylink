@@ -4,8 +4,7 @@
 // Configuration
 #define SAMPLE_RATE 500
 #define BLE_NOTIFY_RATE 10 // DO NOT exceed BLE characteristic length limit of 512 (255?) bytes
-#define CHANNELS 1
-#define CHANNEL_PIN_OFFSET 1
+#define CHANNELS 8
 #define BUFFERS 2
 #define METADATA_BYTES 1
 
@@ -96,7 +95,7 @@ void samplingTimerHandler() {
 void readSamples() {
   doSampling = false;
   for (int channel = 0; channel < CHANNELS; channel++)
-    samples[currentBuffer][channel][currentSample] = analogRead(channel + CHANNEL_PIN_OFFSET);
+    samples[currentBuffer][channel][currentSample] = analogRead(channel);
   currentSample++;
   if (currentSample >= SAMPLES_PER_INTERVAL) {
     sendBuffer = currentBuffer;
@@ -114,6 +113,7 @@ void readSamples() {
 void updateSensorCharacteristic() {
   if (sendBuffer == NO_BUFFER) return;
   int pos = 0;
+  char currentChar;
 
   // Metadata
   bleString[pos++] = CHANNELS;
@@ -122,7 +122,8 @@ void updateSensorCharacteristic() {
   for (int sample = 0; sample < SAMPLES_PER_INTERVAL; sample++) {
     for (int channel = 0; channel < CHANNELS; channel++) {
       // Avoid writing 0x00 since that denotes the end of the string
-      bleString[pos++] = map(samples[sendBuffer][channel][sample], 1536, 3071, 1, 255);
+      currentChar = map(samples[sendBuffer][channel][sample], 1536, 3071, 1, 255);
+      bleString[pos++] = max(1, min(currentChar, 255));
     }
   }
   bleString[pos] = 0;
