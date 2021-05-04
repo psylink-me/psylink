@@ -48,7 +48,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '2048'
+    value: '1024'
   states:
     bus_sink: false
     bus_source: false
@@ -60,7 +60,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '1000'
+    value: '250'
   states:
     bus_sink: false
     bus_source: false
@@ -75,55 +75,63 @@ blocks:
       import importlib\nimport os.path\nimport sys\nfrom threading import Thread,\
       \ Event\nfrom queue import Queue\nfrom gnuradio import gr\n\n# NOTE: fill in\
       \ the path to the pymyocular library\nsys.path.insert(0, os.path.expanduser('~/repos/myocular/5_ble'))\n\
-      import pymyocular\n\nBLUETOOTH_ADAPTER = 'hci0'\nMY_MAC = 'A6:B7:D0:AE:C2:76'\n\
-      MY_CHR_UUID = '0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'\nSIGNAL_COUNT = 8\nSAMPLE_RATE\
-      \ = 1000\nUSE_BLE = True\n\n\ndef run_bluetooth_loop(device, sample_pipe, stop_thread):\n\
-      \    device.connect()\n    fps = 0\n    bps = 0\n    nextfps = time.time() +\
-      \ 1\n    try:\n        while not stop_thread.is_set():\n            read = device.char_read(MY_CHR_UUID)\n\
+      import pymyocular\n\nBLUETOOTH_ADAPTER = 'hci0'\nDEFAULT_BLE_ADDRESS = 'A6:B7:D0:AE:C2:76'\n\
+      SIGNAL_COUNT = 8\nUSE_BLE = True\n\n\ndef run_bluetooth_loop(device, sample_pipe,\
+      \ stop_thread):\n    decoder = pymyocular.BLEDecoder()\n    fps = 0\n    bps\
+      \ = 0\n    last_tick = None\n    nextfps = time.time() + 1\n    device.connect()\n\
+      \    try:\n        decoder.decode_channel_count(device.char_read(pymyocular.BLEDevice.OPTION_CHANNELS_UUID))\n\
+      \        while not stop_thread.is_set():\n            read = device.char_read(pymyocular.BLEDevice.SENSOR_UUID)\n\
       \            print('[BLE] Received a packet of length %d' % len(read))\n   \
-      \         data = pymyocular.decode_ble_packet(read)\n            samples = data['samples']\n\
-      \            for sample in samples:\n                sample_pipe.put(sample)\n\
-      \n            bps += len(read)\n            fps += len(samples)\n          \
-      \  if time.time() >= nextfps:\n                print(f\"FPS: {fps}, BPS: {bps}\"\
-      )\n                nextfps += 1\n                fps = 0\n                bps\
-      \ = 0\n    finally:\n        device.disconnect()\n\n\nclass BLESource(gr.basic_block):\n\
-      \    def __init__(self, ble_mac=MY_MAC, characteristic_uuid=MY_CHR_UUID):\n\
+      \         data = decoder.decode_packet(read)\n            samples = data['samples']\n\
+      \            tick = data['tick']\n\n            if last_tick is not None:\n\
+      \                if last_tick == tick:\n                    # This packet has\
+      \ already been received\n                    print('Dropped packet, it has already\
+      \ been received')\n                    continue\n\n                # Need to\
+      \ consider overflow of tick value. It's range is between 1 and incl. 255\n \
+      \               lost_packets = min(tick - last_tick - 1, tick + 255 - last_tick\
+      \ - 1)\n                null_sample = [0] * data['channels']\n             \
+      \   for _ in range(lost_packets * len(samples)):\n                    sample_pipe.put(null_sample)\n\
+      \            last_tick = tick\n\n            for sample in samples:\n      \
+      \          sample_pipe.put(sample)\n\n            bps += len(read)\n       \
+      \     fps += len(samples)\n            if time.time() >= nextfps:\n        \
+      \        print(f\"FPS: {fps}, BPS: {bps}\")\n                nextfps += 1\n\
+      \                fps = 0\n                bps = 0\n    finally:\n        device.disconnect()\n\
+      \n\nclass BLESource(gr.basic_block):\n    def __init__(self, ble_mac=DEFAULT_BLE_ADDRESS):\n\
       \        gr.basic_block.__init__(self, name='BLE Source', in_sig=[], out_sig=[np.float32]\
-      \ * SIGNAL_COUNT)\n        self.ble_mac = ble_mac\n        self.characteristic_uuid\
-      \ = characteristic_uuid\n        self.sample_pipe = Queue()\n        self.stop_thread\
-      \ = Event()\n        self.device = BLE_GATT.Central(MY_MAC)\n        self._bt_thread\
-      \ = None\n\n    def general_work(self, input_items, output_items):\n       \
-      \ count = 0\n        if USE_BLE:\n            for i in range(min(100, len(output_items[0]))):\n\
-      \                if self.sample_pipe.empty():\n                    break\n \
-      \               channels = self.sample_pipe.get()\n                for channel,\
-      \ samples in enumerate(channels):\n                    try:\n              \
-      \          output_channel = output_items[channel]\n                    except\
-      \ IndexError:\n                        continue\n                    else:\n\
-      \                        output_channel[i] = samples\n                count\
-      \ += 1\n        else:\n            for i in range(min(100, len(output_items[0]))):\n\
-      \                output_items[0][i] = math.sin(i)\n                count +=\
-      \ 1\n        return count\n\n    def start(self):\n        if not USE_BLE:\n\
-      \            return True\n        if self._bt_thread:\n            print(\"\
-      Error: Bluetooth Thread already running!\")\n            return False\n\n  \
-      \      # Reset state\n        importlib.reload(pymyocular)\n        self.stop_thread.clear()\n\
-      \        while not self.sample_pipe.empty():\n            self.sample_pipe.get()\n\
-      \n        # Launch thread\n        self._bt_thread = Thread(\n            target=run_bluetooth_loop,\n\
-      \            args=(self.device, self.sample_pipe, self.stop_thread)\n      \
-      \  )\n        self._bt_thread.start()\n        return True\n\n    def stop(self):\n\
-      \        if not USE_BLE:\n            return True\n        self.stop_thread.set()\n\
-      \        self._bt_thread = None\n\n        return True\n"
+      \ * SIGNAL_COUNT)\n        self.ble_mac = ble_mac\n        self.sample_pipe\
+      \ = Queue()\n        self.stop_thread = Event()\n        self.device = BLE_GATT.Central(ble_mac)\n\
+      \        self._bt_thread = None\n\n    def general_work(self, input_items, output_items):\n\
+      \        count = 0\n        if USE_BLE:\n            for i in range(min(100,\
+      \ len(output_items[0]))):\n                if self.sample_pipe.empty():\n  \
+      \                  break\n                channels = self.sample_pipe.get()\n\
+      \                for channel, samples in enumerate(channels):\n            \
+      \        try:\n                        output_channel = output_items[channel]\n\
+      \                    except IndexError:\n                        continue\n\
+      \                    else:\n                        output_channel[i] = samples\n\
+      \                count += 1\n        else:\n            for i in range(min(100,\
+      \ len(output_items[0]))):\n                output_items[0][i] = math.sin(i)\n\
+      \                count += 1\n        return count\n\n    def start(self):\n\
+      \        if not USE_BLE:\n            return True\n        if self._bt_thread:\n\
+      \            print(\"Error: Bluetooth Thread already running!\")\n         \
+      \   return False\n\n        # Reset state\n        importlib.reload(pymyocular)\n\
+      \        self.stop_thread.clear()\n        while not self.sample_pipe.empty():\n\
+      \            self.sample_pipe.get()\n\n        # Launch thread\n        self._bt_thread\
+      \ = Thread(\n            target=run_bluetooth_loop,\n            args=(self.device,\
+      \ self.sample_pipe, self.stop_thread)\n        )\n        self._bt_thread.start()\n\
+      \        return True\n\n    def stop(self):\n        if not USE_BLE:\n     \
+      \       return True\n        self.stop_thread.set()\n        self._bt_thread\
+      \ = None\n\n        return True\n"
     affinity: ''
     alias: ''
     ble_mac: '''A6:B7:D0:AE:C2:76'''
-    characteristic_uuid: '''0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'''
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: ('BLE Source', 'BLESource', [('ble_mac', "'A6:B7:D0:AE:C2:76'"), ('characteristic_uuid',
-      "'0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'")], [], [('0', 'float', 1), ('1', 'float',
-      1), ('2', 'float', 1), ('3', 'float', 1), ('4', 'float', 1), ('5', 'float',
-      1), ('6', 'float', 1), ('7', 'float', 1)], '', ['ble_mac', 'characteristic_uuid'])
+    _io_cache: ('BLE Source', 'BLESource', [('ble_mac', "'A6:B7:D0:AE:C2:76'")], [],
+      [('0', 'float', 1), ('1', 'float', 1), ('2', 'float', 1), ('3', 'float', 1),
+      ('4', 'float', 1), ('5', 'float', 1), ('6', 'float', 1), ('7', 'float', 1)],
+      '', ['ble_mac'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -698,7 +706,9 @@ connections:
 - [block_shift_0_0, '0', blocks_add_const_vxx_0_0, '0']
 - [block_shift_0_0, '0', qtgui_freq_sink_x_0, '2']
 - [block_shift_0_0_0, '0', blocks_add_const_vxx_0_0_0, '0']
+- [block_shift_0_0_0, '0', qtgui_freq_sink_x_0, '3']
 - [block_shift_0_0_0_0, '0', blocks_add_const_vxx_0_0_0_0, '0']
+- [block_shift_0_0_0_0, '0', qtgui_freq_sink_x_0, '4']
 - [block_shift_0_0_0_0_0, '0', blocks_add_const_vxx_0_0_0_0_0, '0']
 - [block_shift_0_0_0_0_0, '0', qtgui_freq_sink_x_0, '5']
 - [block_shift_0_0_0_0_0_0, '0', blocks_add_const_vxx_0_0_0_0_0_0, '0']

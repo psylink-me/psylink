@@ -5,7 +5,8 @@ import time
 import pymyocular
 
 address = 'A6:B7:D0:AE:C2:76'
-sensor_uuid = '0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'
+sensor_uuid = pymyocular.BLEDevice.SENSOR_UUID
+channel_count_uuid = pymyocular.BLEDevice.OPTION_CHANNELS_UUID
 
 device = BLE_GATT.Central(address)
 device.connect()
@@ -13,11 +14,14 @@ device.connect()
 fps = 0
 bps = 0
 nextfps = time.time() + 1
+
+decoder = pymyocular.BLEDecoder()
 try:
     print(repr(device.chrcs))
+    decoder.decode_channel_count(device.char_read(channel_count_uuid))
     while True:
         read = device.char_read(sensor_uuid)
-        decoded = pymyocular.decode_ble_packet(read)
+        decoded = decoder.decode_packet(read)
         print(decoded)
         fps += 1
         bps += len(read)
