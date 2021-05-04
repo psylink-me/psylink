@@ -3,6 +3,23 @@ __pycache__
 .idea
 tmp
 venv
+
+# Calibrator tool
 records.csv
+
+# TensorFlow
 model.tf
 model.tf.labels
+
+# KiCad
+*-cache.lib
+*.sch-bak
+*.kicad_pcb-bak
+_autosave-*.sch
+_autosave-*.kicad_pcb
+*.pro
+fp-info-cache
+
+# GNURadio
+*/gnuradio/*_0.py
+*/gnuradio/grcmyocular.py
