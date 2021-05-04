@@ -45,8 +45,9 @@ void setup() {
   pinMode(LEDG, OUTPUT);
   pinMode(LEDB, OUTPUT);
   digitalWrite(LEDR, HIGH); // The LED is LOW-activated, let's turn it off.
-  digitalWrite(LEDG, HIGH); // The LED is LOW-activated, let's turn it off.  
-  digitalWrite(LEDB, HIGH); // The LED is LOW-activated, let's turn it off.  
+  digitalWrite(LEDG, HIGH); // The LED is LOW-activated, let's turn it off.
+  //digitalWrite(LEDB, HIGH); // The LED is LOW-activated, let's turn it off.
+  analogWrite(LEDB, 255); // The LED is LOW-activated, let's turn it off.
   if (!BLE.begin()) {
     digitalWrite(LEDR, LOW); // Turn on red LED
     while (1);
@@ -131,7 +132,7 @@ void updateSensorCharacteristic() {
 }
 
 void bleConnectHandler(BLEDevice central) {
-  digitalWrite(LEDB, LOW);
+  analogWrite(LEDB, 253);
   connectedDevice = central;
   bleConnected = true;
   currentSample = 0;
@@ -147,6 +148,6 @@ void bleConnectHandler(BLEDevice central) {
 
 void bleDisconnectHandler(BLEDevice central) {
   //samplingTimer.stopTimer();
-  digitalWrite(LEDB, HIGH);
+  analogWrite(LEDB, 255);
   bleConnected = false;
 }
