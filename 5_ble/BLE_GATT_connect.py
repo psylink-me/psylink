@@ -22,7 +22,7 @@ try:
     while True:
         read = device.char_read(sensor_uuid)
         decoded = decoder.decode_packet(read)
-        print(decoded)
+        #print(decoded)
         fps += 1
         bps += len(read)
         if time.time() >= nextfps:
