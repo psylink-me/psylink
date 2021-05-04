@@ -2,9 +2,9 @@
 #include "NRF52_MBED_TimerInterrupt.h"
 
 // Configuration
-#define SAMPLE_RATE 150 // samples per second
-#define BLE_NOTIFY_RATE 10 // updates per second
-#define CHANNELS 8
+#define SAMPLE_RATE 250 // samples per second
+#define BLE_NOTIFY_RATE 2 // updates per second
+#define CHANNELS 4
 #define BUFFERS 2 // multiple buffers help with concurrency issues, if needed
 #define METADATA_BYTES 1
 // Metadata format:
