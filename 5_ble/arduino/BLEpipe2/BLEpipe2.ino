@@ -26,10 +26,6 @@ int samples[BUFFERS][CHANNELS][SAMPLES_PER_INTERVAL] = {0};
 int currentSample = 0;
 int currentBuffer = 0;
 char bleString[BLE_CHARACTERISTIC_SIZE] = {0};
-int fps = 0;
-unsigned int nextframe = 0;
-
-volatile int tick1, tick2, tick3;
 
 void setup() {
   //Serial.begin(115200);
@@ -66,21 +62,8 @@ void setup() {
 void loop() {
   if (doSampling) {
     readSamples();
-    //if (sendBuffer != NO_BUFFER && connectedDevice && connectedDevice.connected()) {
-      //tick1 = millis();
-      //updateSensorCharacteristic();
-      //tick2 = millis() - tick1;
-    //}
   }
-  //Serial.println(samples[currentBuffer][1][currentSample]);
-
-  //tick1 = millis();
   BLE.poll();
-  //tick3 = millis() - tick1;
-
-  //Serial.print(tick2);
-  //Serial.print(" ");
-  //Serial.println(tick3);
 }
 
 void sensorCharacteristicRead(BLEDevice central, BLECharacteristic characteristic) {
@@ -100,12 +83,6 @@ void readSamples() {
     sendBuffer = currentBuffer;
     currentBuffer = (currentBuffer + 1) % BUFFERS;
     currentSample = 0;
-  }
-  fps++;
-  if (millis() > nextframe) {
-    //Serial.println(fps);
-    fps = 0;
-    nextframe += 1000;
   }
 }
 
@@ -141,7 +118,6 @@ void bleConnectHandler(BLEDevice central) {
       for (int sample = 0; sample < SAMPLES_PER_INTERVAL; sample++)
         samples[buf][channel][sample] = 0;
   samplingTimer.restartTimer();
-  nextframe = millis() + 1000;
 }
 
 void bleDisconnectHandler(BLEDevice central) {
