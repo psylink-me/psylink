@@ -18,8 +18,7 @@ const int NO_BUFFER = -1;
 NRF52_MBED_Timer samplingTimer(NRF_TIMER_3);
 BLEDevice connectedDevice;
 BLEService sensorService("0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e4");
-BLEStringCharacteristic sensorCharacteristic("0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5",
-    BLERead | BLEIndicate, BLE_CHARACTERISTIC_SIZE);
+BLEStringCharacteristic sensorCharacteristic("0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5", BLERead, BLE_CHARACTERISTIC_SIZE);
 
 volatile bool doSampling = true;
 volatile int sendBuffer = NO_BUFFER;
