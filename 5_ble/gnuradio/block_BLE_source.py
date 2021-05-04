@@ -14,24 +14,40 @@ sys.path.insert(0, os.path.expanduser('~/repos/myocular/5_ble'))
 import pymyocular
 
 BLUETOOTH_ADAPTER = 'hci0'
-MY_MAC = 'A6:B7:D0:AE:C2:76'
-MY_CHR_UUID = '0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'
+DEFAULT_BLE_ADDRESS = 'A6:B7:D0:AE:C2:76'
 SIGNAL_COUNT = 8
-SAMPLE_RATE = 1000
 USE_BLE = True
 
 
 def run_bluetooth_loop(device, sample_pipe, stop_thread):
-    device.connect()
+    decoder = pymyocular.BLEDecoder()
     fps = 0
     bps = 0
+    last_tick = None
     nextfps = time.time() + 1
+    device.connect()
     try:
+        decoder.decode_channel_count(device.char_read(pymyocular.BLEDevice.OPTION_CHANNELS_UUID))
         while not stop_thread.is_set():
-            read = device.char_read(MY_CHR_UUID)
+            read = device.char_read(pymyocular.BLEDevice.SENSOR_UUID)
             print('[BLE] Received a packet of length %d' % len(read))
-            data = pymyocular.decode_ble_packet(read)
+            data = decoder.decode_packet(read)
             samples = data['samples']
+            tick = data['tick']
+
+            if last_tick is not None:
+                if last_tick == tick:
+                    # This packet has already been received
+                    print('Dropped packet, it has already been received')
+                    continue
+
+                # Need to consider overflow of tick value. It's range is between 1 and incl. 255
+                lost_packets = min(tick - last_tick - 1, tick + 255 - last_tick - 1)
+                null_sample = [0] * data['channels']
+                for _ in range(lost_packets * len(samples)):
+                    sample_pipe.put(null_sample)
+            last_tick = tick
+
             for sample in samples:
                 sample_pipe.put(sample)
 
@@ -47,13 +63,12 @@ def run_bluetooth_loop(device, sample_pipe, stop_thread):
 
 
 class BLESource(gr.basic_block):
-    def __init__(self, ble_mac=MY_MAC, characteristic_uuid=MY_CHR_UUID):
+    def __init__(self, ble_mac=DEFAULT_BLE_ADDRESS):
         gr.basic_block.__init__(self, name='BLE Source', in_sig=[], out_sig=[np.float32] * SIGNAL_COUNT)
         self.ble_mac = ble_mac
-        self.characteristic_uuid = characteristic_uuid
         self.sample_pipe = Queue()
         self.stop_thread = Event()
-        self.device = BLE_GATT.Central(MY_MAC)
+        self.device = BLE_GATT.Central(ble_mac)
         self._bt_thread = None
 
     def general_work(self, input_items, output_items):
