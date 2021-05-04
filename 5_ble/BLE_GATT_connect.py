@@ -2,7 +2,7 @@
 # sudo hcitool lecc <ADDR>
 import BLE_GATT
 import time
-import myocular_decode
+import pymyocular
 
 address = 'A6:B7:D0:AE:C2:76'
 sensor_uuid = '0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'
@@ -17,10 +17,10 @@ try:
     print(repr(device.chrcs))
     while True:
         read = device.char_read(sensor_uuid)
-        decoded = myocular_decode.myocular_decode(read)
+        decoded = pymyocular.decode_ble_packet(read)
         print(decoded)
         fps += 1
-        bps += len(decoded)
+        bps += len(read)
         if time.time() >= nextfps:
             print(f"FPS: {fps}, BPS: {bps}")
             nextfps += 1
