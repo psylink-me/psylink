@@ -16,7 +16,7 @@ import pymyocular
 BLUETOOTH_ADAPTER = 'hci0'
 MY_MAC = 'A6:B7:D0:AE:C2:76'
 MY_CHR_UUID = '0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'
-SIGNAL_COUNT = 1
+SIGNAL_COUNT = 8
 SAMPLE_RATE = 1000
 USE_BLE = True
 
@@ -64,7 +64,12 @@ class BLESource(gr.basic_block):
                     break
                 channels = self.sample_pipe.get()
                 for channel, samples in enumerate(channels):
-                    output_items[channel][i] = samples
+                    try:
+                        output_channel = output_items[channel]
+                    except IndexError:
+                        continue
+                    else:
+                        output_channel[i] = samples
                 count += 1
         else:
             for i in range(min(100, len(output_items[0]))):

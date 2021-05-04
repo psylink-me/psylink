@@ -32,6 +32,18 @@ options:
     state: enabled
 
 blocks:
+- name: offset
+  id: variable
+  parameters:
+    comment: ''
+    value: '64'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [390, 16]
+    rotation: 0
+    state: true
 - name: points
   id: variable
   parameters:
@@ -64,7 +76,7 @@ blocks:
       \ Event\nfrom queue import Queue\nfrom gnuradio import gr\n\n# NOTE: fill in\
       \ the path to the pymyocular library\nsys.path.insert(0, os.path.expanduser('~/repos/myocular/5_ble'))\n\
       import pymyocular\n\nBLUETOOTH_ADAPTER = 'hci0'\nMY_MAC = 'A6:B7:D0:AE:C2:76'\n\
-      MY_CHR_UUID = '0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'\nSIGNAL_COUNT = 1\nSAMPLE_RATE\
+      MY_CHR_UUID = '0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'\nSIGNAL_COUNT = 8\nSAMPLE_RATE\
       \ = 1000\nUSE_BLE = True\n\n\ndef run_bluetooth_loop(device, sample_pipe, stop_thread):\n\
       \    device.connect()\n    fps = 0\n    bps = 0\n    nextfps = time.time() +\
       \ 1\n    try:\n        while not stop_thread.is_set():\n            read = device.char_read(MY_CHR_UUID)\n\
@@ -84,20 +96,22 @@ blocks:
       \ count = 0\n        if USE_BLE:\n            for i in range(min(100, len(output_items[0]))):\n\
       \                if self.sample_pipe.empty():\n                    break\n \
       \               channels = self.sample_pipe.get()\n                for channel,\
-      \ samples in enumerate(channels):\n                    output_items[channel][i]\
-      \ = samples\n                count += 1\n        else:\n            for i in\
-      \ range(min(100, len(output_items[0]))):\n                output_items[0][i]\
-      \ = math.sin(i)\n                count += 1\n        return count\n\n    def\
-      \ start(self):\n        if not USE_BLE:\n            return True\n        if\
-      \ self._bt_thread:\n            print(\"Error: Bluetooth Thread already running!\"\
-      )\n            return False\n\n        # Reset state\n        importlib.reload(pymyocular)\n\
-      \        self.stop_thread.clear()\n        while not self.sample_pipe.empty():\n\
-      \            self.sample_pipe.get()\n\n        # Launch thread\n        self._bt_thread\
-      \ = Thread(\n            target=run_bluetooth_loop,\n            args=(self.device,\
-      \ self.sample_pipe, self.stop_thread)\n        )\n        self._bt_thread.start()\n\
-      \        return True\n\n    def stop(self):\n        if not USE_BLE:\n     \
-      \       return True\n        self.stop_thread.set()\n        self._bt_thread\
-      \ = None\n\n        return True\n"
+      \ samples in enumerate(channels):\n                    try:\n              \
+      \          output_channel = output_items[channel]\n                    except\
+      \ IndexError:\n                        continue\n                    else:\n\
+      \                        output_channel[i] = samples\n                count\
+      \ += 1\n        else:\n            for i in range(min(100, len(output_items[0]))):\n\
+      \                output_items[0][i] = math.sin(i)\n                count +=\
+      \ 1\n        return count\n\n    def start(self):\n        if not USE_BLE:\n\
+      \            return True\n        if self._bt_thread:\n            print(\"\
+      Error: Bluetooth Thread already running!\")\n            return False\n\n  \
+      \      # Reset state\n        importlib.reload(pymyocular)\n        self.stop_thread.clear()\n\
+      \        while not self.sample_pipe.empty():\n            self.sample_pipe.get()\n\
+      \n        # Launch thread\n        self._bt_thread = Thread(\n            target=run_bluetooth_loop,\n\
+      \            args=(self.device, self.sample_pipe, self.stop_thread)\n      \
+      \  )\n        self._bt_thread.start()\n        return True\n\n    def stop(self):\n\
+      \        if not USE_BLE:\n            return True\n        self.stop_thread.set()\n\
+      \        self._bt_thread = None\n\n        return True\n"
     affinity: ''
     alias: ''
     ble_mac: '''A6:B7:D0:AE:C2:76'''
@@ -107,13 +121,14 @@ blocks:
     minoutbuf: '0'
   states:
     _io_cache: ('BLE Source', 'BLESource', [('ble_mac', "'A6:B7:D0:AE:C2:76'"), ('characteristic_uuid',
-      "'0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'")], [], [('0', 'float', 1)], '', ['ble_mac',
-      'characteristic_uuid'])
+      "'0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'")], [], [('0', 'float', 1), ('1', 'float',
+      1), ('2', 'float', 1), ('3', 'float', 1), ('4', 'float', 1), ('5', 'float',
+      1), ('6', 'float', 1), ('7', 'float', 1)], '', ['ble_mac', 'characteristic_uuid'])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [89, 122]
-    rotation: 180
+    coordinate: [28, 136]
+    rotation: 0
     state: enabled
 - name: block_shift
   id: epy_block
@@ -143,7 +158,350 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [88, 190]
+    coordinate: [306, 122]
+    rotation: 0
+    state: true
+- name: block_shift_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nKeeps a copy of the last N signals and outputs them at\
+      \ a constant rate,\nso that you can use QT GUI sinks in a \"rolling\" mode.\n\
+      \"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\n\n\nclass ShiftBlock(gr.interp_block):\n\
+      \    def __init__(self, number_of_points=1024):\n        gr.interp_block.__init__(\n\
+      \            self,\n            name='Shifting Block',\n            interp=10\
+      \ * number_of_points,  # a large number to ensure that output_items is large\
+      \ enough\n            in_sig=[np.float32],\n            out_sig=[np.float32]\n\
+      \        )\n        self.number_of_points = number_of_points\n        self.buffer\
+      \ = np.zeros(self.number_of_points, dtype=np.float64)\n\n    def work(self,\
+      \ input_items, output_items):\n        n_inputs = min(self.number_of_points,\
+      \ len(input_items[0]))\n        self.buffer = np.roll(self.buffer, -n_inputs)\n\
+      \        self.buffer[-n_inputs:] = input_items[0][:n_inputs]\n        output_items[0][:self.number_of_points]\
+      \ = self.buffer\n        self.consume(0, n_inputs)\n        return self.number_of_points\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    number_of_points: points
+  states:
+    _io_cache: ('Shifting Block', 'ShiftBlock', [('number_of_points', '1024')], [('0',
+      'float', 1)], [('0', 'float', 1)], '', ['number_of_points'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [306, 174]
+    rotation: 0
+    state: true
+- name: block_shift_0_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nKeeps a copy of the last N signals and outputs them at\
+      \ a constant rate,\nso that you can use QT GUI sinks in a \"rolling\" mode.\n\
+      \"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\n\n\nclass ShiftBlock(gr.interp_block):\n\
+      \    def __init__(self, number_of_points=1024):\n        gr.interp_block.__init__(\n\
+      \            self,\n            name='Shifting Block',\n            interp=10\
+      \ * number_of_points,  # a large number to ensure that output_items is large\
+      \ enough\n            in_sig=[np.float32],\n            out_sig=[np.float32]\n\
+      \        )\n        self.number_of_points = number_of_points\n        self.buffer\
+      \ = np.zeros(self.number_of_points, dtype=np.float64)\n\n    def work(self,\
+      \ input_items, output_items):\n        n_inputs = min(self.number_of_points,\
+      \ len(input_items[0]))\n        self.buffer = np.roll(self.buffer, -n_inputs)\n\
+      \        self.buffer[-n_inputs:] = input_items[0][:n_inputs]\n        output_items[0][:self.number_of_points]\
+      \ = self.buffer\n        self.consume(0, n_inputs)\n        return self.number_of_points\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    number_of_points: points
+  states:
+    _io_cache: ('Shifting Block', 'ShiftBlock', [('number_of_points', '1024')], [('0',
+      'float', 1)], [('0', 'float', 1)], '', ['number_of_points'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [307, 223]
+    rotation: 0
+    state: true
+- name: block_shift_0_0_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nKeeps a copy of the last N signals and outputs them at\
+      \ a constant rate,\nso that you can use QT GUI sinks in a \"rolling\" mode.\n\
+      \"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\n\n\nclass ShiftBlock(gr.interp_block):\n\
+      \    def __init__(self, number_of_points=1024):\n        gr.interp_block.__init__(\n\
+      \            self,\n            name='Shifting Block',\n            interp=10\
+      \ * number_of_points,  # a large number to ensure that output_items is large\
+      \ enough\n            in_sig=[np.float32],\n            out_sig=[np.float32]\n\
+      \        )\n        self.number_of_points = number_of_points\n        self.buffer\
+      \ = np.zeros(self.number_of_points, dtype=np.float64)\n\n    def work(self,\
+      \ input_items, output_items):\n        n_inputs = min(self.number_of_points,\
+      \ len(input_items[0]))\n        self.buffer = np.roll(self.buffer, -n_inputs)\n\
+      \        self.buffer[-n_inputs:] = input_items[0][:n_inputs]\n        output_items[0][:self.number_of_points]\
+      \ = self.buffer\n        self.consume(0, n_inputs)\n        return self.number_of_points\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    number_of_points: points
+  states:
+    _io_cache: ('Shifting Block', 'ShiftBlock', [('number_of_points', '1024')], [('0',
+      'float', 1)], [('0', 'float', 1)], '', ['number_of_points'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [307, 272]
+    rotation: 0
+    state: true
+- name: block_shift_0_0_0_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nKeeps a copy of the last N signals and outputs them at\
+      \ a constant rate,\nso that you can use QT GUI sinks in a \"rolling\" mode.\n\
+      \"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\n\n\nclass ShiftBlock(gr.interp_block):\n\
+      \    def __init__(self, number_of_points=1024):\n        gr.interp_block.__init__(\n\
+      \            self,\n            name='Shifting Block',\n            interp=10\
+      \ * number_of_points,  # a large number to ensure that output_items is large\
+      \ enough\n            in_sig=[np.float32],\n            out_sig=[np.float32]\n\
+      \        )\n        self.number_of_points = number_of_points\n        self.buffer\
+      \ = np.zeros(self.number_of_points, dtype=np.float64)\n\n    def work(self,\
+      \ input_items, output_items):\n        n_inputs = min(self.number_of_points,\
+      \ len(input_items[0]))\n        self.buffer = np.roll(self.buffer, -n_inputs)\n\
+      \        self.buffer[-n_inputs:] = input_items[0][:n_inputs]\n        output_items[0][:self.number_of_points]\
+      \ = self.buffer\n        self.consume(0, n_inputs)\n        return self.number_of_points\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    number_of_points: points
+  states:
+    _io_cache: ('Shifting Block', 'ShiftBlock', [('number_of_points', '1024')], [('0',
+      'float', 1)], [('0', 'float', 1)], '', ['number_of_points'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [307, 320]
+    rotation: 0
+    state: true
+- name: block_shift_0_0_0_0_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nKeeps a copy of the last N signals and outputs them at\
+      \ a constant rate,\nso that you can use QT GUI sinks in a \"rolling\" mode.\n\
+      \"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\n\n\nclass ShiftBlock(gr.interp_block):\n\
+      \    def __init__(self, number_of_points=1024):\n        gr.interp_block.__init__(\n\
+      \            self,\n            name='Shifting Block',\n            interp=10\
+      \ * number_of_points,  # a large number to ensure that output_items is large\
+      \ enough\n            in_sig=[np.float32],\n            out_sig=[np.float32]\n\
+      \        )\n        self.number_of_points = number_of_points\n        self.buffer\
+      \ = np.zeros(self.number_of_points, dtype=np.float64)\n\n    def work(self,\
+      \ input_items, output_items):\n        n_inputs = min(self.number_of_points,\
+      \ len(input_items[0]))\n        self.buffer = np.roll(self.buffer, -n_inputs)\n\
+      \        self.buffer[-n_inputs:] = input_items[0][:n_inputs]\n        output_items[0][:self.number_of_points]\
+      \ = self.buffer\n        self.consume(0, n_inputs)\n        return self.number_of_points\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    number_of_points: points
+  states:
+    _io_cache: ('Shifting Block', 'ShiftBlock', [('number_of_points', '1024')], [('0',
+      'float', 1)], [('0', 'float', 1)], '', ['number_of_points'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [306, 369]
+    rotation: 0
+    state: true
+- name: block_shift_0_0_0_0_0_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nKeeps a copy of the last N signals and outputs them at\
+      \ a constant rate,\nso that you can use QT GUI sinks in a \"rolling\" mode.\n\
+      \"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\n\n\nclass ShiftBlock(gr.interp_block):\n\
+      \    def __init__(self, number_of_points=1024):\n        gr.interp_block.__init__(\n\
+      \            self,\n            name='Shifting Block',\n            interp=10\
+      \ * number_of_points,  # a large number to ensure that output_items is large\
+      \ enough\n            in_sig=[np.float32],\n            out_sig=[np.float32]\n\
+      \        )\n        self.number_of_points = number_of_points\n        self.buffer\
+      \ = np.zeros(self.number_of_points, dtype=np.float64)\n\n    def work(self,\
+      \ input_items, output_items):\n        n_inputs = min(self.number_of_points,\
+      \ len(input_items[0]))\n        self.buffer = np.roll(self.buffer, -n_inputs)\n\
+      \        self.buffer[-n_inputs:] = input_items[0][:n_inputs]\n        output_items[0][:self.number_of_points]\
+      \ = self.buffer\n        self.consume(0, n_inputs)\n        return self.number_of_points\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    number_of_points: points
+  states:
+    _io_cache: ('Shifting Block', 'ShiftBlock', [('number_of_points', '1024')], [('0',
+      'float', 1)], [('0', 'float', 1)], '', ['number_of_points'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [306, 418]
+    rotation: 0
+    state: true
+- name: block_shift_0_0_0_0_0_0_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nKeeps a copy of the last N signals and outputs them at\
+      \ a constant rate,\nso that you can use QT GUI sinks in a \"rolling\" mode.\n\
+      \"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\n\n\nclass ShiftBlock(gr.interp_block):\n\
+      \    def __init__(self, number_of_points=1024):\n        gr.interp_block.__init__(\n\
+      \            self,\n            name='Shifting Block',\n            interp=10\
+      \ * number_of_points,  # a large number to ensure that output_items is large\
+      \ enough\n            in_sig=[np.float32],\n            out_sig=[np.float32]\n\
+      \        )\n        self.number_of_points = number_of_points\n        self.buffer\
+      \ = np.zeros(self.number_of_points, dtype=np.float64)\n\n    def work(self,\
+      \ input_items, output_items):\n        n_inputs = min(self.number_of_points,\
+      \ len(input_items[0]))\n        self.buffer = np.roll(self.buffer, -n_inputs)\n\
+      \        self.buffer[-n_inputs:] = input_items[0][:n_inputs]\n        output_items[0][:self.number_of_points]\
+      \ = self.buffer\n        self.consume(0, n_inputs)\n        return self.number_of_points\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    number_of_points: points
+  states:
+    _io_cache: ('Shifting Block', 'ShiftBlock', [('number_of_points', '1024')], [('0',
+      'float', 1)], [('0', 'float', 1)], '', ['number_of_points'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [306, 471]
+    rotation: 0
+    state: true
+- name: blocks_add_const_vxx_0
+  id: blocks_add_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: offset
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [629, 125]
+    rotation: 0
+    state: true
+- name: blocks_add_const_vxx_0_0
+  id: blocks_add_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: 2*offset
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [629, 175]
+    rotation: 0
+    state: true
+- name: blocks_add_const_vxx_0_0_0
+  id: blocks_add_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: 3*offset
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [628, 225]
+    rotation: 0
+    state: true
+- name: blocks_add_const_vxx_0_0_0_0
+  id: blocks_add_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: 4*offset
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [628, 276]
+    rotation: 0
+    state: true
+- name: blocks_add_const_vxx_0_0_0_0_0
+  id: blocks_add_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: 5*offset
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [626, 326]
+    rotation: 0
+    state: true
+- name: blocks_add_const_vxx_0_0_0_0_0_0
+  id: blocks_add_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: 6*offset
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [627, 378]
+    rotation: 0
+    state: true
+- name: blocks_add_const_vxx_0_0_0_0_0_0_0
+  id: blocks_add_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: 7*offset
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [628, 428]
     rotation: 0
     state: true
 - name: qtgui_freq_sink_x_0
@@ -197,7 +555,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     name: '""'
-    nconnections: '1'
+    nconnections: '8'
     showports: 'False'
     tr_chan: '0'
     tr_level: '0.0'
@@ -223,9 +581,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [380, 226]
+    coordinate: [865, 376]
     rotation: 0
-    state: true
+    state: disabled
 - name: qtgui_time_sink_x_0
   id: qtgui_time_sink_x
   parameters:
@@ -271,7 +629,7 @@ blocks:
     legend: 'True'
     marker1: '-1'
     marker10: '-1'
-    marker2: '3'
+    marker2: '-1'
     marker3: '-1'
     marker4: '-1'
     marker5: '-1'
@@ -280,13 +638,13 @@ blocks:
     marker8: '-1'
     marker9: '-1'
     name: '""'
-    nconnections: '1'
+    nconnections: '8'
     size: points
     srate: samp_rate
     stemplot: 'False'
     style1: '1'
     style10: '1'
-    style2: '2'
+    style2: '1'
     style3: '1'
     style4: '1'
     style5: '1'
@@ -313,21 +671,47 @@ blocks:
     width8: '1'
     width9: '1'
     ylabel: Amplitude
-    ymax: '128'
+    ymax: 128 + 7 * offset
     ymin: '-128'
     yunit: '""'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [382, 103]
+    coordinate: [874, 36]
     rotation: 0
     state: enabled
 
 connections:
 - [block_BLE_source, '0', block_shift, '0']
+- [block_BLE_source, '1', block_shift_0, '0']
+- [block_BLE_source, '2', block_shift_0_0, '0']
+- [block_BLE_source, '3', block_shift_0_0_0, '0']
+- [block_BLE_source, '4', block_shift_0_0_0_0, '0']
+- [block_BLE_source, '5', block_shift_0_0_0_0_0, '0']
+- [block_BLE_source, '6', block_shift_0_0_0_0_0_0, '0']
+- [block_BLE_source, '7', block_shift_0_0_0_0_0_0_0, '0']
 - [block_shift, '0', qtgui_freq_sink_x_0, '0']
 - [block_shift, '0', qtgui_time_sink_x_0, '0']
+- [block_shift_0, '0', blocks_add_const_vxx_0, '0']
+- [block_shift_0, '0', qtgui_freq_sink_x_0, '1']
+- [block_shift_0_0, '0', blocks_add_const_vxx_0_0, '0']
+- [block_shift_0_0, '0', qtgui_freq_sink_x_0, '2']
+- [block_shift_0_0_0, '0', blocks_add_const_vxx_0_0_0, '0']
+- [block_shift_0_0_0_0, '0', blocks_add_const_vxx_0_0_0_0, '0']
+- [block_shift_0_0_0_0_0, '0', blocks_add_const_vxx_0_0_0_0_0, '0']
+- [block_shift_0_0_0_0_0, '0', qtgui_freq_sink_x_0, '5']
+- [block_shift_0_0_0_0_0_0, '0', blocks_add_const_vxx_0_0_0_0_0_0, '0']
+- [block_shift_0_0_0_0_0_0, '0', qtgui_freq_sink_x_0, '6']
+- [block_shift_0_0_0_0_0_0_0, '0', blocks_add_const_vxx_0_0_0_0_0_0_0, '0']
+- [block_shift_0_0_0_0_0_0_0, '0', qtgui_freq_sink_x_0, '7']
+- [blocks_add_const_vxx_0, '0', qtgui_time_sink_x_0, '1']
+- [blocks_add_const_vxx_0_0, '0', qtgui_time_sink_x_0, '2']
+- [blocks_add_const_vxx_0_0_0, '0', qtgui_time_sink_x_0, '3']
+- [blocks_add_const_vxx_0_0_0_0, '0', qtgui_time_sink_x_0, '4']
+- [blocks_add_const_vxx_0_0_0_0_0, '0', qtgui_time_sink_x_0, '5']
+- [blocks_add_const_vxx_0_0_0_0_0_0, '0', qtgui_time_sink_x_0, '6']
+- [blocks_add_const_vxx_0_0_0_0_0_0_0, '0', qtgui_time_sink_x_0, '7']
 
 metadata:
   file_format: 1

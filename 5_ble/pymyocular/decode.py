@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 SAMPLE_VALUE_OFFSET = -127
 
@@ -14,7 +15,10 @@ def decode_ble_packet(bytes_):
     """
     channels = bytes_[0]
     sample_values = bytes_[1:]
-    sample_count = len(sample_values)
+    if len(sample_values) % channels != 0:
+        # ensure it's divisible by number of channels:
+        sample_values[-(len(sample_values) % channels):] = []
+    sample_count = math.floor(len(sample_values) / channels)
     samples = np.zeros((sample_count, channels), dtype=np.int)
 
     channel = 0
