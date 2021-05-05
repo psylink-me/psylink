@@ -15,8 +15,9 @@ class MyocularUIWindow(tk.Frame):
         tk.Frame.__init__(self, root)
         self.root = root
         self.controller = controller
-        self.pack(side=tk.TOP, fill='x')
         self._stop_drawing_signals = False
+        self.has_quit = False
+        self.pack(side=tk.TOP, fill='x')
         self.setup_widgets()
 
     def setup_widgets(self):
@@ -103,13 +104,22 @@ class MyocularUIWindow(tk.Frame):
         self.bind_all("<Control-b>", self.controller.connectBLE)
         self.bind_all("<Control-B>", self.controller.disconnectBLE)
 
+    def quit(self):
+        if not self.has_quit:
+            self.root.quit()
+            self.has_quit = True
+
     def log(self, text):
+        if self.has_quit:
+            print(text)
+            return
         text = str(text)
         if not text.endswith('\n'):
             text += '\n'
         self.logText['state'] = tk.NORMAL
         self.logText.insert(tk.END, text)
         self.logText['state'] = tk.DISABLED
+        self.update()
 
     def draw_signals(self):
         # https://stackoverflow.com/questions/53308708/

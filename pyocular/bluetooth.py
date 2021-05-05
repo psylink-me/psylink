@@ -1,6 +1,7 @@
 from pyocular.config import DEFAULT_BLE_ADDRESS
 from threading import Thread, Event
 from queue import Queue
+import logging
 
 
 class BLECharacteristics:
@@ -18,6 +19,7 @@ class BLEBackend:
         self.client = None
         self.thread = None
         self.is_initialized = False
+        self.is_connected = False
         self.init()
 
     def reset(self):
@@ -52,8 +54,11 @@ class BLEBackend:
         self.thread.start()
 
     def thread_stop(self):
-        self.stop_event.set()
-        self.thread = None
+        if self.thread is None:
+            logging.info("Not stopping BLE thread because it's not running")
+        else:
+            self.stop_event.set()
+            self.thread = None
 
     def thread_loop(self, stop_event, pipe, disconnect_on_stop):
         try:
