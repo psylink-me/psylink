@@ -1,3 +1,4 @@
+from pyocular.config import DEFAULT_BLE_ADDRESS
 from threading import Thread, Event
 from queue import Queue
 
@@ -8,10 +9,9 @@ class BLECharacteristics:
 
 
 class BLEBackend:
-    DEFAULT_ADDRESS = 'A6:B7:D0:AE:C2:76'
     MAX_PIPE_SIZE = 10
 
-    def __init__(self, address=DEFAULT_ADDRESS):
+    def __init__(self, address=DEFAULT_BLE_ADDRESS):
         self.address = address
         self.pipe = Queue(maxsize=self.MAX_PIPE_SIZE)
         self.stop_event = Event()
@@ -28,7 +28,7 @@ class BLEBackend:
     def init(self):
         pass
 
-    def connect(self, address=DEFAULT_ADDRESS):
+    def connect(self):
         raise NotImplementedError("Please Override this in subclass")
 
     def read(self, characteristic_uuid):
