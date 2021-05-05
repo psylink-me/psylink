@@ -6,7 +6,6 @@ import logging
 import threading
 import time
 
-SIGNAL_BUFFER_SIZE = 2000
 
 class Controller:
     def __init__(self):
@@ -104,7 +103,7 @@ class Controller:
 
     def readBLEconfig(self):
         self.channels = self.BLE_decoder.decode_channel_count(self.BLE.read_channels())
-        self.signal_buffer.resize(self.channels, SIGNAL_BUFFER_SIZE)
+        self.signal_buffer.resize(self.channels, pyocular.config.SIGNAL_BUFFER_SIZE)
 
     def disconnectBLE(self, event=None):
         self.gui.log('Disconnecting from device...')
