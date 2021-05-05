@@ -6,7 +6,7 @@ import logging
 import threading
 import time
 
-SIGNAL_BUFFER_SIZE = 2048
+SIGNAL_BUFFER_SIZE = 2000
 
 class Controller:
     def __init__(self):
@@ -20,8 +20,15 @@ class Controller:
         self.signal_buffer = None
 
     def run(self):
-        self.launch_gui()
         self.capture_init()
+        try:
+            self.launch_gui()
+        finally:
+            self.gui.quit()
+            self.capture_terminate()
+            if self.BLE:
+                self.disconnectBLE()
+                self.BLE.thread_stop()
 
     def capture_init(self):
         self.capture_thread = threading.Thread(
@@ -42,7 +49,7 @@ class Controller:
         self.capture_terminate_event.set()
 
     def capture_loop(self, capture_active, capture_terminate_event):
-        print("capture loop started")
+        logging.info("Packet capture thread started")
         t_next = time.time() + 1
         samples_per_second = 0
         bytes_per_second = 0
@@ -51,6 +58,8 @@ class Controller:
             if not capture_active.wait(timeout=0.01):
                 continue
             packet = self.BLE.pipe.get()
+            if not capture_active.wait(timeout=0.01):
+                continue
             decoded = self.BLE_decoder.decode_packet(packet)
 
             # Append captured signals to signal_buffer
@@ -70,7 +79,7 @@ class Controller:
                 packets_per_second = bytes_per_second = samples_per_second = 0
 
     def get_signal_image(self, width, height):
-        steps = 16
+        steps = 50
         max_difference = 64.0
 
         image = np.zeros((height, width))
@@ -106,32 +115,33 @@ class Controller:
         root.mainloop()
 
     def quit(self, event=None):
-        self.capture_terminate()
-        self.disconnectBLE()
-        self.BLE.thread_stop()
-        self.gui.root.quit()
+        self.gui.quit()
 
     def connectBLE(self, event=None):
-        self.gui.log('connecting...')
         if not self.BLE:
             address = self.gui.ble_address_stringvar.get()
             BackendClass = list(pyocular.bluetooth.BACKENDS.values())[0]
             self.BLE = BackendClass(address)
+        else:
+            address = self.BLE.address
+        self.gui.log(f'Connecting to {address}...')
         self.BLE.connect()
         self.readBLEconfig()
         self.BLE.thread_start()
         self.capture_activate()
         self.gui.draw_signals()
+        self.gui.log(f'Connected to {address}.')
 
     def readBLEconfig(self):
         self.channels = self.BLE_decoder.decode_channel_count(self.BLE.read_channels())
         self.signal_buffer = np.zeros((SIGNAL_BUFFER_SIZE, self.channels))
 
     def disconnectBLE(self, event=None):
-        self.gui.log('disconnecting...')
-        if self.BLE:
-            self.BLE.disconnect()
-        else:
-            logging.error("BLE not initialized yet")
+        self.gui.log('Disconnecting from device...')
         self.capture_deactivate()
         self.gui.stop_drawing_signals()
+        if self.BLE:
+            self.BLE.thread_stop()
+            self.BLE.disconnect()
+        else:
+            logging.error("BLE not initialized yet.")
