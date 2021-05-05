@@ -168,10 +168,10 @@ class Window(Frame):
         self.do_record = False
         self.ai_active = False
 
-        menu = Menu(self.master)
+        menu = Menu(self.master, relief=FLAT)
         self.master.config(menu=menu)
 
-        fileMenu = Menu(menu)
+        fileMenu = Menu(menu, tearoff=0)
         fileMenu.add_command(label="Start/Resume Recording", command=self.start_recording, accelerator='F1')
         fileMenu.add_command(label="Stop Recording or AI", command=self.stop, accelerator='Esc')
         fileMenu.add_command(label="Train AI", command=self.start_train, accelerator='Ctrl+w')
