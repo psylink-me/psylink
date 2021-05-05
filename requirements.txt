@@ -1,3 +1,4 @@
 BLE-GATT==0.5.0
+matplotlib==3.4.1
 pynput==1.7.3
 tensorflow==2.4.0
