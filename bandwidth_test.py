@@ -1,10 +1,18 @@
 #!/usr/bin/env python
+# This is a script to estimate BLE bandwith for the myocular device.
+# Usages:
+#     python3 bandwidth_test.py [bluetooth_backend]
+#     python3 bandwithh_test.py list
+
 import pyocular
 import time
 import sys
 
 RUN_SECONDS = 6
 
+if 'list' in sys.argv[1:]:
+    print('\n'.join(pyocular.bluetooth.BACKENDS))
+    sys.exit(0)
 try:
     BackendClass = pyocular.bluetooth.BACKENDS[sys.argv[1]]
 except IndexError:
