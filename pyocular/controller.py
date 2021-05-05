@@ -119,7 +119,10 @@ class Controller:
 
 class SignalBuffer:
     def __init__(self):
-        pass
+        self.channels = None
+        self.signals = None
+        self.data = None
+        self.image_buffer = None
 
     def resize(self, channels, signals):
         self.channels = channels
@@ -132,29 +135,39 @@ class SignalBuffer:
         self.data[:sample_count] = samples
 
     def render_image(self, width, height):
-        steps = 50
+        step_height = 2
+        steps = 5
         max_difference = 64.0
+        redraw_delay_ms = 100  # see after() call in gui.MyocularUIWindow.draw_signals
 
-        image = np.zeros((height, width))
-        channels = self.channels
+        if self.image_buffer is None or self.image_buffer.shape != (height, width):
+            self.image_buffer = np.zeros((height, width))
+        else:
+            self.image_buffer = np.roll(self.image_buffer, steps * step_height, 0)
+
         signals_by_channel = np.transpose(self.data)  # copy because of multithreading
-        total_signals = signals_by_channel.shape[1]
+        channels, total_signals = signals_by_channel.shape
+
+        # Get approximately all the samples that arrived since the last redraw
+        samples_per_step = pyocular.config.SAMPLE_RATE / (1000 / redraw_delay_ms) / steps
+        if samples_per_step * steps > total_signals:
+            samples_per_step = int(total_signals / steps)
+
         for channel in range(channels):
             x_start = int(width / channels * channel)
             x_end = int(width / channels * (channel + 1))
             for step in range(steps):
-                y_start = int(height / steps * step)
-                y_end = int(height / steps * (step + 1))
-                sig_start = int(total_signals / steps * step)
-                sig_end = int(total_signals / steps * (step + 1))
+                y_start = int(step_height * step)
+                y_end = int(step_height * (step + 1))
+                sig_start = int(samples_per_step * step)
+                sig_end = int(samples_per_step * (step + 1))
 
                 relevant_signals = signals_by_channel[channel][sig_start:sig_end]
 
                 maxval = relevant_signals.max()
                 minval = relevant_signals.min()
                 value = min(1, (maxval-minval)/max_difference)
-                #print(f"{maxval}, {minval}, {value}")
 
-                image[y_start:y_end, x_start:x_end] = value
+                self.image_buffer[y_start:y_end, x_start:x_end] = value
 
-        return image
+        return self.image_buffer
