@@ -122,6 +122,9 @@ class MyocularUIWindow(tk.Frame):
         self.update()
 
     def draw_signals(self):
+        if self._stop_drawing_signals:
+            return
+
         # https://stackoverflow.com/questions/53308708/
         signals = self.controller.get_signal_image(CANVAS_WIDTH, CANVAS_HEIGHT)
         array = signals
@@ -134,6 +137,10 @@ class MyocularUIWindow(tk.Frame):
             self._stop_drawing_signals = False
         else:
             self.after(100, self.draw_signals)
+
+    def start_drawing_signals(self):
+        self._stop_drawing_signals = False
+        self.draw_signals()
 
     def stop_drawing_signals(self):
         self._stop_drawing_signals = True

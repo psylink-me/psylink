@@ -17,7 +17,7 @@ class Controller:
         self.BLE_decoder = pyocular.protocol.BLEDecoder(sample_value_offset=0)
         self.channels = None
         self.signals = None
-        self.signal_buffer = None
+        self.signal_buffer = SignalBuffer()
 
     def run(self):
         self.capture_init()
@@ -62,11 +62,7 @@ class Controller:
                 continue
             decoded = self.BLE_decoder.decode_packet(packet)
 
-            # Append captured signals to signal_buffer
-            signals = decoded['samples']
-            signal_count = len(signals)
-            self.signal_buffer = np.roll(self.signal_buffer, signal_count, 0)
-            self.signal_buffer[:signal_count] = signals
+            self.signal_buffer.append(decoded['samples'])
 
             packets_per_second += 1
             bytes_per_second += len(packet)
@@ -79,33 +75,7 @@ class Controller:
                 packets_per_second = bytes_per_second = samples_per_second = 0
 
     def get_signal_image(self, width, height):
-        steps = 50
-        max_difference = 64.0
-
-        image = np.zeros((height, width))
-        channels = self.channels
-        signals_by_channel = np.transpose(self.signal_buffer)  # copy because of multithreading
-        total_signals = signals_by_channel.shape[1]
-        for channel in range(channels):
-            x_start = int(width / channels * channel)
-            x_end = int(width / channels * (channel + 1))
-            for step in range(steps):
-                y_start = int(height / steps * step)
-                y_end = int(height / steps * (step + 1))
-                sig_start = int(total_signals / steps * step)
-                sig_end = int(total_signals / steps * (step + 1))
-
-                relevant_signals = signals_by_channel[channel][sig_start:sig_end]
-
-                maxval = relevant_signals.max()
-                minval = relevant_signals.min()
-                value = min(1, (maxval-minval)/max_difference)
-                #print(f"{maxval}, {minval}, {value}")
-
-                image[y_start:y_end, x_start:x_end] = value
-
-        return image
-        return np.transpose(self.signal_buffer)
+        return self.signal_buffer.render_image(width, height)
 
     def launch_gui(self):
         root = tk.Tk()
@@ -129,12 +99,12 @@ class Controller:
         self.readBLEconfig()
         self.BLE.thread_start()
         self.capture_activate()
-        self.gui.draw_signals()
+        self.gui.start_drawing_signals()
         self.gui.log(f'Connected to {address}.')
 
     def readBLEconfig(self):
         self.channels = self.BLE_decoder.decode_channel_count(self.BLE.read_channels())
-        self.signal_buffer = np.zeros((SIGNAL_BUFFER_SIZE, self.channels))
+        self.signal_buffer.resize(self.channels, SIGNAL_BUFFER_SIZE)
 
     def disconnectBLE(self, event=None):
         self.gui.log('Disconnecting from device...')
@@ -145,3 +115,46 @@ class Controller:
             self.BLE.disconnect()
         else:
             logging.error("BLE not initialized yet.")
+
+
+class SignalBuffer:
+    def __init__(self):
+        pass
+
+    def resize(self, channels, signals):
+        self.channels = channels
+        self.signals = signals
+        self.data = np.zeros((signals, channels))
+
+    def append(self, samples):
+        sample_count = len(samples)
+        self.data = np.roll(self.data, sample_count, 0)
+        self.data[:sample_count] = samples
+
+    def render_image(self, width, height):
+        steps = 50
+        max_difference = 64.0
+
+        image = np.zeros((height, width))
+        channels = self.channels
+        signals_by_channel = np.transpose(self.data)  # copy because of multithreading
+        total_signals = signals_by_channel.shape[1]
+        for channel in range(channels):
+            x_start = int(width / channels * channel)
+            x_end = int(width / channels * (channel + 1))
+            for step in range(steps):
+                y_start = int(height / steps * step)
+                y_end = int(height / steps * (step + 1))
+                sig_start = int(total_signals / steps * step)
+                sig_end = int(total_signals / steps * (step + 1))
+
+                relevant_signals = signals_by_channel[channel][sig_start:sig_end]
+
+                maxval = relevant_signals.max()
+                minval = relevant_signals.min()
+                value = min(1, (maxval-minval)/max_difference)
+                #print(f"{maxval}, {minval}, {value}")
+
+                image[y_start:y_end, x_start:x_end] = value
+
+        return image
