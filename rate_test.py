@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-import pyocular.bluetooth
-import pyocular.protocol
+import pyocular
 import time
 import sys
 
