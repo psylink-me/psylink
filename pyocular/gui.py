@@ -1,6 +1,8 @@
+from PIL import Image, ImageTk
+import numpy as np
 import tkinter as tk
 import pyocular.config
-
+from matplotlib import cm
 
 TEXT_NOT_RECORDING = "Not recording"
 TEXT_UNKNOWN = "Unknown"
@@ -14,7 +16,10 @@ class MyocularUIWindow(tk.Frame):
         self.root = root
         self.controller = controller
         self.pack(side=tk.TOP, fill='x')
+        self._stop_drawing_signals = False
+        self.setup_widgets()
 
+    def setup_widgets(self):
         menu = tk.Menu(self.root, relief=tk.FLAT)
         self.root.config(menu=menu)
 
@@ -26,7 +31,6 @@ class MyocularUIWindow(tk.Frame):
         # ===============
         settingFrame = tk.LabelFrame(paneSettingsState, text="Configuration")
         paneSettingsState.add(settingFrame)
-        #settingFrame.pack(side=tk.TOP, fill='both', expand='yes')
 
         ble_address_label = tk.Label(settingFrame, text="BLE Address")
         ble_address_label.pack(side=tk.LEFT)
@@ -41,7 +45,6 @@ class MyocularUIWindow(tk.Frame):
         # ===============
         stateFrame = tk.LabelFrame(paneSettingsState, text="State")
         paneSettingsState.add(stateFrame)
-        #stateFrame.pack(side=tk.TOP, fill='both', expand='yes')
 
         connection_frame = tk.Frame(stateFrame)
         connection_frame.pack(side=tk.TOP, fill='x')
@@ -72,7 +75,6 @@ class MyocularUIWindow(tk.Frame):
 
         self.canvas = tk.Canvas(signalFrame, height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
         self.canvas.pack()
-        self.canvas.config(bg=pyocular.util.viridis_map(0, 0, 256))
 
         # ===============
         # Log
@@ -108,3 +110,20 @@ class MyocularUIWindow(tk.Frame):
         self.logText['state'] = tk.NORMAL
         self.logText.insert(tk.END, text)
         self.logText['state'] = tk.DISABLED
+
+    def draw_signals(self):
+        # https://stackoverflow.com/questions/53308708/
+        signals = self.controller.get_signal_image(CANVAS_WIDTH, CANVAS_HEIGHT)
+        array = signals
+        array = np.uint8(cm.viridis(array)*255)
+        image = Image.fromarray(array, mode='RGBA')
+        imgtk = ImageTk.PhotoImage(image=image)
+        self._asdf69 = imgtk  # avoid garbage collection: https://stackoverflow.com/a/49309510
+        self.canvas.create_image(0, 0, image=imgtk, anchor=tk.NW)
+        if self._stop_drawing_signals:
+            self._stop_drawing_signals = False
+        else:
+            self.after(100, self.draw_signals)
+
+    def stop_drawing_signals(self):
+        self._stop_drawing_signals = True
