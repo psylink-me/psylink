@@ -1,7 +1,7 @@
 *.pyc
 __pycache__
 .idea
-tmp
+extra
 venv
 
 # Calibrator tool
