@@ -40,7 +40,6 @@ class TrainingData:
         """
         self.features[self.current_index] = features
         self.labels.append(label)
-        print(label)
         self.current_index += 1
         if self.current_index >= self.features.shape[0]:
             # Array full, enlarge it

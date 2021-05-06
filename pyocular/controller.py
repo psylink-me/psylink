@@ -101,7 +101,6 @@ class Controller:
                     time.sleep(time_delay)
                     continue
                 next_sample_recording = time.time() + pyocular.config.RECORD_SAMPLES_INTERVAL
-                print(".")
                 window_size = self.ai.training_data.get_window_size()
                 features = self.signal_buffer.data[:window_size]
                 latency = self.BLE.get_latency()
