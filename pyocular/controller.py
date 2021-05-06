@@ -19,6 +19,7 @@ import time
 
 
 AI_WORKER_RECORD_SAMPLES = 'record_samples'
+AI_WORKER_TRAIN = 'choo-choo'
 
 
 class Controller:
@@ -77,7 +78,8 @@ class Controller:
         pass
 
     def start_ai_training(self, event=None):
-        pass
+        self.ai_worker_action = AI_WORKER_TRAIN
+        self.ai_worker_active_event.set()
 
     def on_key_change(self, all_pressed_keys):
         if self.gui:
@@ -95,6 +97,7 @@ class Controller:
         while not terminate.is_set():
             if not active.wait(timeout=0.1):
                 continue
+
             if self.ai_worker_action == AI_WORKER_RECORD_SAMPLES:
                 time_delay = next_sample_recording - time.time()
                 if time_delay > 0:
@@ -107,6 +110,15 @@ class Controller:
                 keys = self.key_capturer.get_pressed_keys(at_time=time.time() - latency)
                 label = self.keys_to_label(keys)
                 self.ai.training_data.append(features, label)
+
+            if self.ai_worker_action == AI_WORKER_TRAIN:
+                print("Train!")
+                self.signal_capture_deactivate()
+                self.ai.build_model()
+                self.ai.compile_training_data()
+                self.ai.train()
+                self.signal_capture_activate()
+                active.clear()
 
     @staticmethod
     def keys_to_label(keys):
