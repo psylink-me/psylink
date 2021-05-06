@@ -26,7 +26,8 @@ class Controller:
         try:
             self.launch_gui()
         finally:
-            self.gui.quit()
+            if self.gui:
+                self.gui.quit()
             self.key_capturer.stop_keyboard_listener()
             self.capture_terminate()
             if self.BLE:
