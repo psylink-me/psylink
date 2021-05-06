@@ -55,26 +55,18 @@ class MyocularUIWindow(tk.Frame):
         stateFrame = tk.LabelFrame(paneSettingsState, text="State")
         paneSettingsState.add(stateFrame)
 
-        connection_frame = tk.Frame(stateFrame)
-        connection_frame.pack(side=tk.TOP, fill='x')
-        connection_label = tk.Label(connection_frame, text="Connection: ")
-        connection_label.pack(side=tk.LEFT)
-        self.connection_value = tk.Label(connection_frame, text=TEXT_UNKNOWN)
-        self.connection_value.pack(side=tk.LEFT)
+        def add_label(parent, label, text):
+            tmpframe = tk.Frame(parent)
+            tmpframe.pack(side=tk.TOP, fill='x')
+            tmplabel1 = tk.Label(tmpframe, text=label)
+            tmplabel1.pack(side=tk.LEFT)
+            tmplabel2 = tk.Label(tmpframe, text=text)
+            tmplabel2.pack(side=tk.LEFT)
+            return tmplabel2
 
-        pressed_keys_frame = tk.Frame(stateFrame)
-        pressed_keys_frame.pack(side=tk.TOP, fill='x')
-        pressed_keys_label = tk.Label(pressed_keys_frame, text="Pressed keys: ")
-        pressed_keys_label.pack(side=tk.LEFT)
-        self.pressed_keys_value = tk.Label(pressed_keys_frame, text="")
-        self.pressed_keys_value.pack(side=tk.LEFT)
-
-        channels_frame = tk.Frame(stateFrame)
-        channels_frame.pack(side=tk.TOP, fill='x')
-        channels_label = tk.Label(channels_frame, text="Channels: ")
-        channels_label.pack(side=tk.LEFT)
-        self.channels_value = tk.Label(channels_frame, text=TEXT_UNKNOWN)
-        self.channels_value.pack(side=tk.LEFT)
+        self.connection_value = add_label(stateFrame, 'Connection: ', TEXT_UNKNOWN)
+        self.pressed_keys_value = add_label(stateFrame, 'Pressed keys: ', "")
+        self.channels_value = add_label(stateFrame, 'Channels: ', TEXT_UNKNOWN)
 
         # ===============
         # Signals
