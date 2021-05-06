@@ -127,11 +127,16 @@ class Controller:
                 self.ai.training_data.append(features, label)
 
             if self.ai_worker_action == AI_WORKER_TRAIN:
-                self.signal_capture_deactivate()
+                signal_capture = self.signal_capture_is_active()
+                if signal_capture:
+                    self.signal_capture_deactivate()
+
                 self.ai.build_model()
                 self.ai.compile_training_data()
                 self.ai.train()
-                self.signal_capture_activate()
+
+                if signal_capture:
+                    self.signal_capture_activate()
                 active.clear()
 
             if self.ai_worker_action == AI_WORKER_PREDICT:
@@ -143,7 +148,7 @@ class Controller:
                 window_size = self.ai.training_data.get_window_size()
                 features = self.signal_buffer.data[:window_size]
                 predicted_label = self.ai.predict(features)
-                keys = self.label_to_keys(label)
+                keys = self.label_to_keys(predicted_label)
                 print(f"Predicted: {keys}")
                 if self.gui:
                     self.gui.set_pressed_keys(keys)
@@ -173,6 +178,9 @@ class Controller:
 
     def signal_capture_deactivate(self):
         self.signal_capture_active_event.clear()
+
+    def signal_capture_is_active(self):
+        return self.signal_capture_active_event.is_set()
 
     def signal_capture_terminate(self):
         self.signal_capture_terminate_event.set()
@@ -210,7 +218,7 @@ class Controller:
         return self.ai.training_data.get_recorded_samples()
 
     def get_number_of_labels(self):
-        return self.ai.training_data.get_used_label_count()
+        return self.ai.training_data.get_label_count()
 
     def get_active_ble_address(self):
         if self.BLE and self.BLE.is_connected():
@@ -223,6 +231,14 @@ class Controller:
         root.geometry("640x480")
         root.wm_title("MyocularUI")
         root.mainloop()
+
+    def save_records(self, event=None):
+        self.ai.save_training_data(self.gui.get_run_name())
+
+    def load_records(self, event=None):
+        self.ai.load_training_data(self.gui.get_run_name())
+        channels = self.ai.training_data.get_channels()
+        self.set_device_config(channels)
 
     def quit(self, event=None):
         self.gui.quit()

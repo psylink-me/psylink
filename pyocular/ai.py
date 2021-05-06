@@ -1,5 +1,6 @@
 from tensorflow import keras
 from tensorflow.keras.models import load_model
+import json
 import logging
 import math
 import numpy as np
@@ -22,11 +23,32 @@ class TrainingData:
         self.current_index = 0
 
     def compile(self):
+        """
+        Returns 2 numpy arrays of samples and labels.
+
+        samples.shape == (recording_count, window_size, channel_count)
+        labels.shape == (recording_count, label_count)
+        """
         sample_count = self.current_index
         sample_array = self.features[:sample_count]
         label_count = self.get_label_count()
         label_array = np.full([sample_count, label_count], False, dtype=bool)
+        #TODO: set Trues in label_array
         return sample_array, label_array
+
+    def load(self, samples, labels):
+        """
+        Takes a numpy array for samples and a list of strings for labels
+
+        samples.shape == (recording_count, window_size, channel_count)
+        len(labels) == recording_count
+        """
+        assert len(samples) == len(labels)
+        self.features = samples
+        self.labels = labels
+        self.all_labels = list(sorted(set(labels)))
+        self.current_index = len(labels)
+        self.channels = samples.shape[2]
 
     def shuffle_split(self):
         """
@@ -40,21 +62,14 @@ class TrainingData:
         samples_train, samples_validate = np.split(samples, [split])
         return labels_train, labels_validate, samples_train, samples_validate
 
-    def get_all_labels(self):
-        # Returns all labels, padded to length MAX_LABELS
-        return self.all_labels + [None] * (pyocular.config.MAX_LABELS - len(self.all_labels))
-
     def get_input_shape(self):
         return (self.get_window_size(), self.channels)
 
     def get_label_count(self):
-        # To support re-training a model with more labels than it was originally
-        # trained, we add up to MAX_LABELS unused labels which will get used when
-        # the user adds new samples with new labels.
-        return max(len(self.all_labels), pyocular.config.MAX_LABELS)
-
-    def get_used_label_count(self):
         return len(self.all_labels)
+
+    def get_all_labels(self):
+        return self.all_labels
 
     def get_window_size(self):
         return pyocular.config.FEATURE_WINDOW_SIZE
@@ -67,6 +82,9 @@ class TrainingData:
             self.channels = channels
             logging.warning("Number of channels has changed. Resetting training data.")
             self.clear()
+
+    def get_channels(self):
+        return self.channels
 
     def append(self, features, label):
         """
@@ -86,7 +104,7 @@ class TrainingData:
 class AI:
     def __init__(self):
         self.training_data = TrainingData()
-        self.labels = None
+        self.saved_labels = None
         self.model = None
         self.reset_seed()
 
@@ -104,13 +122,13 @@ class AI:
             kernel_size=5,
             input_shape=input_shape,
         ))
-        model.add(tf.keras.layers.SeparableConv1D(
-            filters=128,
-            kernel_size=3,
-            #activation='relu',
-        ))
+        #model.add(tf.keras.layers.SeparableConv1D(
+        #    filters=128,
+        #    kernel_size=3,
+        #    #activation='relu',
+        #))
         model.add(tf.keras.layers.Flatten())
-        for _ in range(3):
+        for _ in range(2):
             model.add(tf.keras.layers.Dense(
                 units=128,
                 activation='relu',
@@ -132,6 +150,10 @@ class AI:
         self.saved_labels = self.training_data.get_all_labels()
         self.labels_train, self.labels_validate, self.samples_train, self.samples_validate = \
                 self.training_data.shuffle_split()
+        print(f"self.labels_train.shape: {self.labels_train.shape}")
+        print(f"self.labels_validate.shape: {self.labels_validate.shape}")
+        print(f"self.samples_train.shape: {self.samples_train.shape}")
+        print(f"self.samples_validate.shape: {self.samples_validate.shape}")
 
     def train(self, epochs=pyocular.config.DEFAULT_TRAINING_EPOCHS):
         logging.info("Starting to train")
@@ -148,8 +170,38 @@ class AI:
         prediction = self.model.predict(samples)
         label_id = np.argmax(prediction)
         label = self.saved_labels[label_id]
-        print(f"label_id: {label_id}, prediction: {prediction}")
+        print(f"label_id: {label_id}, label: {label}, prediction: {prediction}, labels: {self.saved_labels}")
         return label
+
+    @staticmethod
+    def _run_name_to_signals_file_name(run_name):
+        return f'{run_name}_signals.npy'
+
+    @staticmethod
+    def _run_name_to_labels_file_name(run_name):
+        return f'{run_name}_labels.json'
+
+    def save_training_data(self, run_name):
+        signals_fname = self._run_name_to_signals_file_name(run_name)
+        labels_fname = self._run_name_to_labels_file_name(run_name)
+
+        samples, _ = self.training_data.compile()
+        np.save(signals_fname, samples, allow_pickle=False)
+
+        labels = self.training_data.labels
+        with open(labels_fname, 'w') as f:
+            json.dump(labels, f)
+
+    def load_training_data(self, run_name):
+        signals_fname = self._run_name_to_signals_file_name(run_name)
+        labels_fname = self._run_name_to_labels_file_name(run_name)
+
+        samples = np.load(signals_fname, allow_pickle=False)
+        with open(labels_fname, 'r') as f:
+            labels = json.load(f)
+
+        self.training_data.load(samples, labels)
+
 
 def unison_shuffled_copies(a, b):
     # https://stackoverflow.com/a/4602224
