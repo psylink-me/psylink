@@ -18,8 +18,10 @@ import threading
 import time
 
 
-AI_WORKER_RECORD_SAMPLES = 'record_samples'
+AI_WORKER_RECORD_SAMPLES = 'mic-check'
 AI_WORKER_TRAIN = 'choo-choo'
+AI_WORKER_PREDICT = 'rub crystal ball'
+AI_WORKER_PRESS_KEYS = 'press'
 
 
 class Controller:
@@ -39,6 +41,7 @@ class Controller:
         self.ai = pyocular.ai.AI()
         self.signal_buffer = SignalBuffer()
         self.key_capturer = pyocular.keycapturer.KeyCapturer(self.on_key_change)
+        self.show_predicted_keys = False
 
     def run(self):
         self.signal_capture_init()
@@ -68,21 +71,33 @@ class Controller:
             logging.error("Need to connect to device before recording samples")
 
     def stop_current_process(self, event=None):
-        self.ai_worker_action = None
-        self.ai_worker_active_event.clear()
+        self.set_worker_action(None)
 
     def start_ai_dry(self, event=None):
-        pass
+        self.set_worker_action(AI_WORKER_PREDICT)
 
     def start_ai_simulate_keypresses(self, event=None):
-        pass
+        self.set_worker_action(AI_WORKER_PRESS_KEYS)
 
     def start_ai_training(self, event=None):
-        self.ai_worker_action = AI_WORKER_TRAIN
-        self.ai_worker_active_event.set()
+        self.set_worker_action(AI_WORKER_TRAIN)
+
+    def set_worker_action(self, action, run=True):
+        if action is None and run:
+            self.ai_worker_active_event.clear()
+
+        if self.ai_worker_action != action:
+            if self.ai_worker_action == AI_WORKER_PREDICT:
+                self.show_predicted_keys = False
+            elif action == AI_WORKER_PREDICT:
+                self.show_predicted_keys = True
+
+            self.ai_worker_action = action
+            if run and action:
+                self.ai_worker_active_event.set()
 
     def on_key_change(self, all_pressed_keys):
-        if self.gui:
+        if self.gui and not self.show_predicted_keys:
             self.gui.set_pressed_keys(all_pressed_keys)
 
     def ai_worker_thread_init(self):
@@ -93,17 +108,17 @@ class Controller:
         self.ai_worker_thread.start()
 
     def ai_worker_loop(self, active, terminate):
-        next_sample_recording = 0
+        next_action = 0
         while not terminate.is_set():
             if not active.wait(timeout=0.1):
                 continue
 
             if self.ai_worker_action == AI_WORKER_RECORD_SAMPLES:
-                time_delay = next_sample_recording - time.time()
+                time_delay = next_action - time.time()
                 if time_delay > 0:
                     time.sleep(time_delay)
                     continue
-                next_sample_recording = time.time() + pyocular.config.RECORD_SAMPLES_INTERVAL
+                next_action = time.time() + pyocular.config.RECORD_SAMPLES_INTERVAL
                 window_size = self.ai.training_data.get_window_size()
                 features = self.signal_buffer.data[:window_size]
                 latency = self.BLE.get_latency()
@@ -112,7 +127,6 @@ class Controller:
                 self.ai.training_data.append(features, label)
 
             if self.ai_worker_action == AI_WORKER_TRAIN:
-                print("Train!")
                 self.signal_capture_deactivate()
                 self.ai.build_model()
                 self.ai.compile_training_data()
@@ -120,9 +134,27 @@ class Controller:
                 self.signal_capture_activate()
                 active.clear()
 
+            if self.ai_worker_action == AI_WORKER_PREDICT:
+                time_delay = next_action - time.time()
+                if time_delay > 0:
+                    time.sleep(time_delay)
+                    continue
+                next_action = time.time() + pyocular.config.PREDICT_INTERVAL
+                window_size = self.ai.training_data.get_window_size()
+                features = self.signal_buffer.data[:window_size]
+                predicted_label = self.ai.predict(features)
+                keys = self.label_to_keys(label)
+                print(f"Predicted: {keys}")
+                if self.gui:
+                    self.gui.set_pressed_keys(keys)
+
     @staticmethod
     def keys_to_label(keys):
         return pyocular.config.LABEL_SEPARATOR.join(keys)
+
+    @staticmethod
+    def label_to_keys(label):
+        return label.split(pyocular.config.LABEL_SEPARATOR)
 
     def ai_worker_terminate(self):
         self.ai_worker_terminate_event.set()
@@ -176,6 +208,9 @@ class Controller:
 
     def get_recorded_samples(self):
         return self.ai.training_data.get_recorded_samples()
+
+    def get_number_of_labels(self):
+        return self.ai.training_data.get_used_label_count()
 
     def get_active_ble_address(self):
         if self.BLE and self.BLE.is_connected():

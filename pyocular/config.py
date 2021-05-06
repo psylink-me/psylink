@@ -13,5 +13,5 @@ FEATURE_WINDOW_SIZE = int(SAMPLE_RATE / 2)  # Enough samples to fit half a secon
 LABEL_SEPARATOR = ','
 BATCH_SIZE = 64
 TRAIN_SPLIT = 0.8
-MAX_LABELS = 256
 RECORD_SAMPLES_INTERVAL = 0.05  # seconds
+PREDICT_INTERVAL = 0.05  # seconds

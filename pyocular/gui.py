@@ -72,6 +72,7 @@ class MyocularUIWindow(tk.Frame):
         self.pressed_keys_value = add_label(stateFrame, 'Pressed keys: ', "")
         self.channels_value = add_label(stateFrame, 'Channels: ', TEXT_UNKNOWN)
         self.recorded_samples_value = add_label(stateFrame, 'Recorded samples: ', '0')
+        self.label_count_value = add_label(stateFrame, 'Number of recorded key combinations: ', '0')
 
         # ===============
         # Signals
@@ -184,6 +185,7 @@ class MyocularUIWindow(tk.Frame):
         if connection is None:
             connection = TEXT_NOT_CONNECTED
         self.connection_value.config(text=connection)
+        self.label_count_value.config(text=self.controller.get_number_of_labels())
         self.after(1000, self.refresh_values)
 
     def draw_signals(self):

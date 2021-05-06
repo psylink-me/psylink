@@ -40,6 +40,10 @@ class TrainingData:
         samples_train, samples_validate = np.split(samples, [split])
         return labels_train, labels_validate, samples_train, samples_validate
 
+    def get_all_labels(self):
+        # Returns all labels, padded to length MAX_LABELS
+        return self.all_labels + [None] * (pyocular.config.MAX_LABELS - len(self.all_labels))
+
     def get_input_shape(self):
         return (self.get_window_size(), self.channels)
 
@@ -48,6 +52,9 @@ class TrainingData:
         # trained, we add up to MAX_LABELS unused labels which will get used when
         # the user adds new samples with new labels.
         return max(len(self.all_labels), pyocular.config.MAX_LABELS)
+
+    def get_used_label_count(self):
+        return len(self.all_labels)
 
     def get_window_size(self):
         return pyocular.config.FEATURE_WINDOW_SIZE
@@ -79,6 +86,7 @@ class TrainingData:
 class AI:
     def __init__(self):
         self.training_data = TrainingData()
+        self.labels = None
         self.model = None
         self.reset_seed()
 
@@ -121,6 +129,7 @@ class AI:
 
     def compile_training_data(self):
         logging.info("Compiling training data")
+        self.saved_labels = self.training_data.get_all_labels()
         self.labels_train, self.labels_validate, self.samples_train, self.samples_validate = \
                 self.training_data.shuffle_split()
 
@@ -134,6 +143,13 @@ class AI:
             validation_data=(self.samples_validate, self.labels_validate),
         )
 
+    def predict(self, samples):
+        samples = samples.reshape((1, samples.shape[0], samples.shape[1]))
+        prediction = self.model.predict(samples)
+        label_id = np.argmax(prediction)
+        label = self.saved_labels[label_id]
+        print(f"label_id: {label_id}, prediction: {prediction}")
+        return label
 
 def unison_shuffled_copies(a, b):
     # https://stackoverflow.com/a/4602224
