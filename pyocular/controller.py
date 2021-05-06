@@ -17,13 +17,16 @@ class Controller:
         self.channels = None
         self.signals = None
         self.signal_buffer = SignalBuffer()
+        self.key_capturer = pyocular.keycapturer.KeyCapturer()
 
     def run(self):
         self.capture_init()
+        self.key_capturer.start_keyboard_listener()
         try:
             self.launch_gui()
         finally:
             self.gui.quit()
+            self.key_capturer.stop_keyboard_listener()
             self.capture_terminate()
             if self.BLE:
                 self.disconnectBLE()
