@@ -5,6 +5,7 @@ import pyocular.config
 from matplotlib import cm
 
 TEXT_UNKNOWN = "Unknown"
+TEXT_NOT_CONNECTED = 'Not connected'
 CANVAS_HEIGHT = 200
 CANVAS_WIDTH = 630
 
@@ -67,9 +68,10 @@ class MyocularUIWindow(tk.Frame):
             tmplabel2.pack(side=tk.LEFT)
             return tmplabel2
 
-        self.connection_value = add_label(stateFrame, 'Connection: ', TEXT_UNKNOWN)
+        self.connection_value = add_label(stateFrame, 'Connection: ', TEXT_NOT_CONNECTED)
         self.pressed_keys_value = add_label(stateFrame, 'Pressed keys: ', "")
         self.channels_value = add_label(stateFrame, 'Channels: ', TEXT_UNKNOWN)
+        self.recorded_samples_value = add_label(stateFrame, 'Recorded samples: ', '0')
 
         # ===============
         # Signals
@@ -134,6 +136,8 @@ class MyocularUIWindow(tk.Frame):
         self.bind_all("<Escape>", self.controller.stop_current_process)
         self.bind_all("<F12>", self.controller.debug_action)
 
+        self.refresh_values()
+
     def quit(self):
         if not self.has_quit:
             self.root.quit()
@@ -162,6 +166,9 @@ class MyocularUIWindow(tk.Frame):
     def set_channels(self, channels):
         self.channels_value.config(text=str(channels))
 
+    def set_recorded_samples(self, count):
+        self.recorded_samples_value.config(text=str(count))
+
     def get_BLE_address(self):
         return self.ble_address_stringvar.get()
 
@@ -170,6 +177,14 @@ class MyocularUIWindow(tk.Frame):
 
     def get_epochs(self):
         return self.epochs_stringvar.get()
+
+    def refresh_values(self):
+        self.set_recorded_samples(self.controller.get_recorded_samples())
+        connection = self.controller.get_active_ble_address()
+        if connection is None:
+            connection = TEXT_NOT_CONNECTED
+        self.connection_value.config(text=connection)
+        self.after(1000, self.refresh_values)
 
     def draw_signals(self):
         if self._stop_drawing_signals:

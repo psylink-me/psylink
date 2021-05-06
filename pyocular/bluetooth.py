@@ -1,7 +1,11 @@
-from pyocular.config import DEFAULT_BLE_ADDRESS
+from pyocular.config import DEFAULT_BLE_ADDRESS, ASSUMED_BLE_LATENCY
 from threading import Thread, Event
 from queue import Queue
 import logging
+
+
+# TODO: drop duplicate packets
+# TODO: indicate packet loss
 
 
 class BLECharacteristics:
@@ -19,7 +23,6 @@ class BLEBackend:
         self.client = None
         self.thread = None
         self.is_initialized = False
-        self.is_connected = False
         self.init()
 
     def reset(self):
@@ -29,6 +32,13 @@ class BLEBackend:
 
     def init(self):
         pass
+
+    def get_latency(self):
+        # Would be awesome if I can actually get the latency somehow
+        return ASSUMED_BLE_LATENCY
+
+    def is_connected(self):
+        return bool(self.thread and self.thread.is_alive())
 
     def connect(self):
         raise NotImplementedError("Please Override this in subclass")

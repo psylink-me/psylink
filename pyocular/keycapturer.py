@@ -65,16 +65,22 @@ class KeyCapturer:
 
     def on_key_down(self, key, override_time=None):
         # override_time is purely for unit testing
+        key = str(key)
+        if not self.key_is_acceptable(key):
+            return
         if key in self.keys_pressed:
             logging.warning("Key `%s' pressed before it was released" % key)
         else:
-            self.keys_pressed.add(str(key))
+            self.keys_pressed.add(key)
             self._update_history(override_time=override_time)
 
     def on_key_up(self, key, override_time=None):
         # override_time is purely for unit testing
+        key = str(key)
+        if not self.key_is_acceptable(key):
+            return
         try:
-            self.keys_pressed.remove(str(key))
+            self.keys_pressed.remove(key)
         except KeyError:
             logging.warning("Key `%s' released before it was pressed" % key)
         else:
@@ -87,6 +93,10 @@ class KeyCapturer:
         self.key_history.append([t, keys])
         if self.on_change_callback:
             self.on_change_callback(keys)
+
+    @staticmethod
+    def key_is_acceptable(key):
+        return key.startswith("'")
 
     def reset(self):
         self.keys_pressed.clear()
