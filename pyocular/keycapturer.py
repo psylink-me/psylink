@@ -69,7 +69,7 @@ class KeyCapturer:
         if not self.key_is_acceptable(key):
             return
         if key in self.keys_pressed:
-            logging.warning("Key `%s' pressed before it was released" % key)
+            logging.info("Key `%s' pressed before it was released" % key)
         else:
             self.keys_pressed.add(key)
             self._update_history(override_time=override_time)
