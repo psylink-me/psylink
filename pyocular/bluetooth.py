@@ -33,6 +33,9 @@ class BLEBackend:
     def connect(self):
         raise NotImplementedError("Please Override this in subclass")
 
+    def disconnect(self):
+        raise NotImplementedError("Please Override this in subclass")
+
     def read(self, characteristic_uuid):
         raise NotImplementedError("Please Override this in subclass")
 
@@ -101,7 +104,7 @@ class BleakBackend(BLEBackend):
     def read(self, characteristic_uuid):
         import asyncio
         return asyncio.get_event_loop().run_until_complete(
-                client.read_gatt_char(characteristic_uuid))
+                self.client.read_gatt_char(characteristic_uuid))
 
 
 BACKENDS = dict(

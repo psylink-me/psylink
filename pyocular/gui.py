@@ -1,4 +1,4 @@
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk # pylint: disable=no-name-in-module
 import numpy as np
 import tkinter as tk
 import pyocular.config
