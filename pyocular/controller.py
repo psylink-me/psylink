@@ -38,6 +38,21 @@ class Controller:
         # Place any debug action here to be triggered when F1 is pressed
         print("Debug action triggered")
 
+    def start_sampling(self, event=None):
+        pass
+
+    def stop_current_process(self, event=None):
+        pass
+
+    def start_ai_dry(self, event=None):
+        pass
+
+    def start_ai_simulate_keypresses(self, event=None):
+        pass
+
+    def start_ai_training(self, event=None):
+        pass
+
     def on_key_change(self, all_pressed_keys):
         if self.gui:
             self.gui.set_pressed_keys(all_pressed_keys)

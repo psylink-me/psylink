@@ -92,24 +92,47 @@ class MyocularUIWindow(tk.Frame):
         # ===============
         # Menu
         # ===============
-        fileMenu = tk.Menu(menu, tearoff=0, relief=tk.GROOVE)
-        fileMenu.add_command(label="Exit", command=self.controller.quit, accelerator='Ctrl+Q')
-        menu.add_cascade(label="File", menu=fileMenu)
+        tmpMenu = tk.Menu(menu, tearoff=0, relief=tk.GROOVE)
+        tmpMenu.add_command(label="Stop current process",
+                command=self.controller.stop_current_process, accelerator='Esc')
+        tmpMenu.add_command(label="Exit", command=self.controller.quit, accelerator='Ctrl+Q')
+        menu.add_cascade(label="File", menu=tmpMenu)
 
-        viewMenu = tk.Menu(menu, tearoff=0, relief=tk.GROOVE)
-        viewMenu.add_command(label="Clear messages", command=self.log_clear, accelerator='Ctrl+M')
-        menu.add_cascade(label="View", menu=viewMenu)
+        tmpMenu = tk.Menu(menu, tearoff=0, relief=tk.GROOVE)
+        tmpMenu.add_command(label="Clear messages", command=self.log_clear, accelerator='Ctrl+M')
+        menu.add_cascade(label="View", menu=tmpMenu)
 
-        connectMenu = tk.Menu(menu, tearoff=0, relief=tk.GROOVE)
-        connectMenu.add_command(label="BLE Connect", command=self.controller.connectBLE, accelerator='Ctrl+B')
-        connectMenu.add_command(label="BLE Disconnect", command=self.controller.disconnectBLE, accelerator='Ctrl+Shift+B')
-        menu.add_cascade(label="Connect", menu=connectMenu)
+        tmpMenu = tk.Menu(menu, tearoff=0, relief=tk.GROOVE)
+        tmpMenu.add_command(label="Start recording samples",
+                command=self.controller.start_sampling, accelerator='F1')
+        tmpMenu.add_command(label="Stop recording samples",
+                command=self.controller.stop_current_process, accelerator='Esc')
+        tmpMenu.add_separator()
+        tmpMenu.add_command(label="Start training AI",
+                command=self.controller.start_ai_training, accelerator='Ctrl+W')
+        tmpMenu.add_command(label="Activate AI (dry run)",
+                command=self.controller.start_ai_dry, accelerator='Ctrl+A')
+        tmpMenu.add_command(label="Activate AI (simulate key presses)",
+                command=self.controller.start_ai_simulate_keypresses, accelerator='Ctrl+Shift+A')
+        tmpMenu.add_command(label="Deactivate AI",
+                command=self.controller.stop_current_process, accelerator='Esc')
+        menu.add_cascade(label="AI", menu=tmpMenu)
+
+        tmpMenu = tk.Menu(menu, tearoff=0, relief=tk.GROOVE)
+        tmpMenu.add_command(label="BLE Connect", command=self.controller.connectBLE, accelerator='Ctrl+B')
+        tmpMenu.add_command(label="BLE Disconnect", command=self.controller.disconnectBLE, accelerator='Ctrl+Shift+B')
+        menu.add_cascade(label="Connect", menu=tmpMenu)
 
         self.bind_all("<Control-q>", self.controller.quit)
         self.bind_all("<Control-b>", self.controller.connectBLE)
         self.bind_all("<Control-B>", self.controller.disconnectBLE)
         self.bind_all("<Control-m>", self.log_clear)
-        self.bind_all("<F1>", self.controller.debug_action)
+        self.bind_all("<Control-w>", self.controller.start_ai_training)
+        self.bind_all("<Control-a>", self.controller.start_ai_dry)
+        self.bind_all("<Control-A>", self.controller.start_ai_simulate_keypresses)
+        self.bind_all("<F1>", self.controller.start_sampling)
+        self.bind_all("<Escape>", self.controller.stop_current_process)
+        self.bind_all("<F12>", self.controller.debug_action)
 
     def quit(self):
         if not self.has_quit:
