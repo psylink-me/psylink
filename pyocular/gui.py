@@ -127,6 +127,9 @@ class MyocularUIWindow(tk.Frame):
     def set_pressed_keys(self, pressed_keys):
         self.pressed_keys_value.config(text=','.join(pressed_keys))
 
+    def set_channels(self, channels):
+        self.channels_value.config(text=str(channels))
+
     def get_BLE_address(self):
         return self.ble_address_stringvar.get()
 
