@@ -115,6 +115,7 @@ class Controller:
 
     def readBLEconfig(self):
         self.channels = self.BLE_decoder.decode_channel_count(self.BLE.read_channels())
+        self.gui.set_channels(self.channels)
         self.signal_buffer.resize(self.channels, pyocular.config.SIGNAL_BUFFER_SIZE)
 
     def disconnectBLE(self, event=None):
