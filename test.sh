@@ -6,4 +6,4 @@ find pyocular -type f -iname '*.py' \
     -exec python '{}' ';'
 
 echo '=== 2. pylint -E ==='
-pylint -E pyocular
+pylint -E pyocular --generated-members=viridis
