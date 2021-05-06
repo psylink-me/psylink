@@ -29,11 +29,17 @@ class TrainingData:
         samples.shape == (recording_count, window_size, channel_count)
         labels.shape == (recording_count, label_count)
         """
+
         sample_count = self.current_index
         sample_array = self.features[:sample_count]
+
         label_count = self.get_label_count()
         label_array = np.full([sample_count, label_count], False, dtype=bool)
-        #TODO: set Trues in label_array
+
+        for index, label in enumerate(self.labels):
+            label_id = self.all_labels.index(label)
+            label_array[index][label_id] = True
+
         return sample_array, label_array
 
     def load(self, samples, labels):
@@ -111,6 +117,9 @@ class AI:
     def reset_seed(self):
         np.random.seed(pyocular.config.SEED_NUMPY)
         tf.random.set_seed(pyocular.config.SEED_TENSORFLOW)
+
+    def has_model(self):
+        return self.model is not None
 
     def build_model(self):
         input_shape = self.training_data.get_input_shape()
