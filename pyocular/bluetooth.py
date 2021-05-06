@@ -57,7 +57,8 @@ class BLEBackend:
 
     def thread_start(self, disconnect_on_stop=False):
         if self.thread is not None:
-            raise Exception("Error: BLE thread already running")
+            logging.warning("Attempted to start BLE thread while it was already running")
+            return
 
         self.reset()
         self.thread = Thread(
