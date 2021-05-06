@@ -1,3 +1,14 @@
+"""
+The controller glues every other component together and serves as the starting point.
+
+It contains the following threads:
+
+- key_capturer's thread
+- signal_capture_thread
+- ai_worker_thread
+- BLE's thread
+
+"""
 from pyocular.gui import MyocularUIWindow
 import pyocular
 import tkinter as tk
@@ -7,21 +18,30 @@ import threading
 import time
 
 
+AI_WORKER_RECORD_SAMPLES = 'record_samples'
+
+
 class Controller:
     def __init__(self):
         self.BLE = None
-        self.capture_thread = None
-        self.capture_active = threading.Event()
-        self.capture_terminate_event = threading.Event()
+        self.ai_worker_thread = None
+        self.ai_worker_active_event = threading.Event()
+        self.ai_worker_terminate_event = threading.Event()
+        self.ai_worker_action = None
+        self.signal_capture_thread = None
+        self.signal_capture_active_event = threading.Event()
+        self.signal_capture_terminate_event = threading.Event()
         self.BLE_decoder = pyocular.protocol.BLEDecoder(sample_value_offset=0)
         self.channels = None
         self.signals = None
         self.gui = None
+        self.ai = pyocular.ai.AI()
         self.signal_buffer = SignalBuffer()
         self.key_capturer = pyocular.keycapturer.KeyCapturer(self.on_key_change)
 
     def run(self):
-        self.capture_init()
+        self.signal_capture_init()
+        self.ai_worker_thread_init()
         self.key_capturer.start_keyboard_listener()
         try:
             self.launch_gui()
@@ -29,7 +49,8 @@ class Controller:
             if self.gui:
                 self.gui.quit()
             self.key_capturer.stop_keyboard_listener()
-            self.capture_terminate()
+            self.signal_capture_terminate()
+            self.ai_worker_terminate()
             if self.BLE:
                 self.disconnectBLE()
                 self.BLE.thread_stop()
@@ -39,10 +60,15 @@ class Controller:
         print("Debug action triggered")
 
     def start_sampling(self, event=None):
-        pass
+        if self.BLE and self.BLE.is_connected():
+            self.ai_worker_action = AI_WORKER_RECORD_SAMPLES
+            self.ai_worker_active_event.set()
+        else:
+            logging.error("Need to connect to device before recording samples")
 
     def stop_current_process(self, event=None):
-        pass
+        self.ai_worker_action = None
+        self.ai_worker_active_event.clear()
 
     def start_ai_dry(self, event=None):
         pass
@@ -57,35 +83,68 @@ class Controller:
         if self.gui:
             self.gui.set_pressed_keys(all_pressed_keys)
 
-    def capture_init(self):
-        self.capture_thread = threading.Thread(
-            target=self.capture_loop,
-            args=(self.capture_active, self.capture_terminate_event),
+    def ai_worker_thread_init(self):
+        self.ai_worker_thread = threading.Thread(
+            target=self.ai_worker_loop,
+            args=(self.ai_worker_active_event, self.ai_worker_terminate_event),
         )
-        self.capture_thread.start()
+        self.ai_worker_thread.start()
 
-    def capture_activate(self):
-        self.capture_active.set()
-        if self.capture_thread is None:
-            self.capture_init()
+    def ai_worker_loop(self, active, terminate):
+        next_sample_recording = 0
+        while not terminate.is_set():
+            if not active.wait(timeout=0.1):
+                continue
+            if self.ai_worker_action == AI_WORKER_RECORD_SAMPLES:
+                time_delay = next_sample_recording - time.time()
+                if time_delay > 0:
+                    time.sleep(time_delay)
+                    continue
+                next_sample_recording = time.time() + pyocular.config.RECORD_SAMPLES_INTERVAL
+                print(".")
+                window_size = self.ai.training_data.get_window_size()
+                features = self.signal_buffer.data[:window_size]
+                latency = self.BLE.get_latency()
+                keys = self.key_capturer.get_pressed_keys(at_time=time.time() - latency)
+                label = self.keys_to_label(keys)
+                self.ai.training_data.append(features, label)
 
-    def capture_deactivate(self):
-        self.capture_active.clear()
+    @staticmethod
+    def keys_to_label(keys):
+        return pyocular.config.LABEL_SEPARATOR.join(keys)
 
-    def capture_terminate(self):
-        self.capture_terminate_event.set()
+    def ai_worker_terminate(self):
+        self.ai_worker_terminate_event.set()
 
-    def capture_loop(self, capture_active, capture_terminate_event):
+    def signal_capture_init(self):
+        self.signal_capture_thread = threading.Thread(
+            target=self.signal_capture_loop,
+            args=(self.signal_capture_active_event, self.signal_capture_terminate_event),
+        )
+        self.signal_capture_thread.start()
+
+    def signal_capture_activate(self):
+        self.signal_capture_active_event.set()
+        if self.signal_capture_thread is None:
+            self.signal_capture_init()
+
+    def signal_capture_deactivate(self):
+        self.signal_capture_active_event.clear()
+
+    def signal_capture_terminate(self):
+        self.signal_capture_terminate_event.set()
+
+    def signal_capture_loop(self, active, terminate):
         logging.info("Packet capture thread started")
         t_next = time.time() + 1
         samples_per_second = 0
         bytes_per_second = 0
         packets_per_second = 0
-        while not capture_terminate_event.is_set():
-            if not capture_active.wait(timeout=0.01):
+        while not terminate.is_set():
+            if not active.wait(timeout=0.1):
                 continue
             packet = self.BLE.pipe.get()
-            if not capture_active.wait(timeout=0.01):
+            if not active.wait(timeout=0.1):
                 continue
             decoded = self.BLE_decoder.decode_packet(packet)
 
@@ -103,6 +162,14 @@ class Controller:
 
     def get_signal_image(self, width, height):
         return self.signal_buffer.render_image(width, height)
+
+    def get_recorded_samples(self):
+        return self.ai.training_data.get_recorded_samples()
+
+    def get_active_ble_address(self):
+        if self.BLE and self.BLE.is_connected():
+            return self.BLE.address
+        return None
 
     def launch_gui(self):
         root = tk.Tk()
@@ -125,18 +192,23 @@ class Controller:
         self.BLE.connect()
         self.readBLEconfig()
         self.BLE.thread_start()
-        self.capture_activate()
+        self.signal_capture_activate()
         self.gui.start_drawing_signals()
         self.gui.log(f'Connected to {address}.')
 
     def readBLEconfig(self):
-        self.channels = self.BLE_decoder.decode_channel_count(self.BLE.read_channels())
-        self.gui.set_channels(self.channels)
-        self.signal_buffer.resize(self.channels, pyocular.config.SIGNAL_BUFFER_SIZE)
+        channels = self.BLE_decoder.decode_channel_count(self.BLE.read_channels())
+        self.set_device_config(channels)
+
+    def set_device_config(self, channels):
+        self.channels = channels
+        self.ai.training_data.set_channels(channels)
+        self.gui.set_channels(channels)
+        self.signal_buffer.resize(channels, pyocular.config.SIGNAL_BUFFER_SIZE)
 
     def disconnectBLE(self, event=None):
         self.gui.log('Disconnecting from device...')
-        self.capture_deactivate()
+        self.signal_capture_deactivate()
         self.gui.stop_drawing_signals()
         if self.BLE:
             self.BLE.thread_stop()
