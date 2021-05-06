@@ -4,7 +4,6 @@ import tkinter as tk
 import pyocular.config
 from matplotlib import cm
 
-TEXT_NOT_RECORDING = "Not recording"
 TEXT_UNKNOWN = "Unknown"
 CANVAS_HEIGHT = 200
 CANVAS_WIDTH = 630
@@ -54,12 +53,12 @@ class MyocularUIWindow(tk.Frame):
         self.connection_value = tk.Label(connection_frame, text=TEXT_UNKNOWN)
         self.connection_value.pack(side=tk.LEFT)
 
-        recording_frame = tk.Frame(stateFrame)
-        recording_frame.pack(side=tk.TOP, fill='x')
-        recording_label = tk.Label(recording_frame, text="Pressed keys: ")
-        recording_label.pack(side=tk.LEFT)
-        self.recording_value = tk.Label(recording_frame, text=TEXT_NOT_RECORDING)
-        self.recording_value.pack(side=tk.LEFT)
+        pressed_keys_frame = tk.Frame(stateFrame)
+        pressed_keys_frame.pack(side=tk.TOP, fill='x')
+        pressed_keys_label = tk.Label(pressed_keys_frame, text="Pressed keys: ")
+        pressed_keys_label.pack(side=tk.LEFT)
+        self.pressed_keys_value = tk.Label(pressed_keys_frame, text="")
+        self.pressed_keys_value.pack(side=tk.LEFT)
 
         channels_frame = tk.Frame(stateFrame)
         channels_frame.pack(side=tk.TOP, fill='x')
@@ -120,6 +119,9 @@ class MyocularUIWindow(tk.Frame):
         self.logText.insert(tk.END, text)
         self.logText['state'] = tk.DISABLED
         self.update()
+
+    def set_pressed_keys(self, pressed_keys):
+        self.pressed_keys_value.config(text=','.join(pressed_keys))
 
     def draw_signals(self):
         if self._stop_drawing_signals:

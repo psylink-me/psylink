@@ -44,10 +44,11 @@ from pynput import keyboard
 MAX_HISTORY_SIZE = 32
 
 class KeyCapturer:
-    def __init__(self):
+    def __init__(self, on_change_callback=None):
         self.key_history = deque(maxlen=MAX_HISTORY_SIZE)
         self.key_listener = None
         self.keys_pressed = set()
+        self.on_change_callback = on_change_callback
 
     def get_pressed_keys(self, at_time=None):
         if not self.key_history:
@@ -82,7 +83,10 @@ class KeyCapturer:
     def _update_history(self, override_time):
         # override_time is purely for unit testing
         t = override_time if override_time else time.time()
-        self.key_history.append([t, list(sorted(self.keys_pressed))])
+        keys = list(sorted(self.keys_pressed))
+        self.key_history.append([t, keys])
+        if self.on_change_callback:
+            self.on_change_callback(keys)
 
     def reset(self):
         self.keys_pressed.clear()

@@ -16,8 +16,9 @@ class Controller:
         self.BLE_decoder = pyocular.protocol.BLEDecoder(sample_value_offset=0)
         self.channels = None
         self.signals = None
+        self.gui = None
         self.signal_buffer = SignalBuffer()
-        self.key_capturer = pyocular.keycapturer.KeyCapturer()
+        self.key_capturer = pyocular.keycapturer.KeyCapturer(self.on_key_change)
 
     def run(self):
         self.capture_init()
@@ -31,6 +32,10 @@ class Controller:
             if self.BLE:
                 self.disconnectBLE()
                 self.BLE.thread_stop()
+
+    def on_key_change(self, all_pressed_keys):
+        if self.gui:
+            self.gui.set_pressed_keys(all_pressed_keys)
 
     def capture_init(self):
         self.capture_thread = threading.Thread(
