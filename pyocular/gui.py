@@ -32,13 +32,22 @@ class MyocularUIWindow(tk.Frame):
         settingFrame = tk.LabelFrame(paneSettingsState, text="Configuration")
         paneSettingsState.add(settingFrame)
 
-        ble_address_label = tk.Label(settingFrame, text="BLE Address")
-        ble_address_label.pack(side=tk.LEFT)
+        def add_entry(parent, label, text):
+            tmpframe = tk.Frame(parent)
+            tmpframe.pack(side=tk.TOP, fill='x')
+            tmplabel = tk.Label(tmpframe, text=label)
+            tmplabel.pack(side=tk.LEFT)
+            tmpstringvar = tk.StringVar()
+            tmpstringvar.set(text)
+            tmpentry = tk.Entry(tmpframe, textvariable=tmpstringvar)
+            tmpentry.pack(side=tk.RIGHT)
+            return tmpstringvar
 
-        self.ble_address_stringvar = tk.StringVar()
-        self.ble_address_stringvar.set(pyocular.config.DEFAULT_BLE_ADDRESS)
-        ble_address_entry = tk.Entry(settingFrame, textvariable=self.ble_address_stringvar)
-        ble_address_entry.pack(side=tk.RIGHT)
+        self.run_name_stringvar = add_entry(settingFrame,
+                "Run name", pyocular.config.DEFAULT_RUN_NAME)
+
+        self.ble_address_stringvar = add_entry(settingFrame,
+                "BLE Address", pyocular.config.DEFAULT_BLE_ADDRESS)
 
         # ===============
         # State
@@ -85,7 +94,6 @@ class MyocularUIWindow(tk.Frame):
         self.logText.pack()
         self.log("Welcome!")
 
-
         # ===============
         # Menu
         # ===============
@@ -102,6 +110,7 @@ class MyocularUIWindow(tk.Frame):
         self.bind_all("<Control-q>", self.controller.quit)
         self.bind_all("<Control-b>", self.controller.connectBLE)
         self.bind_all("<Control-B>", self.controller.disconnectBLE)
+        self.bind_all("<F1>", self.controller.debug_action)
 
     def quit(self):
         if not self.has_quit:
@@ -122,6 +131,12 @@ class MyocularUIWindow(tk.Frame):
 
     def set_pressed_keys(self, pressed_keys):
         self.pressed_keys_value.config(text=','.join(pressed_keys))
+
+    def get_BLE_address(self):
+        return self.ble_address_stringvar.get()
+
+    def get_run_name(self):
+        return self.run_name_stringvar.get()
 
     def draw_signals(self):
         if self._stop_drawing_signals:
