@@ -65,19 +65,29 @@ class Controller:
 
     def start_sampling(self, event=None):
         if self.BLE and self.BLE.is_connected():
-            self.ai_worker_action = AI_WORKER_RECORD_SAMPLES
-            self.ai_worker_active_event.set()
+            self.set_worker_action(AI_WORKER_RECORD_SAMPLES)
         else:
             logging.error("Need to connect to device before recording samples")
 
     def stop_current_process(self, event=None):
         self.set_worker_action(None)
 
+    def _start_ai_key_prediction_common(self):
+        if self.BLE and self.BLE.is_connected():
+            if self.ai.has_model():
+                return True
+            else:
+                logging.error("Need to train a model before starting key prediction")
+        else:
+            logging.error("Need to connect to device before starting key prediction")
+
     def start_ai_dry(self, event=None):
-        self.set_worker_action(AI_WORKER_PREDICT)
+        if self._start_ai_key_prediction_common():
+            self.set_worker_action(AI_WORKER_PREDICT)
 
     def start_ai_simulate_keypresses(self, event=None):
-        self.set_worker_action(AI_WORKER_PRESS_KEYS)
+        if self._start_ai_key_prediction_common():
+            self.set_worker_action(AI_WORKER_PRESS_KEYS)
 
     def start_ai_training(self, event=None):
         self.set_worker_action(AI_WORKER_TRAIN)
