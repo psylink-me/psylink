@@ -98,6 +98,10 @@ class MyocularUIWindow(tk.Frame):
         tmpMenu = tk.Menu(menu, tearoff=0, relief=tk.GROOVE)
         tmpMenu.add_command(label="Stop current process",
                 command=self.controller.stop_current_process, accelerator='Esc')
+        tmpMenu.add_command(label="Save recorded samples",
+                command=self.controller.save_records, accelerator='Ctrl+S')
+        tmpMenu.add_command(label="Load recorded samples",
+                command=self.controller.load_records, accelerator='Ctrl+L')
         tmpMenu.add_command(label="Exit", command=self.controller.quit, accelerator='Ctrl+Q')
         menu.add_cascade(label="File", menu=tmpMenu)
 
@@ -127,6 +131,8 @@ class MyocularUIWindow(tk.Frame):
         menu.add_cascade(label="Connect", menu=tmpMenu)
 
         self.bind_all("<Control-q>", self.controller.quit)
+        self.bind_all("<Control-s>", self.controller.save_records)
+        self.bind_all("<Control-l>", self.controller.load_records)
         self.bind_all("<Control-b>", self.controller.connectBLE)
         self.bind_all("<Control-B>", self.controller.disconnectBLE)
         self.bind_all("<Control-m>", self.log_clear)
