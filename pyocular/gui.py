@@ -94,8 +94,11 @@ class MyocularUIWindow(tk.Frame):
         # ===============
         fileMenu = tk.Menu(menu, tearoff=0, relief=tk.GROOVE)
         fileMenu.add_command(label="Exit", command=self.controller.quit, accelerator='Ctrl+Q')
-
         menu.add_cascade(label="File", menu=fileMenu)
+
+        viewMenu = tk.Menu(menu, tearoff=0, relief=tk.GROOVE)
+        viewMenu.add_command(label="Clear messages", command=self.log_clear, accelerator='Ctrl+M')
+        menu.add_cascade(label="View", menu=viewMenu)
 
         connectMenu = tk.Menu(menu, tearoff=0, relief=tk.GROOVE)
         connectMenu.add_command(label="BLE Connect", command=self.controller.connectBLE, accelerator='Ctrl+B')
@@ -105,6 +108,7 @@ class MyocularUIWindow(tk.Frame):
         self.bind_all("<Control-q>", self.controller.quit)
         self.bind_all("<Control-b>", self.controller.connectBLE)
         self.bind_all("<Control-B>", self.controller.disconnectBLE)
+        self.bind_all("<Control-m>", self.log_clear)
         self.bind_all("<F1>", self.controller.debug_action)
 
     def quit(self):
@@ -123,6 +127,11 @@ class MyocularUIWindow(tk.Frame):
         self.logText.insert(tk.END, text)
         self.logText['state'] = tk.DISABLED
         self.update()
+
+    def log_clear(self, event=None):
+        self.logText['state'] = tk.NORMAL
+        self.logText.delete('1.0', tk.END)
+        self.logText['state'] = tk.DISABLED
 
     def set_pressed_keys(self, pressed_keys):
         self.pressed_keys_value.config(text=','.join(pressed_keys))
