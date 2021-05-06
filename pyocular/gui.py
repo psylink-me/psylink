@@ -47,7 +47,10 @@ class MyocularUIWindow(tk.Frame):
                 "Run name", pyocular.config.DEFAULT_RUN_NAME)
 
         self.ble_address_stringvar = add_entry(settingFrame,
-                "BLE Address", pyocular.config.DEFAULT_BLE_ADDRESS)
+                "BLE address", pyocular.config.DEFAULT_BLE_ADDRESS)
+
+        self.epochs_stringvar = add_entry(settingFrame,
+                "Training epochs", pyocular.config.DEFAULT_TRAINING_EPOCHS)
 
         # ===============
         # State
@@ -129,6 +132,9 @@ class MyocularUIWindow(tk.Frame):
 
     def get_run_name(self):
         return self.run_name_stringvar.get()
+
+    def get_epochs(self):
+        return self.epochs_stringvar.get()
 
     def draw_signals(self):
         if self._stop_drawing_signals:
