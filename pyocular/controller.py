@@ -33,6 +33,10 @@ class Controller:
                 self.disconnectBLE()
                 self.BLE.thread_stop()
 
+    def debug_action(self, event=None):
+        # Place any debug action here to be triggered when F1 is pressed
+        print("Debug action triggered")
+
     def on_key_change(self, all_pressed_keys):
         if self.gui:
             self.gui.set_pressed_keys(all_pressed_keys)
@@ -96,7 +100,7 @@ class Controller:
 
     def connectBLE(self, event=None):
         if not self.BLE:
-            address = self.gui.ble_address_stringvar.get()
+            address = self.gui.get_BLE_address()
             BackendClass = list(pyocular.bluetooth.BACKENDS.values())[0]
             self.BLE = BackendClass(address)
         else:
