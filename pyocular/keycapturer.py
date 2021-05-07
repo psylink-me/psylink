@@ -15,24 +15,24 @@ Test cases:
 >>> kc = KeyCapturer()
 >>> kc.get_pressed_keys()
 []
->>> kc.on_key_down("'a'", override_time=1620259925.2486)
+>>> kc.on_key_down('a', override_time=1620259925.2486)
 >>> kc.get_pressed_keys()
-["'a'"]
->>> kc.on_key_down("'s'", override_time=1620259955.671136)
->>> kc.on_key_down("'d'", override_time=1620259982.468571)
+['a']
+>>> kc.on_key_down('s', override_time=1620259955.671136)
+>>> kc.on_key_down('d', override_time=1620259982.468571)
 >>> kc.get_pressed_keys()
-["'a'", "'d'", "'s'"]
+['a', 'd', 's']
 >>> kc.get_pressed_keys(at_time=1620259900)
 []
 >>> kc.get_pressed_keys(at_time=1620259950)
-["'a'"]
+['a']
 >>> kc.get_pressed_keys(at_time=1620259970)
-["'a'", "'s'"]
+['a', 's']
 >>> kc.get_pressed_keys(at_time=1620259985)
-["'a'", "'d'", "'s'"]
->>> kc.on_key_up("'s'", override_time=1620260013.6233)
+['a', 'd', 's']
+>>> kc.on_key_up('s', override_time=1620260013.6233)
 >>> kc.get_pressed_keys()
-["'a'", "'d'"]
+['a', 'd']
 """
 
 from collections import deque
