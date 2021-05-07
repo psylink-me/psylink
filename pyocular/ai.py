@@ -7,6 +7,8 @@ import pyocular
 import tensorflow as tf
 import os.path
 
+FALLBACK_LABEL = ''
+
 class TrainingData:
     def __init__(self):
         self.channels = pyocular.config.DEFAULT_CHANNELS
@@ -173,7 +175,11 @@ class AI:
         samples = samples.reshape((1, samples.shape[0], samples.shape[1]))
         prediction = self.model.predict(samples)
         label_id = np.argmax(prediction)
-        label = self.training_data.label_order[label_id]
+        try:
+            label = self.training_data.label_order[label_id]
+        except IndexError:
+            logging.error(f"Label #{label_id} out of range for labels: {self.training_data.label_order}")
+            return FALLBACK_LABEL
         return label
 
     @staticmethod
