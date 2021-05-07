@@ -1,11 +1,11 @@
 from tensorflow import keras
-from tensorflow.keras.models import load_model
 import json
 import logging
 import math
 import numpy as np
 import pyocular
 import tensorflow as tf
+import os.path
 
 class TrainingData:
     def __init__(self):
@@ -19,7 +19,7 @@ class TrainingData:
             self.channels,
         ), dtype=np.uint8)
         self.labels = []
-        self.all_labels = []
+        self.label_order = []
         self.current_index = 0
 
     def compile(self):
@@ -37,14 +37,14 @@ class TrainingData:
         label_array = np.full([sample_count, label_count], False, dtype=bool)
 
         for index, label in enumerate(self.labels):
-            label_id = self.all_labels.index(label)
+            label_id = self.label_order.index(label)
             label_array[index][label_id] = True
 
         return sample_array, label_array
 
-    def load(self, samples, labels):
+    def load(self, samples, labels, label_order):
         """
-        Takes a numpy array for samples and a list of strings for labels
+        Takes a numpy array for samples and a list of strings for labels & label_order
 
         samples.shape == (recording_count, window_size, channel_count)
         len(labels) == recording_count
@@ -52,7 +52,7 @@ class TrainingData:
         assert len(samples) == len(labels)
         self.features = samples
         self.labels = labels
-        self.all_labels = list(sorted(set(labels)))
+        self.label_order = label_order
         self.current_index = len(labels)
         self.channels = samples.shape[2]
 
@@ -72,10 +72,7 @@ class TrainingData:
         return (self.get_window_size(), self.channels)
 
     def get_label_count(self):
-        return len(self.all_labels)
-
-    def get_all_labels(self):
-        return self.all_labels
+        return len(self.label_order)
 
     def get_window_size(self):
         return pyocular.config.FEATURE_WINDOW_SIZE
@@ -99,8 +96,8 @@ class TrainingData:
         """
         self.features[self.current_index] = features
         self.labels.append(label)
-        if label not in self.all_labels:
-            self.all_labels.append(label)
+        if label not in self.label_order:
+            self.label_order.append(label)
         self.current_index += 1
         if self.current_index >= self.features.shape[0]:
             # Array full, enlarge it
@@ -110,7 +107,7 @@ class TrainingData:
 class AI:
     def __init__(self):
         self.training_data = TrainingData()
-        self.saved_labels = None
+        self.label_order = None
         self.model = None
         self.reset_seed()
 
@@ -156,7 +153,7 @@ class AI:
 
     def compile_training_data(self):
         logging.info("Compiling training data")
-        self.saved_labels = self.training_data.get_all_labels()
+        self.label_order = self.training_data.label_order
         self.labels_train, self.labels_validate, self.samples_train, self.samples_validate = \
                 self.training_data.shuffle_split()
         print(f"self.labels_train.shape: {self.labels_train.shape}")
@@ -178,8 +175,8 @@ class AI:
         samples = samples.reshape((1, samples.shape[0], samples.shape[1]))
         prediction = self.model.predict(samples)
         label_id = np.argmax(prediction)
-        label = self.saved_labels[label_id]
-        print(f"label_id: {label_id}, label: {label}, prediction: {prediction}, labels: {self.saved_labels}")
+        label = self.label_order[label_id]
+        print(f"label_id: {label_id}, label: {label}, prediction: {prediction}, labels: {self.label_order}")
         return label
 
     @staticmethod
@@ -189,6 +186,14 @@ class AI:
     @staticmethod
     def _run_name_to_labels_file_name(run_name):
         return f'{run_name}_labels.json'
+
+    @staticmethod
+    def _run_name_to_model_path(run_name):
+        return f'{run_name}_model'
+
+    @staticmethod
+    def _run_name_to_label_order_file_name(run_name):
+        return f'{run_name}_label_order.json'
 
     def save_training_data(self, run_name):
         signals_fname = self._run_name_to_signals_file_name(run_name)
@@ -200,6 +205,7 @@ class AI:
         labels = self.training_data.labels
         with open(labels_fname, 'w') as f:
             json.dump(labels, f)
+        self.save_label_order(run_name)
 
     def load_training_data(self, run_name):
         signals_fname = self._run_name_to_signals_file_name(run_name)
@@ -208,8 +214,36 @@ class AI:
         samples = np.load(signals_fname, allow_pickle=False)
         with open(labels_fname, 'r') as f:
             labels = json.load(f)
+        self.load_label_order(run_name)
 
-        self.training_data.load(samples, labels)
+        self.training_data.load(samples, labels, self.label_order)
+
+    def save_label_order(self, run_name):
+        fname = self._run_name_to_label_order_file_name(run_name)
+        with open(fname, 'w') as f:
+            json.dump(self.label_order, f)
+
+    def load_label_order(self, run_name):
+        fname = self._run_name_to_label_order_file_name(run_name)
+        with open(fname, 'r') as f:
+            self.label_order = json.load(f)
+
+    def save_model(self, run_name):
+        if not self.model:
+            logging.error("No model to save")
+            return
+        model_path = self._run_name_to_model_path(run_name)
+        self.model.save(model_path)
+        self.save_label_order(run_name)
+
+    def load_model(self, run_name):
+        model_path = self._run_name_to_model_path(run_name)
+        self.model = keras.models.load_model(model_path)
+        self.load_label_order(run_name)
+
+        first_layer = self.model.layers[0]
+        channels = first_layer.input_shape[2]
+        self.training_data.set_channels(channels)
 
 
 def unison_shuffled_copies(a, b):
