@@ -41,6 +41,7 @@ class Controller:
         self.ai = pyocular.ai.AI()
         self.signal_buffer = SignalBuffer()
         self.key_capturer = pyocular.keycapturer.KeyCapturer(self.on_key_change)
+        self.key_presser = pyocular.keycapturer.KeyPresser()
         self.show_predicted_keys = False
 
     def run(self):
@@ -149,7 +150,7 @@ class Controller:
                     self.signal_capture_activate()
                 active.clear()
 
-            if self.ai_worker_action == AI_WORKER_PREDICT:
+            if self.ai_worker_action in (AI_WORKER_PREDICT, AI_WORKER_PRESS_KEYS):
                 time_delay = next_action - time.time()
                 if time_delay > 0:
                     time.sleep(time_delay)
@@ -159,7 +160,10 @@ class Controller:
                 features = self.signal_buffer.data[:window_size]
                 predicted_label = self.ai.predict(features)
                 keys = self.label_to_keys(predicted_label)
-                print(f"Predicted: {keys}")
+
+                if self.ai_worker_action == AI_WORKER_PRESS_KEYS:
+                    self.key_presser.set_pressed_keys(keys)
+
                 if self.gui:
                     self.gui.set_pressed_keys(keys)
 
