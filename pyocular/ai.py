@@ -102,15 +102,16 @@ class TrainingData:
         feature: a 2D numpy array in shape = (self.channels, self.get_window_size())
         label: string
         """
+        if self.current_index >= self.features.shape[0]:
+            # Array full, enlarge it
+            pad = pyocular.config.FEATURE_BUFFER_SIZE
+            self.features = np.pad(self.features, ((0, pad), (0, 0), (0, 0)))
+
         self.features[self.current_index] = features
         self.labels.append(label)
         if label not in self.label_order:
             self.label_order.append(label)
         self.current_index += 1
-        if self.current_index >= self.features.shape[0]:
-            # Array full, enlarge it
-            pad = pyocular.config.FEATURE_BUFFER_SIZE
-            self.features = np.pad(self.features, ((0, pad), (0, 0), (0, 0)))
         self.dirty = True
 
 class AI:
