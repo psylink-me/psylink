@@ -6,6 +6,7 @@ venv
 
 # Calibrator tool
 records.csv
+save_*
 
 # TensorFlow
 model.tf

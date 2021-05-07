@@ -184,19 +184,19 @@ class AI:
 
     @staticmethod
     def _run_name_to_signals_file_name(run_name):
-        return f'{run_name}_signals.npy'
+        return f'save_{run_name}/signals.npy'
 
     @staticmethod
     def _run_name_to_labels_file_name(run_name):
-        return f'{run_name}_labels.json'
+        return f'save_{run_name}/labels.json'
 
     @staticmethod
     def _run_name_to_model_path(run_name):
-        return f'{run_name}_model'
+        return f'save_{run_name}/model'
 
     @staticmethod
     def _run_name_to_label_order_file_name(run_name):
-        return f'{run_name}_label_order.json'
+        return f'save_{run_name}/label_order.json'
 
     def save_training_data(self, run_name):
         signals_fname = self._run_name_to_signals_file_name(run_name)
