@@ -127,6 +127,8 @@ class MyocularUIWindow(tk.Frame):
                 command=self.controller.start_ai_simulate_keypresses, accelerator='Ctrl+Shift+A')
         tmpMenu.add_command(label="Deactivate AI",
                 command=self.controller.stop_current_process, accelerator='Esc')
+        tmpMenu.add_command(label="Reset AI",
+                command=self.controller.reset_ai, accelerator='Ctrl+Shift+R')
         menu.add_cascade(label="AI", menu=tmpMenu)
 
         tmpMenu = tk.Menu(menu, tearoff=0, relief=tk.GROOVE)
@@ -145,6 +147,7 @@ class MyocularUIWindow(tk.Frame):
         self.bind_all("<Control-w>", self.controller.start_ai_training)
         self.bind_all("<Control-a>", self.controller.start_ai_dry)
         self.bind_all("<Control-A>", self.controller.start_ai_simulate_keypresses)
+        self.bind_all("<Control-R>", self.controller.reset_ai)
         self.bind_all("<F1>", self.controller.start_sampling)
         self.bind_all("<Escape>", self.controller.stop_current_process)
         self.bind_all("<F12>", self.controller.debug_action)

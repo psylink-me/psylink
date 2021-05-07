@@ -82,6 +82,9 @@ class Controller:
         else:
             logging.error("Need to connect to device before starting key prediction")
 
+    def reset_ai(self, event=None):
+        self.ai.reset_model()
+
     def start_ai_dry(self, event=None):
         if self._start_ai_key_prediction_common():
             self.set_worker_action(AI_WORKER_PREDICT)
@@ -142,13 +145,23 @@ class Controller:
                 if signal_capture:
                     self.signal_capture_deactivate()
 
-                self.ai.build_model()
-                self.ai.compile_training_data()
-                self.ai.train()
+                if not self.ai.has_model():
+                    self.ai.build_model()
+
+                if self.ai.needs_compiling_of_training_data():
+                    self.ai.compile_training_data()
+
+                epochs = self.gui.get_epochs()
+                try:
+                    epochs = int(epochs)
+                except ValueError:
+                    self.ai.train()
+                else:
+                    self.ai.train(epochs=epochs)
 
                 if signal_capture:
                     self.signal_capture_activate()
-                active.clear()
+                self.set_worker_action(None)
 
             if self.ai_worker_action in (AI_WORKER_PREDICT, AI_WORKER_PRESS_KEYS):
                 time_delay = next_action - time.time()
