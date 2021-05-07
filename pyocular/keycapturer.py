@@ -65,7 +65,8 @@ class KeyCapturer:
 
     def on_key_down(self, key, override_time=None):
         # override_time is purely for unit testing
-        key = self.key_to_str(key)
+        if not isinstance(key, str):
+            key = self.key_to_str(key)
         if key is None:
             return
         if key in self.keys_pressed:
@@ -76,7 +77,8 @@ class KeyCapturer:
 
     def on_key_up(self, key, override_time=None):
         # override_time is purely for unit testing
-        key = self.key_to_str(key)
+        if not isinstance(key, str):
+            key = self.key_to_str(key)
         if key is None:
             return
         try:
