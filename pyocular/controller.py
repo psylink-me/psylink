@@ -250,6 +250,14 @@ class Controller:
         channels = self.ai.training_data.get_channels()
         self.set_device_config(channels)
 
+    def save_model(self, event=None):
+        self.ai.save_model(self.gui.get_run_name())
+
+    def load_model(self, event=None):
+        self.ai.load_model(self.gui.get_run_name())
+        channels = self.ai.training_data.get_channels()
+        self.set_device_config(channels)
+
     def quit(self, event=None):
         self.gui.quit()
 

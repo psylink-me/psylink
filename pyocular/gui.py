@@ -99,9 +99,13 @@ class MyocularUIWindow(tk.Frame):
         tmpMenu.add_command(label="Stop current process",
                 command=self.controller.stop_current_process, accelerator='Esc')
         tmpMenu.add_command(label="Save recorded samples",
-                command=self.controller.save_records, accelerator='Ctrl+S')
+                command=self.controller.save_records, accelerator='Ctrl+Shift+S')
         tmpMenu.add_command(label="Load recorded samples",
-                command=self.controller.load_records, accelerator='Ctrl+L')
+                command=self.controller.load_records, accelerator='Ctrl+Shift+L')
+        tmpMenu.add_command(label="Save AI model",
+                command=self.controller.save_model, accelerator='Ctrl+S')
+        tmpMenu.add_command(label="Load AI model",
+                command=self.controller.load_model, accelerator='Ctrl+L')
         tmpMenu.add_command(label="Exit", command=self.controller.quit, accelerator='Ctrl+Q')
         menu.add_cascade(label="File", menu=tmpMenu)
 
@@ -131,8 +135,10 @@ class MyocularUIWindow(tk.Frame):
         menu.add_cascade(label="Connect", menu=tmpMenu)
 
         self.bind_all("<Control-q>", self.controller.quit)
-        self.bind_all("<Control-s>", self.controller.save_records)
-        self.bind_all("<Control-l>", self.controller.load_records)
+        self.bind_all("<Control-S>", self.controller.save_records)
+        self.bind_all("<Control-L>", self.controller.load_records)
+        self.bind_all("<Control-s>", self.controller.save_model)
+        self.bind_all("<Control-l>", self.controller.load_model)
         self.bind_all("<Control-b>", self.controller.connectBLE)
         self.bind_all("<Control-B>", self.controller.disconnectBLE)
         self.bind_all("<Control-m>", self.log_clear)
