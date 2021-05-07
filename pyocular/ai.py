@@ -242,11 +242,11 @@ class AI:
     def load_model(self, run_name):
         model_path = self._run_name_to_model_path(run_name)
         self.model = keras.models.load_model(model_path)
-        self.training_data.label_order = self.load_label_order(run_name)
 
         first_layer = self.model.layers[0]
         channels = first_layer.input_shape[2]
         self.training_data.set_channels(channels)
+        self.training_data.label_order = self.load_label_order(run_name)
 
 
 def unison_shuffled_copies(a, b):
