@@ -107,7 +107,6 @@ class TrainingData:
 class AI:
     def __init__(self):
         self.training_data = TrainingData()
-        self.label_order = None
         self.model = None
         self.reset_seed()
 
@@ -153,7 +152,6 @@ class AI:
 
     def compile_training_data(self):
         logging.info("Compiling training data")
-        self.label_order = self.training_data.label_order
         self.labels_train, self.labels_validate, self.samples_train, self.samples_validate = \
                 self.training_data.shuffle_split()
         print(f"self.labels_train.shape: {self.labels_train.shape}")
@@ -175,8 +173,7 @@ class AI:
         samples = samples.reshape((1, samples.shape[0], samples.shape[1]))
         prediction = self.model.predict(samples)
         label_id = np.argmax(prediction)
-        label = self.label_order[label_id]
-        print(f"label_id: {label_id}, label: {label}, prediction: {prediction}, labels: {self.label_order}")
+        label = self.training_data.label_order[label_id]
         return label
 
     @staticmethod
@@ -214,19 +211,19 @@ class AI:
         samples = np.load(signals_fname, allow_pickle=False)
         with open(labels_fname, 'r') as f:
             labels = json.load(f)
-        self.load_label_order(run_name)
+        label_order = self.load_label_order(run_name)
 
-        self.training_data.load(samples, labels, self.label_order)
+        self.training_data.load(samples, labels, label_order)
 
     def save_label_order(self, run_name):
         fname = self._run_name_to_label_order_file_name(run_name)
         with open(fname, 'w') as f:
-            json.dump(self.label_order, f)
+            json.dump(self.training_data.label_order, f)
 
     def load_label_order(self, run_name):
         fname = self._run_name_to_label_order_file_name(run_name)
         with open(fname, 'r') as f:
-            self.label_order = json.load(f)
+            return json.load(f)
 
     def save_model(self, run_name):
         if not self.model:
@@ -239,7 +236,7 @@ class AI:
     def load_model(self, run_name):
         model_path = self._run_name_to_model_path(run_name)
         self.model = keras.models.load_model(model_path)
-        self.load_label_order(run_name)
+        self.training_data.label_order = self.load_label_order(run_name)
 
         first_layer = self.model.layers[0]
         channels = first_layer.input_shape[2]
