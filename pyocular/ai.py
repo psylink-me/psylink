@@ -23,6 +23,7 @@ class TrainingData:
         self.labels = []
         self.label_order = []
         self.current_index = 0
+        self.dirty = True
 
     def compile(self):
         """
@@ -57,6 +58,7 @@ class TrainingData:
         self.label_order = label_order
         self.current_index = len(labels)
         self.channels = samples.shape[2]
+        self.dirty = True
 
     def shuffle_split(self):
         """
@@ -91,6 +93,10 @@ class TrainingData:
     def get_channels(self):
         return self.channels
 
+    def mark_clean(self):
+        # Used for determining whether training data changed since last training
+        self.dirty = False
+
     def append(self, features, label):
         """
         feature: a 2D numpy array in shape = (self.channels, self.get_window_size())
@@ -105,6 +111,7 @@ class TrainingData:
             # Array full, enlarge it
             pad = pyocular.config.FEATURE_BUFFER_SIZE
             self.features = np.pad(self.features, ((0, pad), (0, 0), (0, 0)))
+        self.dirty = True
 
 class AI:
     def __init__(self):
@@ -118,6 +125,12 @@ class AI:
 
     def has_model(self):
         return self.model is not None
+
+    def reset_model(self):
+        self.model = None
+
+    def needs_compiling_of_training_data(self):
+        return self.training_data.dirty
 
     def build_model(self):
         input_shape = self.training_data.get_input_shape()
@@ -154,6 +167,7 @@ class AI:
 
     def compile_training_data(self):
         logging.info("Compiling training data")
+        self.training_data.mark_clean()
         self.labels_train, self.labels_validate, self.samples_train, self.samples_validate = \
                 self.training_data.shuffle_split()
         print(f"self.labels_train.shape: {self.labels_train.shape}")
