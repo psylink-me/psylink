@@ -35,11 +35,11 @@ Test cases:
 ["'a'", "'d'"]
 """
 
-import logging
-import time
-import doctest
 from collections import deque
-from pynput import keyboard
+import doctest
+import logging
+import pynput.keyboard
+import time
 
 MAX_HISTORY_SIZE = 32
 
@@ -65,8 +65,8 @@ class KeyCapturer:
 
     def on_key_down(self, key, override_time=None):
         # override_time is purely for unit testing
-        key = str(key)
-        if not self.key_is_acceptable(key):
+        key = self.key_to_str(key)
+        if key is None:
             return
         if key in self.keys_pressed:
             logging.info("Key `%s' pressed before it was released" % key)
@@ -76,8 +76,8 @@ class KeyCapturer:
 
     def on_key_up(self, key, override_time=None):
         # override_time is purely for unit testing
-        key = str(key)
-        if not self.key_is_acceptable(key):
+        key = self.key_to_str(key)
+        if key is None:
             return
         try:
             self.keys_pressed.remove(key)
@@ -95,15 +95,21 @@ class KeyCapturer:
             self.on_change_callback(keys)
 
     @staticmethod
-    def key_is_acceptable(key):
-        return key.startswith("'")
+    def key_to_str(key):
+        if hasattr(key, 'char') and key.char:
+            return key.char
+        return None
+
+    @staticmethod
+    def str_to_key(s):
+        return pynput.Key.from_char(s)
 
     def reset(self):
         self.keys_pressed.clear()
         self.key_history.clear()
 
     def start_keyboard_listener(self):
-        self.key_listener = keyboard.Listener(
+        self.key_listener = pynput.keyboard.Listener(
                 on_press=self.on_key_down,
                 on_release=self.on_key_up)
         self.key_listener.start()
@@ -113,6 +119,25 @@ class KeyCapturer:
             self.key_listener.stop()
         else:
             logging.warning("Tried to stop key listener while it wasn't running")
+
+
+class KeyPresser:
+    def __init__(self):
+        self.controller = pynput.keyboard.Controller()
+        self.keys_pressed = set()
+
+    def reset(self):
+        for key in self.keys_pressed:
+            self.controller.release(key)
+        self.keys_pressed.clear()
+
+    def set_pressed_keys(self, keys):
+        keys = set(keys) - set([''])
+        for key in self.keys_pressed - keys:
+            self.controller.release(key)
+        for key in keys - self.keys_pressed:
+            self.controller.press(key)
+        self.keys_pressed = keys
 
 
 if __name__ == '__main__':
