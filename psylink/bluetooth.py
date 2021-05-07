@@ -1,4 +1,4 @@
-from pyocular.config import DEFAULT_BLE_ADDRESS, ASSUMED_BLE_LATENCY
+from psylink.config import DEFAULT_BLE_ADDRESS, ASSUMED_BLE_LATENCY
 from threading import Thread, Event
 from queue import Queue
 import logging

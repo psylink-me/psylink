@@ -1,4 +1,4 @@
-See https://hut.pm/myocular.html for more information.
+See https://hut.pm/psylink.html for more information.
 
 # License
 

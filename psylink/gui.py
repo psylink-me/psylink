@@ -1,7 +1,7 @@
 from PIL import Image, ImageTk # pylint: disable=no-name-in-module
 import numpy as np
 import tkinter as tk
-import pyocular.config
+import psylink.config
 from matplotlib import cm
 
 TEXT_UNKNOWN = "Unknown"
@@ -45,13 +45,13 @@ class MyocularUIWindow(tk.Frame):
             return tmpstringvar
 
         self.run_name_stringvar = add_entry(settingFrame,
-                "Run name", pyocular.config.DEFAULT_RUN_NAME)
+                "Run name", psylink.config.DEFAULT_RUN_NAME)
 
         self.ble_address_stringvar = add_entry(settingFrame,
-                "BLE address", pyocular.config.DEFAULT_BLE_ADDRESS)
+                "BLE address", psylink.config.DEFAULT_BLE_ADDRESS)
 
         self.epochs_stringvar = add_entry(settingFrame,
-                "Training epochs", pyocular.config.DEFAULT_TRAINING_EPOCHS)
+                "Training epochs", psylink.config.DEFAULT_TRAINING_EPOCHS)
 
         # ===============
         # State

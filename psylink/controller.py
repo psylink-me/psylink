@@ -9,8 +9,8 @@ It contains the following threads:
 - BLE's thread
 
 """
-from pyocular.gui import MyocularUIWindow
-import pyocular
+from psylink.gui import MyocularUIWindow
+import psylink
 import tkinter as tk
 import numpy as np
 import logging
@@ -34,14 +34,14 @@ class Controller:
         self.signal_capture_thread = None
         self.signal_capture_active_event = threading.Event()
         self.signal_capture_terminate_event = threading.Event()
-        self.BLE_decoder = pyocular.protocol.BLEDecoder(sample_value_offset=0)
+        self.BLE_decoder = psylink.protocol.BLEDecoder(sample_value_offset=0)
         self.channels = None
         self.signals = None
         self.gui = None
-        self.ai = pyocular.ai.AI()
+        self.ai = psylink.ai.AI()
         self.signal_buffer = SignalBuffer()
-        self.key_capturer = pyocular.keycapturer.KeyCapturer(self.on_key_change)
-        self.key_presser = pyocular.keycapturer.KeyPresser()
+        self.key_capturer = psylink.keycapturer.KeyCapturer(self.on_key_change)
+        self.key_presser = psylink.keycapturer.KeyPresser()
         self.show_predicted_keys = False
 
     def run(self):
@@ -132,7 +132,7 @@ class Controller:
                 if time_delay > 0:
                     time.sleep(time_delay)
                     continue
-                next_action = time.time() + pyocular.config.RECORD_SAMPLES_INTERVAL
+                next_action = time.time() + psylink.config.RECORD_SAMPLES_INTERVAL
                 window_size = self.ai.training_data.get_window_size()
                 features = self.signal_buffer.data[:window_size]
                 latency = self.BLE.get_latency()
@@ -168,7 +168,7 @@ class Controller:
                 if time_delay > 0:
                     time.sleep(time_delay)
                     continue
-                next_action = time.time() + pyocular.config.PREDICT_INTERVAL
+                next_action = time.time() + psylink.config.PREDICT_INTERVAL
                 window_size = self.ai.training_data.get_window_size()
                 features = self.signal_buffer.data[:window_size]
                 predicted_label = self.ai.predict(features)
@@ -182,11 +182,11 @@ class Controller:
 
     @staticmethod
     def keys_to_label(keys):
-        return pyocular.config.LABEL_SEPARATOR.join(keys)
+        return psylink.config.LABEL_SEPARATOR.join(keys)
 
     @staticmethod
     def label_to_keys(label):
-        return label.split(pyocular.config.LABEL_SEPARATOR)
+        return label.split(psylink.config.LABEL_SEPARATOR)
 
     def ai_worker_terminate(self):
         self.ai_worker_terminate_event.set()
@@ -281,7 +281,7 @@ class Controller:
     def connectBLE(self, event=None):
         if not self.BLE:
             address = self.gui.get_BLE_address()
-            BackendClass = list(pyocular.bluetooth.BACKENDS.values())[0]
+            BackendClass = list(psylink.bluetooth.BACKENDS.values())[0]
             self.BLE = BackendClass(address)
         else:
             address = self.BLE.address
@@ -301,7 +301,7 @@ class Controller:
         self.channels = channels
         self.ai.training_data.set_channels(channels)
         self.gui.set_channels(channels)
-        self.signal_buffer.resize(channels, pyocular.config.SIGNAL_BUFFER_SIZE)
+        self.signal_buffer.resize(channels, psylink.config.SIGNAL_BUFFER_SIZE)
 
     def disconnectBLE(self, event=None):
         self.gui.log('Disconnecting from device...')
@@ -346,7 +346,7 @@ class SignalBuffer:
         channels, total_signals = signals_by_channel.shape
 
         # Get approximately all the samples that arrived since the last redraw
-        samples_per_step = pyocular.config.SAMPLE_RATE / (1000 / redraw_delay_ms) / steps
+        samples_per_step = psylink.config.SAMPLE_RATE / (1000 / redraw_delay_ms) / steps
         if samples_per_step * steps > total_signals:
             samples_per_step = int(total_signals / steps)
 

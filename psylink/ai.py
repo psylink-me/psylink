@@ -3,7 +3,7 @@ import json
 import logging
 import math
 import numpy as np
-import pyocular
+import psylink
 import tensorflow as tf
 import os.path
 
@@ -11,12 +11,12 @@ FALLBACK_LABEL = ''
 
 class TrainingData:
     def __init__(self):
-        self.channels = pyocular.config.DEFAULT_CHANNELS
+        self.channels = psylink.config.DEFAULT_CHANNELS
         self.clear()
 
     def clear(self):
         self.features = np.zeros((
-            pyocular.config.FEATURE_BUFFER_SIZE,
+            psylink.config.FEATURE_BUFFER_SIZE,
             self.get_window_size(),
             self.channels,
         ), dtype=np.uint8)
@@ -67,7 +67,7 @@ class TrainingData:
         samples, labels = self.compile()
         samples, labels = unison_shuffled_copies(samples, labels)
 
-        split = int(len(samples) * pyocular.config.TRAIN_SPLIT)
+        split = int(len(samples) * psylink.config.TRAIN_SPLIT)
         labels_train, labels_validate = np.split(labels, [split])
         samples_train, samples_validate = np.split(samples, [split])
         return labels_train, labels_validate, samples_train, samples_validate
@@ -79,7 +79,7 @@ class TrainingData:
         return len(self.label_order)
 
     def get_window_size(self):
-        return pyocular.config.FEATURE_WINDOW_SIZE
+        return psylink.config.FEATURE_WINDOW_SIZE
 
     def get_recorded_samples(self):
         return self.current_index
@@ -104,7 +104,7 @@ class TrainingData:
         """
         if self.current_index >= self.features.shape[0]:
             # Array full, enlarge it
-            pad = pyocular.config.FEATURE_BUFFER_SIZE
+            pad = psylink.config.FEATURE_BUFFER_SIZE
             self.features = np.pad(self.features, ((0, pad), (0, 0), (0, 0)))
 
         self.features[self.current_index] = features
@@ -121,8 +121,8 @@ class AI:
         self.reset_seed()
 
     def reset_seed(self):
-        np.random.seed(pyocular.config.SEED_NUMPY)
-        tf.random.set_seed(pyocular.config.SEED_TENSORFLOW)
+        np.random.seed(psylink.config.SEED_NUMPY)
+        tf.random.set_seed(psylink.config.SEED_TENSORFLOW)
 
     def has_model(self):
         return self.model is not None
@@ -176,12 +176,12 @@ class AI:
         print(f"self.samples_train.shape: {self.samples_train.shape}")
         print(f"self.samples_validate.shape: {self.samples_validate.shape}")
 
-    def train(self, epochs=pyocular.config.DEFAULT_TRAINING_EPOCHS):
+    def train(self, epochs=psylink.config.DEFAULT_TRAINING_EPOCHS):
         logging.info("Starting to train")
         history = self.model.fit(
             self.samples_train,
             self.labels_train,
-            batch_size=pyocular.config.BATCH_SIZE,
+            batch_size=psylink.config.BATCH_SIZE,
             epochs=epochs,
             validation_data=(self.samples_validate, self.labels_validate),
         )
