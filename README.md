@@ -7,11 +7,12 @@ A myoelectric neural interface.
 Currently in R&D phase, specification constantly changing.  This describes the
 hardware version 0.5.1 and software from 2021-05-08.
 
-- Application: Train an AI to understand your muscle signals by pressing keys
-  on the keyboard at the exact time you make certain movements with the other
-  arm.  The movements will produce electrical signals which are captured by
-  this device and fed to the AI.  After training the AI on this data, the AI
-  will press the keys for you just by evaluating your muscle signals.
+- Application: A human input device based on muscle signals, where an AI maps
+  the signals to the keys one intends to press.  It knows one's intentions from
+  a training step during which one presses keys at the exact same time one
+  makes movements with the limb that uses the device.  The correlations between
+  signals and keys are used to train the AI, so it can predict the keys based
+  on muscle signals alone.
 - Features:
     - Battery-powered
     - Wireless, using Bluetooth Low Energy (BLE)
