@@ -25,8 +25,8 @@ hardware version 0.5.1 and software from 2021-05-08.
 - Hardware overview:
     - A fabric glove/sleeve with a central component (arduino + power supply)
       and 8 distributed signal clean-up units close to individual electrodes.
-    - [Schematic](schematics/myocular0.5.1.sch)
-    - [PCB of one distributed signal clean-up unit](schematics/myocular0.5.1d.kicad_pcb)
+    - [KiCad Schematic](schematics/myocular0.5.1.sch)
+    - [KiCad PCB of one distributed signal clean-up unit](schematics/myocular0.5.1d.kicad_pcb)
 - Components:
     - 1x [Arduino Nano 33 BLE Sense](https://store.arduino.cc/arduino-nano-33-ble-sense)
     - 1x [LM324 Operational Amplifier](https://www.ti.com/product/LM324)
