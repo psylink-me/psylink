@@ -2,17 +2,35 @@
 
 A myoelectric neural interface.
 
+This is intended as a human input device (like a keyboard) that predicts your
+intention from muscle signals.  Using a neural network, trained through a
+process where you press keys at the exact same time that you make movements
+with the limb wearing the device, it learns correlations between the muscle
+signals and intended keys, and can press them for you.
+
+# Pictures
+
+These may be out of date because of e.g. shipping delays, or out of sync
+because one part of the system may have advanced faster recently than the
+others.
+
+## Most recent prototype
+
+![Hardware Photo](https://hut.pm/data/psylink_hardware.jpg)
+
+## Software Screenshot
+
+![Software Screenshot](https://hut.pm/data/psylink_software.png)
+
+## Most recent schematic
+
+![Schematic](https://hut.pm/data/psylink_schematic.png)
+
 # Datasheet
 
 Currently in R&D phase, specification constantly changing.  This describes the
 hardware version 0.5.1 and software from 2021-05-08.
 
-- Application: A human input device based on muscle signals, where an AI maps
-  the signals to the keys one intends to press.  It knows one's intentions from
-  a training step during which one presses keys at the exact same time one
-  makes movements with the limb that uses the device.  The correlations between
-  signals and keys are used to train the AI, so it can predict the keys based
-  on muscle signals alone.
 - Features:
     - Battery-powered
     - Wireless, using Bluetooth Low Energy (BLE)
@@ -42,24 +60,6 @@ hardware version 0.5.1 and software from 2021-05-08.
         - Idle: ~86.9mW (16.9mA x 5.14V)
         - Transmitting at 6-7kB/s: 92.5mW (18.0mA x 5.14V)
 - Development Log: https://hut.pm/psylink.html
-
-# Pictures
-
-These may be out of date because of e.g. shipping delays, or out of sync
-because one part of the system may have advanced faster recently than the
-others.
-
-## Software Screenshot
-
-![Software Screenshot](https://hut.pm/data/psylink_software.png)
-
-## Most recent schematic
-
-![Schematic](https://hut.pm/data/psylink_schematic.png)
-
-## Most recent prototype
-
-![Hardware Photo](https://hut.pm/data/psylink_hardware.jpg)
 
 # License
 
