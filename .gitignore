@@ -22,5 +22,5 @@ _autosave-*.kicad_pcb
 fp-info-cache
 
 # GNURadio
-*/gnuradio/*_0.py
-*/gnuradio/grcmyocular.py
+gnuradio/*_0.py
+gnuradio/plot_signals.py
