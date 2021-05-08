@@ -5,7 +5,21 @@ PsyLink - A myoelectric neural interface
 Currently in R&D phase, specification constantly changing.  This describes the
 hardware version 0.5.1 and software from 2021-05-08.
 
-- Development Log: https://hut.pm/psylink.html
+- Application: Train an AI to understand your muscle signals by pressing keys
+  on the keyboard at the exact time you make certain movements with the other
+  arm.  The movements will produce electrical signals which are captured by
+  this device and fed to the AI.  When all is done, the AI will press the keys
+  for you just by evaluating your muscle signals.
+- Features:
+    - Battery-powered
+    - Wireless, using Bluetooth Low Energy (BLE)
+    - Supports 17 electrodes (8 pairs + 1 ground)
+    - Transmits 8 signals at 8-bit resolution, 500Hz sampling rate
+    - Linux graphical user interface for:
+        - Mapping keyboard key presses to muscle signals
+        - Training a neural network to predict key presses from signals
+        - Simulating key presses based on neural network predictions
+    - GNURadio integration for plotting the raw signals + FFT
 - Hardware overview:
     - A fabric glove/sleeve with a central component (arduino + power supply)
       and 8 distributed signal clean-up units close to individual electrodes.
@@ -19,21 +33,12 @@ hardware version 0.5.1 and software from 2021-05-08.
     - Electrodes, e.g. [Prym 390120](https://www.prym.com/en/non-sew-refill-for-390120-smooth-cap-10mm-silver-coloured-390104) (don't laugh, they work)
     - A forearm sleeve from non-conductive fabric
     - Additional standard components (see schematic)
-- Features:
-    - Battery-powered
-    - Wireless, using Bluetooth Low Energy (BLE)
-    - Supports 17 electrodes (8 pairs + 1 ground)
-    - Transmits 8 signals at 8-bit resolution, 500Hz sampling rate
-    - Linux graphical user interface for:
-        - Mapping keyboard key presses to muscle signals
-        - Training a neural network to predict key presses from signals
-        - Simulating key presses based on neural network predictions
-    - GNURadio integration for plotting the raw signals + FFT
 - Power ratings
     - Supply Voltage: 4.5-6V
     - Power dissipation:
         - Idle: ~86.9mW (16.9mA x 5.14V)
         - Transmitting at 6-7kB/s: 92.5mW (18.0mA x 5.14V)
+- Development Log: https://hut.pm/psylink.html
 
 # License
 
