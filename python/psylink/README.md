@@ -1,1 +1,1 @@
-A python library for interfacing with the Myocular device
+A python library for interfacing with the PsyLink device
