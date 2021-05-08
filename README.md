@@ -20,6 +20,8 @@ others.
 
 ![Schematic](https://hut.pm/data/psylink_schematic.png)
 
+![Rendering of the PCB](https://hut.pm/data/psylink_pcb.png)
+
 # Datasheet
 
 Currently in R&D phase, specification constantly changing.  This describes the
