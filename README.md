@@ -8,6 +8,8 @@ process where you press keys at the exact same time that you make movements
 with the limb wearing the device, it learns correlations between the muscle
 signals and intended keys, and can press them for you.
 
+[Click here for a video demo](https://hut.pm/data/psylink_video.webm)
+
 # Pictures
 
 These may be out of date because of e.g. shipping delays, or out of sync
