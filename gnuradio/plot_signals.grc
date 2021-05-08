@@ -73,13 +73,15 @@ blocks:
   parameters:
     _source_code: "import numpy as np\nimport math\nimport BLE_GATT\nimport time\n\
       import importlib\nimport os.path\nimport sys\nfrom threading import Thread,\
-      \ Event\nfrom queue import SimpleQueue\nfrom gnuradio import gr\n\n# NOTE: fill\
-      \ in the path to the pymyocular library\nsys.path.insert(0, os.path.expanduser('~/repos/myocular/5_ble'))\n\
-      import pymyocular\n\nBLUETOOTH_ADAPTER = 'hci0'\nDEFAULT_BLE_ADDRESS = 'A6:B7:D0:AE:C2:76'\n\
-      SIGNAL_COUNT = 8\nUSE_BLE = True\n\n\ndef run_bluetooth_loop(device, sample_pipe,\
-      \ stop_thread):\n    decoder = pymyocular.BLEDecoder()\n    sps = 0\n    bps\
-      \ = 0\n    last_tick = None\n    nextsps = time.time() + 1\n    device.connect()\n\
-      \    try:\n        decoder.decode_channel_count(device.char_read(pymyocular.BLEDevice.OPTION_CHANNELS_UUID))\n\
+      \ Event\nfrom queue import SimpleQueue\nfrom gnuradio import gr\n\ntry:\n  \
+      \  import pymyocular\nexcept ImportError:\n    # TODO: migrate to new \"psylink\"\
+      \ lib\n    libpath = os.path.join(os.path.dirname(os.path.realpath(__file__)),\
+      \ '..', 'experimental', '5_ble')\n    print(libpath)\n    sys.path.insert(0,\
+      \ libpath)\n    import pymyocular\n\nBLUETOOTH_ADAPTER = 'hci0'\nDEFAULT_BLE_ADDRESS\
+      \ = 'A6:B7:D0:AE:C2:76'\nSIGNAL_COUNT = 8\nUSE_BLE = True\n\n\ndef run_bluetooth_loop(device,\
+      \ sample_pipe, stop_thread):\n    decoder = pymyocular.BLEDecoder()\n    sps\
+      \ = 0\n    bps = 0\n    last_tick = None\n    nextsps = time.time() + 1\n  \
+      \  device.connect()\n    try:\n        decoder.decode_channel_count(device.char_read(pymyocular.BLEDevice.OPTION_CHANNELS_UUID))\n\
       \        while not stop_thread.is_set():\n            t = time.time()\n    \
       \        read = device.char_read(pymyocular.BLEDevice.SENSOR_UUID)\n       \
       \     t = time.time() - t\n            data = decoder.decode_packet(read)\n\

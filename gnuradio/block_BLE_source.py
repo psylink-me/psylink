@@ -9,9 +9,14 @@ from threading import Thread, Event
 from queue import SimpleQueue
 from gnuradio import gr
 
-# NOTE: fill in the path to the pymyocular library
-sys.path.insert(0, os.path.expanduser('~/repos/myocular/5_ble'))
-import pymyocular
+try:
+    import pymyocular
+except ImportError:
+    # TODO: migrate to new "psylink" lib
+    libpath = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'experimental', '5_ble')
+    print(libpath)
+    sys.path.insert(0, libpath)
+    import pymyocular
 
 BLUETOOTH_ADAPTER = 'hci0'
 DEFAULT_BLE_ADDRESS = 'A6:B7:D0:AE:C2:76'
