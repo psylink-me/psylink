@@ -3,19 +3,22 @@ PsyLink - A myoelectric neural interface
 # Datasheet
 
 Currently in R&D phase, specification constantly changing.  This describes the
-hardware version 0.5.1 (see [schematic](schematics/myocular0.5.1.sch)) and
-software from 2021-05-08.
+hardware version 0.5.1 and software from 2021-05-08.
 
 - Development Log: https://hut.pm/psylink.html
+- Hardware overview:
+    - A fabric glove/sleeve with a central component (arduino + power supply)
+      and 8 distributed signal clean-up units close to individual electrodes.
+    - [Schematic](schematics/myocular0.5.1.sch)
+    - [PCB of one distributed signal clean-up unit](schematics/myocular0.5.1d.kicad_pcb)
 - Components:
     - 1x [Arduino Nano 33 BLE Sense](https://store.arduino.cc/arduino-nano-33-ble-sense)
     - 1x [LM324 Operational Amplifier](https://www.ti.com/product/LM324)
     - 8x [INA128 Instrumentational Amplifier](https://www.ti.com/product/INA128)
     - Any portable 6V power supply (like 2x CR2032)
-    - A printed circuit board of [myocular0.5.1d.kicad_pcb](schematics/myocular0.5.1d.kicad_pcb)
-    - Additional standard components (see schematic)
     - Electrodes, e.g. [Prym 390120](https://www.prym.com/en/non-sew-refill-for-390120-smooth-cap-10mm-silver-coloured-390104) (don't laugh, they work)
     - A forearm sleeve from non-conductive fabric
+    - Additional standard components (see schematic)
 - Features:
     - Battery-powered
     - Wireless, using Bluetooth Low Energy (BLE)
