@@ -58,7 +58,7 @@ void setup() {
 //    while (1);
 //  }
   //samplingTimer.stopTimer();
-  BLE.setLocalName("Myocular");
+  BLE.setLocalName("PsyLink");
   BLE.setAdvertisedService(sensorService);
   sensorService.addCharacteristic(sensorCharacteristic);
   sensorService.addCharacteristic(channelCountCharacteristic);
