@@ -1,4 +1,6 @@
-PsyLink - A myoelectric neural interface
+# PsyLink
+
+A myoelectric neural interface.
 
 # Datasheet
 
@@ -8,8 +10,8 @@ hardware version 0.5.1 and software from 2021-05-08.
 - Application: Train an AI to understand your muscle signals by pressing keys
   on the keyboard at the exact time you make certain movements with the other
   arm.  The movements will produce electrical signals which are captured by
-  this device and fed to the AI.  When all is done, the AI will press the keys
-  for you just by evaluating your muscle signals.
+  this device and fed to the AI.  After training the AI on this data, the AI
+  will press the keys for you just by evaluating your muscle signals.
 - Features:
     - Battery-powered
     - Wireless, using Bluetooth Low Energy (BLE)
