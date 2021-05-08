@@ -8,7 +8,8 @@ process where you press keys at the exact same time that you make movements
 with the limb wearing the device, it learns correlations between the muscle
 signals and intended keys, and can press them for you.
 
-[Click here for a video demo](https://hut.pm/data/psylink_video.webm)
+- [Video demo](https://hut.pm/data/psylink_video.webm)
+- [Development Log](https://hut.pm/psylink.html)
 
 # Pictures
 
@@ -57,7 +58,6 @@ hardware version 0.5.1 and software from 2021-05-08.
     - Power dissipation:
         - Idle: ~86.9mW (16.9mA x 5.14V)
         - Transmitting at 6-7kB/s: 92.5mW (18.0mA x 5.14V)
-- Development Log: https://hut.pm/psylink.html
 
 # License
 
