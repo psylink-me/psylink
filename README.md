@@ -14,15 +14,9 @@ These may be out of date because of e.g. shipping delays, or out of sync
 because one part of the system may have advanced faster recently than the
 others.
 
-## Most recent prototype
-
 ![Hardware Photo](https://hut.pm/data/psylink_hardware.jpg)
 
-## Software Screenshot
-
 ![Software Screenshot](https://hut.pm/data/psylink_software.png)
-
-## Most recent schematic
 
 ![Schematic](https://hut.pm/data/psylink_schematic.png)
 
