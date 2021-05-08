@@ -33,7 +33,7 @@ hardware version 0.5.1 and software from 2021-05-08.
     - 1x [LM324 Operational Amplifier](https://www.ti.com/product/LM324)
     - 8x [INA128 Instrumentational Amplifier](https://www.ti.com/product/INA128)
     - Any portable 6V power supply (like 2x CR2032)
-    - Electrodes, e.g. [Prym 390120](https://www.prym.com/en/non-sew-refill-for-390120-smooth-cap-10mm-silver-coloured-390104) (don't laugh, they work)
+    - 17x Electrodes, e.g. [Prym 390120](https://www.prym.com/en/non-sew-refill-for-390120-smooth-cap-10mm-silver-coloured-390104) (don't laugh, they work)
     - A forearm sleeve from non-conductive fabric
     - Additional standard components (see schematic)
 - Power ratings
