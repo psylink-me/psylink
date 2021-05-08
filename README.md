@@ -43,6 +43,24 @@ hardware version 0.5.1 and software from 2021-05-08.
         - Transmitting at 6-7kB/s: 92.5mW (18.0mA x 5.14V)
 - Development Log: https://hut.pm/psylink.html
 
+# Pictures
+
+These may be out of date because of e.g. shipping delays, or out of sync
+because one part of the system may have advanced faster recently than the
+others.
+
+## Software Screenshot
+
+![Software Screenshot](https://hut.pm/data/psylink_software.png)
+
+## Most recent schematic
+
+![Schematic](https://hut.pm/data/psylink_schematic.png)
+
+## Most recent prototype
+
+![Hardware Photo](https://hut.pm/data/psylink_hardware.jpg)
+
 # License
 
 Copyright (C) 2021  Roman Zimbelmann
