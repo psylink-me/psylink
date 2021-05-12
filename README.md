@@ -8,7 +8,7 @@ process where you press keys at the exact same time that you make movements
 with the limb wearing the device, it learns correlations between the muscle
 signals and intended keys, and can press them for you.
 
-- [Video demo](https://hut.pm/data/psylink_video.webm)
+- [Video demo](https://hut.pm/data/psy/-video.webm)
 - [Development Log](https://hut.pm/psylink.html)
 
 # Pictures
@@ -17,13 +17,13 @@ These may be out of date because of e.g. shipping delays, or out of sync
 because one part of the system may have advanced faster recently than the
 others.
 
-![Hardware Photo](https://hut.pm/data/psylink_hardware.jpg)
+![Hardware Photo](https://hut.pm/data/psy/-hardware.jpg)
 
-![Software Screenshot](https://hut.pm/data/psylink_software.png)
+![Software Screenshot](https://hut.pm/data/psy/-software.png)
 
-![Schematic](https://hut.pm/data/psylink_schematic.png)
+![Schematic](https://hut.pm/data/psy/-schematic.png)
 
-![Rendering of the PCB](https://hut.pm/data/psylink_pcb.png)
+![Rendering of the PCB](https://hut.pm/data/psy/-pcb.png)
 
 # Datasheet
 
