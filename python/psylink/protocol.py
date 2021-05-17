@@ -10,12 +10,14 @@ class BLEDecoder:
 
     def decode_packet(self, bytes_):
         """
-        Takes bytes as argument, as received from the BLE characteristic of Myocular
+        Takes bytes as argument, as received from the BLE characteristic of PsyLink
 
         returns {
             'channels': Number of channels,
             'tick': a number between 1 and 256 that gets incremented on each chraracteristic update
             'sample_count': Number of samples,
+            'min_sampling_delay': The approx. minimum time in milliseconds between sample reads,
+            'max_sampling_delay': The approx. maximum time in milliseconds between sample reads,
             'samples': np.array([...], dtype=np.int),
         }
         """
@@ -24,9 +26,15 @@ class BLEDecoder:
                 " channel count before running this method. Alternatively, set"
                 " the channel count manually with e.g. `decoder.channels = 1`")
 
-        channels = self.channels
+        # Decoding Metadata (as documented in Arduino code)
         tick = bytes_[0]
-        sample_values = bytes_[1:]
+        delays = bytes_[1]
+        min_sampling_delay = self._decompress_delay((delays & 0xf0) >> 4)
+        max_sampling_delay = self._decompress_delay(delays & 0x0f)
+
+        # Decoding Sample data
+        sample_values = bytes_[2:]
+        channels = self.channels
         if len(sample_values) % channels != 0:
             # ensure it's divisible by number of channels:
             sample_values[-(len(sample_values) % channels):] = []
@@ -45,9 +53,16 @@ class BLEDecoder:
         return {
             'channels': channels,
             'tick': tick,
+            'min_sampling_delay': min_sampling_delay,
+            'max_sampling_delay': max_sampling_delay,
             'sample_count': sample_count,
             'samples': samples,
         }
+
+    @staticmethod
+    def _decompress_delay(delay):
+        # this reverses COMPRESS_DELAY in Arduino code
+        return 500 * 1.7 ** delay
 
     def decode_channel_count(self, byte):
         self.channels = int.from_bytes(byte, 'little')

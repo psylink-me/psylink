@@ -8,11 +8,18 @@
 #define BLE_CONNECTION_INTERVAL_MAX 8 // in steps of 1.25ms
 #define CHANNELS 7
 #define BUFFERS 2 // multiple buffers help with concurrency issues, if needed
+#define SEND_METRICS true
 #define METADATA_BYTES 1
 // Metadata format:
-// Byte    |1   |
-// Bit     |1-8 |
-// Content |Tick|
+// Byte    |1   |2                            |
+// Bit     |1-8 |1-4           |5-8           |
+// Content |Tick|MinSampleDelay|MaxSampleDelay|
+// NOTE: MinSampleDelay and MaxSampleDelay will be 0xF when SEND_METRICS is false.
+
+// The numbers in COMPRESS_DELAY are tailored so that values from 500us to 500000us will
+// map to 1-15, so that we can approximately transmit those values in 4 bits.
+#define COMPRESS_DELAY(a) ((int) min(15, max(1, floor(log(a / 500.0) / log(1.7)))))
+//#define DELAY_LOG_BASE 1.6378937
 
 // Constants
 const int SAMPLE_INTERVAL_uS = 1000000 / SAMPLE_RATE;
@@ -36,6 +43,11 @@ int currentBuffer = 0;
 unsigned char tick = 1;
 char bleString[BLE_CHARACTERISTIC_SIZE] = {0};
 bool bleConnected = false;
+
+// Metrics
+#if SEND_METRICS == true
+volatile unsigned long minSampleDelay, maxSampleDelay;
+#endif
 
 void setup() {
   //Serial.begin(115200);
@@ -95,6 +107,10 @@ void samplingTimerHandler() {
 }
 
 void readSamples() {
+  #if SEND_METRICS == true
+  unsigned long int sampleDelay = micros();
+  #endif
+
   doSampling = false;
   for (int channel = 0; channel < CHANNELS; channel++)
     samples[currentBuffer][channel][currentSample] = analogRead(channel);
@@ -108,6 +124,14 @@ void readSamples() {
       tick++;
     }
   }
+
+  #if SEND_METRICS == true
+  sampleDelay = micros() - sampleDelay;
+  if (maxSampleDelay < sampleDelay)
+    maxSampleDelay = sampleDelay;
+  if (minSampleDelay > sampleDelay)
+    minSampleDelay = sampleDelay;
+  #endif
 }
 
 void updateSensorCharacteristic() {
@@ -117,6 +141,11 @@ void updateSensorCharacteristic() {
 
   // Metadata
   bleString[pos++] = tick;
+  #if SEND_METRICS == true
+  bleString[pos++] = (COMPRESS_DELAY(minSampleDelay) << 4) | COMPRESS_DELAY(maxSampleDelay);
+  #else
+  bleString[pos++] = 0xFF;
+  #endif
 
   // Sample data
   for (int sample = 0; sample < SAMPLES_PER_INTERVAL; sample++) {
@@ -126,9 +155,16 @@ void updateSensorCharacteristic() {
       bleString[pos++] = max(1, min(currentChar, 255));
     }
   }
-  bleString[pos] = 0;
+
+  bleString[pos] = 0;  // End the string with 0x00
   sensorCharacteristic.writeValue(bleString);
+
+  // Reset values
   sendBuffer = NO_BUFFER;
+  #if SEND_METRICS == true
+  minSampleDelay = 999999999;
+  maxSampleDelay = 0;
+  #endif
 }
 
 void bleConnectHandler(BLEDevice central) {
@@ -137,6 +173,10 @@ void bleConnectHandler(BLEDevice central) {
   bleConnected = true;
   currentSample = 0;
   currentBuffer = 0;
+  #if SEND_METRICS == true
+  minSampleDelay = 999999999;
+  maxSampleDelay = 0;
+  #endif
   tick = 1;
   sendBuffer = NO_BUFFER;
   for (int buf = 0; buf < BUFFERS; buf++)

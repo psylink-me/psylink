@@ -35,6 +35,7 @@ class Controller:
         self.signal_capture_active_event = threading.Event()
         self.signal_capture_terminate_event = threading.Event()
         self.BLE_decoder = psylink.protocol.BLEDecoder(sample_value_offset=0)
+        self.last_decoded_packet = None
         self.channels = None
         self.signals = None
         self.gui = None
@@ -225,6 +226,7 @@ class Controller:
             if not active.wait(timeout=0.1):
                 continue
             decoded = self.BLE_decoder.decode_packet(packet)
+            self.last_decoded_packet = decoded
 
             self.signal_buffer.append(decoded['samples'])
 
@@ -251,6 +253,12 @@ class Controller:
         if self.BLE and self.BLE.is_connected():
             return self.BLE.address
         return None
+
+    def get_sampling_delays(self):
+        if self.last_decoded_packet:
+            return (self.last_decoded_packet['min_sampling_delay'],
+                    self.last_decoded_packet['max_sampling_delay'])
+        return (0, 0)
 
     def launch_gui(self):
         root = tk.Tk()

@@ -73,6 +73,7 @@ class MyocularUIWindow(tk.Frame):
         self.channels_value = add_label(stateFrame, 'Channels: ', TEXT_UNKNOWN)
         self.recorded_samples_value = add_label(stateFrame, 'Recorded samples: ', '0')
         self.label_count_value = add_label(stateFrame, 'Number of recorded key combinations: ', '0')
+        self.delays = add_label(stateFrame, 'Sampling delays: ', TEXT_UNKNOWN)
 
         # ===============
         # Signals
@@ -201,6 +202,7 @@ class MyocularUIWindow(tk.Frame):
             connection = TEXT_NOT_CONNECTED
         self.connection_value.config(text=connection)
         self.label_count_value.config(text=self.controller.get_number_of_labels())
+        self.delays.config(text="%d - %dms" % self.controller.get_sampling_delays())
         self.after(1000, self.refresh_values)
 
     def draw_signals(self):
