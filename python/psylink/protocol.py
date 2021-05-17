@@ -11,6 +11,7 @@ class BLEDecoder:
     def __init__(self, sample_value_offset=SAMPLE_VALUE_OFFSET):
         self.channels = None
         self.sample_value_offset = sample_value_offset
+        self.last_tick = None
 
     def decode_packet(self, bytes_):
         """
@@ -23,6 +24,7 @@ class BLEDecoder:
             'min_sampling_delay': The approx. minimum time in milliseconds between sample reads,
             'max_sampling_delay': The approx. maximum time in milliseconds between sample reads,
             'samples': np.array([...], dtype=np.int),
+            'is_duplicate': Boolean,
         }
         """
         if self.channels is None:
@@ -35,6 +37,10 @@ class BLEDecoder:
         delays = bytes_[1]
         min_sampling_delay = self._decompress_delay((delays & 0xf0) >> 4)
         max_sampling_delay = self._decompress_delay(delays & 0x0f)
+
+        is_duplicate = False
+        if self.last_tick is not None:
+            is_duplicate = tick == self.last_tick
 
         # Decoding Sample data
         sample_values = bytes_[2:]
@@ -54,6 +60,8 @@ class BLEDecoder:
                 channel = 0
                 sample_id += 1
 
+        self.last_tick = tick
+
         return {
             'channels': channels,
             'tick': tick,
@@ -61,6 +69,7 @@ class BLEDecoder:
             'max_sampling_delay': max_sampling_delay,
             'sample_count': sample_count,
             'samples': samples,
+            'is_duplicate': is_duplicate,
         }
 
     @staticmethod

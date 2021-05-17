@@ -226,6 +226,9 @@ class Controller:
             if not active.wait(timeout=0.1):
                 continue
             decoded = self.BLE_decoder.decode_packet(packet)
+            if decoded['is_duplicate']:
+                continue
+
             self.last_decoded_packet = decoded
 
             self.signal_buffer.append(decoded['samples'])

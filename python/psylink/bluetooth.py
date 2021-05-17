@@ -4,7 +4,6 @@ from queue import Queue
 import logging
 
 
-# TODO: drop duplicate packets
 # TODO: indicate packet loss
 
 
