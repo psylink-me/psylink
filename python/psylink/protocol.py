@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import logging
 
 SAMPLE_VALUE_OFFSET = -127
 
@@ -25,6 +26,7 @@ class BLEDecoder:
             'max_sampling_delay': The approx. maximum time in milliseconds between sample reads,
             'samples': np.array([...], dtype=np.int),
             'is_duplicate': Boolean,
+            'lost_packets': Number of skipped packets since last reads,
         }
         """
         if self.channels is None:
@@ -38,9 +40,15 @@ class BLEDecoder:
         min_sampling_delay = self._decompress_delay((delays & 0xf0) >> 4)
         max_sampling_delay = self._decompress_delay(delays & 0x0f)
 
+        lost_packets = 0
         is_duplicate = False
         if self.last_tick is not None:
             is_duplicate = tick == self.last_tick
+
+            # Need to consider overflow of tick value. Its range is between 1 and incl. 255
+            lost_packets = min(max(0, tick - self.last_tick - 1), tick + 255 - self.last_tick - 1)
+            if lost_packets:
+                logging.warn(f"Lost packets: {lost_packets}")
 
         # Decoding Sample data
         sample_values = bytes_[2:]
@@ -70,6 +78,7 @@ class BLEDecoder:
             'sample_count': sample_count,
             'samples': samples,
             'is_duplicate': is_duplicate,
+            'lost_packets': lost_packets,
         }
 
     @staticmethod

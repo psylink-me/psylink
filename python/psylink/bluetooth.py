@@ -4,9 +4,6 @@ from queue import Queue
 import logging
 
 
-# TODO: indicate packet loss
-
-
 class BLECharacteristics:
     SENSOR = '0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5'
     CNF_CHANNELS = '0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e6'
