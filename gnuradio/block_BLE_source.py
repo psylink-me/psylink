@@ -2,10 +2,8 @@
 # INSTEAD, OPEN GNURADIO, DOUBLE-CLICK THE BLOCK, AND CLICK ON "Open in Editor"!
 
 import importlib
-import math
 import os.path
 import sys
-import time
 
 import numpy as np
 from gnuradio import gr
