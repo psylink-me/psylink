@@ -3,6 +3,10 @@ import math
 
 SAMPLE_VALUE_OFFSET = -127
 
+# Keep these in sync with arduino code.
+DELAY_PARAM_A = -11.3384217
+DELAY_PARAM_B = 1.93093431
+
 class BLEDecoder:
     def __init__(self, sample_value_offset=SAMPLE_VALUE_OFFSET):
         self.channels = None
@@ -62,7 +66,7 @@ class BLEDecoder:
     @staticmethod
     def _decompress_delay(delay):
         # this reverses COMPRESS_DELAY in Arduino code
-        return 500 * 1.7 ** delay
+        return math.exp((delay - DELAY_PARAM_A) / DELAY_PARAM_B)
 
     def decode_channel_count(self, byte):
         self.channels = int.from_bytes(byte, 'little')

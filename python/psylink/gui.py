@@ -73,7 +73,7 @@ class MyocularUIWindow(tk.Frame):
         self.channels_value = add_label(stateFrame, 'Channels: ', TEXT_UNKNOWN)
         self.recorded_samples_value = add_label(stateFrame, 'Recorded samples: ', '0')
         self.label_count_value = add_label(stateFrame, 'Number of recorded key combinations: ', '0')
-        self.delays = add_label(stateFrame, 'Sampling delays: ', TEXT_UNKNOWN)
+        self.delays = add_label(stateFrame, 'Approx. sampling intervals: ', TEXT_UNKNOWN)
 
         # ===============
         # Signals

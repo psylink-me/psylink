@@ -16,10 +16,12 @@
 // Content |Tick|MinSampleDelay|MaxSampleDelay|
 // NOTE: MinSampleDelay and MaxSampleDelay will be 0xF when SEND_METRICS is false.
 
-// The numbers in COMPRESS_DELAY are tailored so that values from 500us to 500000us will
-// map to 1-15, so that we can approximately transmit those values in 4 bits.
-#define COMPRESS_DELAY(a) ((int) min(15, max(1, floor(log(a / 500.0) / log(1.7)))))
-//#define DELAY_LOG_BASE 1.6378937
+// The DELAY_PARAMs are from a logarithmic regression (f(x)=A+B*log(x)) with
+// f(1000)=2 and f(500000)=14, so we can map ranges from <1000us to >500000us to 4 bits.
+// Keep this in sync with python/psylink/protocol.py.
+#define DELAY_PARAM_A -11.3384217
+#define DELAY_PARAM_B 1.93093431
+#define COMPRESS_DELAY(x) ((int) min(15, max(1, round(DELAY_PARAM_A + DELAY_PARAM_B * log(x)))))
 
 // Constants
 const int SAMPLE_INTERVAL_uS = 1000000 / SAMPLE_RATE;
