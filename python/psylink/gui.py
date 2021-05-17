@@ -202,7 +202,7 @@ class MyocularUIWindow(tk.Frame):
             connection = TEXT_NOT_CONNECTED
         self.connection_value.config(text=connection)
         self.label_count_value.config(text=self.controller.get_number_of_labels())
-        self.delays.config(text="%d - %dms" % self.controller.get_sampling_delays())
+        self.delays.config(text="%0.1f - %0.1fms" % self.controller.get_sampling_delays())
         self.after(1000, self.refresh_values)
 
     def draw_signals(self):

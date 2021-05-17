@@ -259,8 +259,8 @@ class Controller:
 
     def get_sampling_delays(self):
         if self.last_decoded_packet:
-            return (self.last_decoded_packet['min_sampling_delay'],
-                    self.last_decoded_packet['max_sampling_delay'])
+            return (self.last_decoded_packet['min_sampling_delay'] / 1000,
+                    self.last_decoded_packet['max_sampling_delay'] / 1000)
         return (0, 0)
 
     def launch_gui(self):
