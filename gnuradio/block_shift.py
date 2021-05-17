@@ -10,22 +10,26 @@ import numpy as np
 from gnuradio import gr
 
 
+CHANNELS = 7
+
+
 class ShiftBlock(gr.interp_block):
     def __init__(self, number_of_points=1024):
         gr.interp_block.__init__(
             self,
             name='Shifting Block',
             interp=10 * number_of_points,  # a large number to ensure that output_items is large enough
-            in_sig=[np.float32],
-            out_sig=[np.float32]
+            in_sig=[np.float32] * CHANNELS,
+            out_sig=[np.float32] * CHANNELS,
         )
         self.number_of_points = number_of_points
-        self.buffer = np.zeros(self.number_of_points, dtype=np.float64)
+        self.buffer = np.zeros((CHANNELS, self.number_of_points), dtype=np.float64)
 
     def work(self, input_items, output_items):
         n_inputs = min(self.number_of_points, len(input_items[0]))
-        self.buffer = np.roll(self.buffer, -n_inputs)
-        self.buffer[-n_inputs:] = input_items[0][:n_inputs]
-        output_items[0][:self.number_of_points] = self.buffer
-        self.consume(0, n_inputs)
+        self.buffer = np.roll(self.buffer, shift=-n_inputs, axis=1)
+        for channel in range(CHANNELS):
+            self.buffer[channel][-n_inputs:] = input_items[channel][:n_inputs]
+            output_items[channel][:self.number_of_points] = self.buffer[channel]
+            self.consume(channel, n_inputs)
         return self.number_of_points
