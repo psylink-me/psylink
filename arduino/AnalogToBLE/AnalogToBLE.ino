@@ -6,7 +6,7 @@
 #define BLE_NOTIFY_RATE 10 // updates per second
 #define BLE_CONNECTION_INTERVAL_MIN 8 // in steps of 1.25ms
 #define BLE_CONNECTION_INTERVAL_MAX 8 // in steps of 1.25ms
-#define CHANNELS 8
+#define CHANNELS 7
 #define BUFFERS 2 // multiple buffers help with concurrency issues, if needed
 #define METADATA_BYTES 1
 // Metadata format:

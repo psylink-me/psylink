@@ -13,14 +13,13 @@ try:
     import pymyocular
 except ImportError:
     # TODO: migrate to new "psylink" lib
-    libpath = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'experimental', '5_ble')
-    print(libpath)
+    libpath = os.path.expanduser('~/repos/psylink/experimental/5_ble')
     sys.path.insert(0, libpath)
     import pymyocular
 
 BLUETOOTH_ADAPTER = 'hci0'
 DEFAULT_BLE_ADDRESS = 'A6:B7:D0:AE:C2:76'
-SIGNAL_COUNT = 8
+SIGNAL_COUNT = 7
 USE_BLE = True
 
 
@@ -88,7 +87,7 @@ class BLESource(gr.basic_block):
                 samples = self.sample_pipe.get()
                 transposed = np.transpose(samples)
                 for channel_id, channel in enumerate(output_items):
-                    channel[count:count+len(samples)] = transposed[channel_id]
+                    channel[count:count+len(samples)] = (transposed[channel_id] + 127) / 256
                 count += len(samples)
                 self.last_sample_count = len(samples)
                 limit = len(output_items[0]) - self.last_sample_count
