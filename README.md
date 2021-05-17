@@ -47,12 +47,12 @@ hardware version 0.5.1 and software from 2021-05-08.
     - [KiCad PCB of one distributed signal clean-up unit](schematics/myocular0.5.1d.kicad_pcb)
 - Software dependencies:
     - Python3 (see [requirements.txt](python/requirements.txt))
-        - BLE-GATT
-        - matplotlib
-        - pynput
-        - tensorflow
+        - [BLE-GATT](https://pypi.org/project/BLE-GATT/)
+        - [matplotlib](https://matplotlib.org/)
+        - [pynput](https://pypi.org/project/pynput/)
+        - [tensorflow](https://www.tensorflow.org/)
     - ArduinoIDE
-        - ArduinoBLE
+        - [ArduinoBLE](https://www.arduino.cc/en/Reference/ArduinoBLE)
 - Components:
     - 1x [Arduino Nano 33 BLE Sense](https://store.arduino.cc/arduino-nano-33-ble-sense)
     - 1x [LM324 Operational Amplifier](https://www.ti.com/product/LM324)
