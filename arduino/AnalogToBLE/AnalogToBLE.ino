@@ -48,7 +48,7 @@ bool bleConnected = false;
 
 // Metrics
 #if SEND_METRICS == true
-volatile unsigned long minSampleDelay, maxSampleDelay;
+volatile unsigned long minSampleDelay, maxSampleDelay, lastSampleMicroSeconds = 0;
 #endif
 
 void setup() {
@@ -109,10 +109,6 @@ void samplingTimerHandler() {
 }
 
 void readSamples() {
-  #if SEND_METRICS == true
-  unsigned long int sampleDelay = micros();
-  #endif
-
   doSampling = false;
   for (int channel = 0; channel < CHANNELS; channel++)
     samples[currentBuffer][channel][currentSample] = analogRead(channel);
@@ -128,7 +124,9 @@ void readSamples() {
   }
 
   #if SEND_METRICS == true
-  sampleDelay = micros() - sampleDelay;
+  unsigned long int currentMicroSeconds = micros();
+  unsigned long int sampleDelay = currentMicroSeconds - lastSampleMicroSeconds;
+  lastSampleMicroSeconds = currentMicroSeconds;
   if (maxSampleDelay < sampleDelay)
     maxSampleDelay = sampleDelay;
   if (minSampleDelay > sampleDelay)
@@ -166,6 +164,7 @@ void updateSensorCharacteristic() {
   #if SEND_METRICS == true
   minSampleDelay = 999999999;
   maxSampleDelay = 0;
+  lastSampleMicroSeconds = micros();
   #endif
 }
 
