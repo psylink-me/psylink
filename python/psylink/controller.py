@@ -36,6 +36,8 @@ class Controller:
         self.signal_capture_terminate_event = threading.Event()
         self.BLE_decoder = psylink.protocol.BLEDecoder(sample_value_offset=0)
         self.last_decoded_packet = None
+        self.min_sampling_delay = None
+        self.max_sampling_delay = None
         self.channels = None
         self.signals = None
         self.gui = None
@@ -230,6 +232,10 @@ class Controller:
                 continue
 
             self.last_decoded_packet = decoded
+            if not self.min_sampling_delay or self.min_sampling_delay > decoded['min_sampling_delay']:
+                self.min_sampling_delay = decoded['min_sampling_delay']
+            if not self.max_sampling_delay or self.max_sampling_delay < decoded['max_sampling_delay']:
+                self.max_sampling_delay = decoded['max_sampling_delay']
 
             self.signal_buffer.append(decoded['samples'])
 
@@ -258,9 +264,11 @@ class Controller:
         return None
 
     def get_sampling_delays(self):
-        if self.last_decoded_packet:
-            return (self.last_decoded_packet['min_sampling_delay'] / 1000,
-                    self.last_decoded_packet['max_sampling_delay'] / 1000)
+        if self.min_sampling_delay is not None and self.max_sampling_delay is not None:
+            result = (self.min_sampling_delay / 1000, self.max_sampling_delay / 1000)
+            self.min_sampling_delay = None
+            self.max_sampling_delay = None
+            return result
         return (0, 0)
 
     def launch_gui(self):
