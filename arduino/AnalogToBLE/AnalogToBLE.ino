@@ -122,7 +122,7 @@ void updateSensorCharacteristic() {
   for (int sample = 0; sample < SAMPLES_PER_INTERVAL; sample++) {
     for (int channel = 0; channel < CHANNELS; channel++) {
       // Avoid writing 0x00 since that denotes the end of the string
-      currentChar = map(samples[sendBuffer][channel][sample], 1536, 3071, 1, 255);
+      currentChar = map(samples[sendBuffer][channel][sample], 1921, 2176, 1, 255);
       bleString[pos++] = max(1, min(currentChar, 255));
     }
   }
