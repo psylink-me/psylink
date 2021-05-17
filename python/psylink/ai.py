@@ -139,19 +139,19 @@ class AI:
 
         model = self.model = tf.keras.Sequential()
         model.add(tf.keras.layers.SeparableConv1D(
-            filters=128,
+            filters=32,
             kernel_size=5,
             input_shape=input_shape,
         ))
-        #model.add(tf.keras.layers.SeparableConv1D(
-        #    filters=128,
-        #    kernel_size=3,
-        #    #activation='relu',
-        #))
+        model.add(tf.keras.layers.SeparableConv1D(
+            filters=64,
+            kernel_size=3,
+            #activation='relu',
+        ))
         model.add(tf.keras.layers.Flatten())
         for _ in range(2):
             model.add(tf.keras.layers.Dense(
-                units=128,
+                units=32,
                 activation='relu',
                 #bias_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4),
                 #activity_regularizer=tf.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4),
