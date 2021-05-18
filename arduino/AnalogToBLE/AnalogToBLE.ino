@@ -31,9 +31,9 @@
 // Constants
 const int SAMPLE_INTERVAL_uS = 1000000 / SAMPLE_RATE;
 const int BLE_NOTIFY_INTERVAL_MS = 1000 / BLE_NOTIFY_RATE;
-const int SAMPLES_PER_INTERVAL = SAMPLE_RATE / BLE_NOTIFY_RATE;
+const int SAMPLES_PER_NOTIFY = SAMPLE_RATE / BLE_NOTIFY_RATE;
 // Ensure that BLE_CHARACTERISTICS_SIZE does not exceed BLE characteristic length limit of 512 (255?) bytes
-const int BLE_CHARACTERISTIC_SIZE = METADATA_BYTES + CHANNELS * SAMPLES_PER_INTERVAL;
+const int BLE_CHARACTERISTIC_SIZE = METADATA_BYTES + CHANNELS * SAMPLES_PER_NOTIFY;
 const int NO_BUFFER = -1;
 
 #if USE_INTERRUPT_TIMER == true
@@ -46,7 +46,7 @@ BLEIntCharacteristic channelCountCharacteristic("0a3d3fd8-2f1c-46fd-bf46-eaef2fd
 
 volatile bool doSampling = true;
 volatile int sendBuffer = NO_BUFFER;
-int samples[BUFFERS][CHANNELS][SAMPLES_PER_INTERVAL] = {0};
+int samples[BUFFERS][CHANNELS][SAMPLES_PER_NOTIFY] = {0};
 int currentSample = 0;
 int currentBuffer = 0;
 unsigned char tick = 1;
@@ -132,7 +132,7 @@ void readSamples() {
   for (int channel = 0; channel < CHANNELS; channel++)
     samples[currentBuffer][channel][currentSample] = analogRead(channel);
   currentSample++;
-  if (currentSample >= SAMPLES_PER_INTERVAL) {
+  if (currentSample >= SAMPLES_PER_NOTIFY) {
     sendBuffer = currentBuffer;
     currentBuffer = (currentBuffer + 1) % BUFFERS;
     currentSample = 0;
@@ -167,7 +167,7 @@ void updateSensorCharacteristic() {
   #endif
 
   // Sample data
-  for (int sample = 0; sample < SAMPLES_PER_INTERVAL; sample++) {
+  for (int sample = 0; sample < SAMPLES_PER_NOTIFY; sample++) {
     for (int channel = 0; channel < CHANNELS; channel++) {
       // Avoid writing 0x00 since that denotes the end of the string
       currentChar = map(samples[sendBuffer][channel][sample], 1921, 2176, 1, 255);
@@ -201,7 +201,7 @@ void bleConnectHandler(BLEDevice central) {
   sendBuffer = NO_BUFFER;
   for (int buf = 0; buf < BUFFERS; buf++)
     for (int channel = 0; channel < CHANNELS; channel++)
-      for (int sample = 0; sample < SAMPLES_PER_INTERVAL; sample++)
+      for (int sample = 0; sample < SAMPLES_PER_NOTIFY; sample++)
         samples[buf][channel][sample] = 0;
   //samplingTimer.restartTimer();
 }
