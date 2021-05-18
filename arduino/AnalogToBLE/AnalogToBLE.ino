@@ -3,6 +3,7 @@
 #define USE_INTERRUPT_TIMER false
 
 #include <ArduinoBLE.h>
+#include <Arduino_LSM9DS1.h>
 #if USE_INTERRUPT_TIMER == true
 #include "NRF52_MBED_TimerInterrupt.h"
 #endif
@@ -16,9 +17,9 @@
 #define BUFFERS 2 // multiple buffers help with concurrency issues, if needed
 #define METADATA_BYTES 1
 // Metadata format:
-// Byte    |1   |2                            |
-// Bit     |1-8 |1-4           |5-8           |
-// Content |Tick|MinSampleDelay|MaxSampleDelay|
+// Bytes   |1   |2                            |3-5             |6-8                 |
+// Bits    |all |1-4           |5-8           |all             |all                 |
+// Content |Tick|MinSampleDelay|MaxSampleDelay|Gryoscope(x,y,z)|Accelerometer(x,y,z)|
 // NOTE: MinSampleDelay and MaxSampleDelay will be 0xF when SEND_METRICS is false.
 
 // The DELAY_PARAMs are from a logarithmic regression (f(x)=A+B*log(x)) with
@@ -81,6 +82,11 @@ void setup() {
   }
   samplingTimer.stopTimer();
   #endif
+  if (!IMU.begin()) {
+    digitalWrite(LEDR, LOW); // Turn on red LED
+    digitalWrite(LEDG, LOW); // Turn on green LED
+    while (1);
+  }
   BLE.setLocalName("PsyLink");
   BLE.setAdvertisedService(sensorService);
   sensorService.addCharacteristic(sensorCharacteristic);
@@ -157,6 +163,7 @@ void updateSensorCharacteristic() {
   if (sendBuffer == NO_BUFFER || !bleConnected) return;
   int pos = 0;
   char currentChar;
+  float x, y, z;
 
   // Metadata
   bleString[pos++] = tick;
@@ -165,6 +172,28 @@ void updateSensorCharacteristic() {
   #else
   bleString[pos++] = 0xFF;
   #endif
+  if (IMU.gyroscopeAvailable()) {
+    IMU.readGyroscope(x, y, z);
+    bleString[pos++] = min(255, max(1, x+127));
+    bleString[pos++] = min(255, max(1, y+127));
+    bleString[pos++] = min(255, max(1, z+127));
+  }
+  else {
+    bleString[pos++] = 128;
+    bleString[pos++] = 128;
+    bleString[pos++] = 128;
+  }
+  if (IMU.accelerationAvailable()) {
+    IMU.readAcceleration(x, y, z);
+    bleString[pos++] = min(255, max(1, 128*x+127));
+    bleString[pos++] = min(255, max(1, 128*y+127));
+    bleString[pos++] = min(255, max(1, 128*z+127));
+  }
+  else {
+    bleString[pos++] = 128;
+    bleString[pos++] = 128;
+    bleString[pos++] = 128;
+  }
 
   // Sample data
   for (int sample = 0; sample < SAMPLES_PER_NOTIFY; sample++) {

@@ -53,6 +53,7 @@ hardware version 0.5.1 and software from 2021-05-08.
         - [tensorflow](https://www.tensorflow.org/)
     - ArduinoIDE
         - [ArduinoBLE](https://www.arduino.cc/en/Reference/ArduinoBLE)
+        - [Arduino LSM9DS1](https://www.arduino.cc/en/Reference/ArduinoLSM9DS1) (for accelerometer/gyroscope)
 - Components:
     - 1x [Arduino Nano 33 BLE Sense](https://store.arduino.cc/arduino-nano-33-ble-sense)
     - 1x [LM324 Operational Amplifier](https://www.ti.com/product/LM324)

@@ -387,6 +387,7 @@ class SignalBuffer:
         for channel in range(channels):
             x_start = int(width / channels * channel)
             x_end = int(width / channels * (channel + 1))
+            is_IMU_channel = channel >= channels - psylink.config.IMU_CHANNELS
             for step in range(steps):
                 y_start = int(step_height * step)
                 y_end = int(step_height * (step + 1))
@@ -397,7 +398,13 @@ class SignalBuffer:
 
                 maxval = relevant_signals.max()
                 minval = relevant_signals.min()
-                value = min(1, (maxval-minval)/max_difference)
+                if is_IMU_channel:
+                    if abs(maxval-127) > abs(minval-127):
+                        value = maxval / 255
+                    else:
+                        value = minval / 255
+                else:
+                    value = min(1, (maxval-minval)/max_difference)
 
                 self.image_buffer[y_start:y_end, x_start:x_end] = value
 

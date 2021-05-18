@@ -1,6 +1,7 @@
 import numpy as np
 import math
 import logging
+from psylink.config import IMU_CHANNELS
 
 SAMPLE_VALUE_OFFSET = -127
 
@@ -58,28 +59,37 @@ class BLEDecoder:
             if lost_packets:
                 logging.warn(f"Lost packets: {lost_packets}")
 
+        gyroscope_accelerometer = list(bytes_[2:2+IMU_CHANNELS])
+        assert len(gyroscope_accelerometer) == IMU_CHANNELS
+
         # Decoding Sample data
-        sample_values = bytes_[2:]
-        channels = self.channels
-        if len(sample_values) % channels != 0:
-            # ensure it's divisible by number of channels:
-            sample_values[-(len(sample_values) % channels):] = []
-        sample_count = math.floor(len(sample_values) / channels)
-        samples = np.zeros((sample_count, channels), dtype=np.int)
+        sample_values = bytes_[8:]
+        emg_channels = self.emg_channels
+
+        if len(sample_values) % emg_channels != 0:
+            # ensure it's divisible by number of EMG channels:
+            sample_values[-(len(sample_values) % emg_channels):] = []
+        sample_count = math.floor(len(sample_values) / emg_channels)
+        samples = np.zeros((sample_count, self.channels), dtype=np.int)
 
         channel = 0
         sample_id = 0
         for sample_value in sample_values:
             samples[sample_id][channel] = sample_value + self.sample_value_offset
             channel += 1
-            if channel >= channels:
+            if channel >= emg_channels:
                 channel = 0
                 sample_id += 1
+
+        # Filling in gyroscope/accelerometer channels
+        for sample_id, channels in enumerate(samples):
+            assert len(channels) == emg_channels + IMU_CHANNELS
+            channels[emg_channels:] = gyroscope_accelerometer
 
         self.last_tick = tick
 
         return {
-            'channels': channels,
+            'channels': self.channels,
             'tick': tick,
             'min_sampling_delay': min_sampling_delay,
             'max_sampling_delay': max_sampling_delay,
@@ -96,6 +106,6 @@ class BLEDecoder:
         return math.exp((delay - DELAY_PARAM_A) / DELAY_PARAM_B)
 
     def decode_channel_count(self, byte):
-        self.channels = int.from_bytes(byte, 'little')
-        print("Channels = %d" % self.channels)
+        self.emg_channels = int.from_bytes(byte, 'little')
+        self.channels = self.emg_channels + IMU_CHANNELS
         return self.channels

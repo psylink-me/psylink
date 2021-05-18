@@ -10,6 +10,7 @@ REDRAW_SIGNALS_DELAY = 100  # milliseconds
 SEED_TENSORFLOW = SEED_NUMPY = 1337
 DEFAULT_TRAINING_EPOCHS = 25
 DEFAULT_CHANNELS = 1
+IMU_CHANNELS = 6  # For gyroscope and accelerometer
 FEATURE_BUFFER_SIZE = 2**20
 FEATURE_WINDOW_SIZE = int(SAMPLE_RATE / 2)  # Enough samples to fit half a second
 LABEL_SEPARATOR = ','
