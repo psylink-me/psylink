@@ -19,7 +19,7 @@ except ImportError:
     import psylink.protocol
 
 DEFAULT_BLE_ADDRESS = 'A6:B7:D0:AE:C2:76'
-EMG_CHANNELS = 7
+EMG_CHANNELS = 8
 SIGNAL_COUNT = EMG_CHANNELS + psylink.config.IMU_CHANNELS
 
 class BLESource(gr.basic_block):

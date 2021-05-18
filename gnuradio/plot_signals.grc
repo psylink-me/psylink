@@ -90,7 +90,7 @@ blocks:
       \    import psylink.protocol\nexcept ImportError:\n    # NOTE: You may need\
       \ to change this path to where you downloaded psyink to:\n    libpath = os.path.expanduser('~/repos/psylink/python')\n\
       \    sys.path.insert(0, libpath)\n    import psylink.bluetooth\n    import psylink.protocol\n\
-      \nDEFAULT_BLE_ADDRESS = 'A6:B7:D0:AE:C2:76'\nEMG_CHANNELS = 7\nSIGNAL_COUNT\
+      \nDEFAULT_BLE_ADDRESS = 'A6:B7:D0:AE:C2:76'\nEMG_CHANNELS = 8\nSIGNAL_COUNT\
       \ = EMG_CHANNELS + psylink.config.IMU_CHANNELS\n\nclass BLESource(gr.basic_block):\n\
       \    def __init__(self, ble_mac=DEFAULT_BLE_ADDRESS):\n        gr.basic_block.__init__(self,\
       \ name='BLE Source', in_sig=[], out_sig=[np.float32] * SIGNAL_COUNT)\n     \
@@ -126,7 +126,7 @@ blocks:
       [('0', 'float', 1), ('1', 'float', 1), ('2', 'float', 1), ('3', 'float', 1),
       ('4', 'float', 1), ('5', 'float', 1), ('6', 'float', 1), ('7', 'float', 1),
       ('8', 'float', 1), ('9', 'float', 1), ('10', 'float', 1), ('11', 'float', 1),
-      ('12', 'float', 1)], '', ['ble_mac'])
+      ('12', 'float', 1), ('13', 'float', 1)], '', ['ble_mac'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -141,7 +141,7 @@ blocks:
       \ ON \"Open in Editor\"!\n\n\"\"\"\nKeeps a copy of the last N signals and outputs\
       \ them at a constant rate,\nso that you can use QT GUI sinks in a \"rolling\"\
       \ mode.\n\"\"\"\n\nimport numpy as np\nfrom gnuradio import gr\n\n\nCHANNELS\
-      \ = 13\n\n\nclass ShiftBlock(gr.interp_block):\n    def __init__(self, number_of_points=1024):\n\
+      \ = 14\n\n\nclass ShiftBlock(gr.interp_block):\n    def __init__(self, number_of_points=1024):\n\
       \        gr.interp_block.__init__(\n            self,\n            name='Shifting\
       \ Block',\n            interp=10 * number_of_points,  # a large number to ensure\
       \ that output_items is large enough\n            in_sig=[np.float32] * CHANNELS,\n\
@@ -164,10 +164,11 @@ blocks:
       'float', 1), ('1', 'float', 1), ('2', 'float', 1), ('3', 'float', 1), ('4',
       'float', 1), ('5', 'float', 1), ('6', 'float', 1), ('7', 'float', 1), ('8',
       'float', 1), ('9', 'float', 1), ('10', 'float', 1), ('11', 'float', 1), ('12',
-      'float', 1)], [('0', 'float', 1), ('1', 'float', 1), ('2', 'float', 1), ('3',
-      'float', 1), ('4', 'float', 1), ('5', 'float', 1), ('6', 'float', 1), ('7',
-      'float', 1), ('8', 'float', 1), ('9', 'float', 1), ('10', 'float', 1), ('11',
-      'float', 1), ('12', 'float', 1)], '', ['number_of_points'])
+      'float', 1), ('13', 'float', 1)], [('0', 'float', 1), ('1', 'float', 1), ('2',
+      'float', 1), ('3', 'float', 1), ('4', 'float', 1), ('5', 'float', 1), ('6',
+      'float', 1), ('7', 'float', 1), ('8', 'float', 1), ('9', 'float', 1), ('10',
+      'float', 1), ('11', 'float', 1), ('12', 'float', 1), ('13', 'float', 1)], '',
+      ['number_of_points'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -280,6 +281,24 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [536, 372]
+    rotation: 0
+    state: enabled
+- name: blocks_add_const_vxx_0_0_0_0_0_0_0
+  id: blocks_add_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: 7*offset
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [540, 422]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0
@@ -402,7 +421,7 @@ blocks:
     label5: Index Finger
     label6: Middle Finger
     label7: Ring Finger
-    label8: Signal 8
+    label8: Front To Back
     label9: Signal 9
     legend: 'True'
     marker1: '-1'
@@ -416,7 +435,7 @@ blocks:
     marker8: '-1'
     marker9: '-1'
     name: '""'
-    nconnections: '7'
+    nconnections: '8'
     size: points
     srate: samp_rate
     stemplot: 'False'
@@ -553,7 +572,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [574, 458]
+    coordinate: [560, 497]
     rotation: 0
     state: enabled
 
@@ -563,6 +582,7 @@ connections:
 - [block_BLE_source, '10', block_shift, '10']
 - [block_BLE_source, '11', block_shift, '11']
 - [block_BLE_source, '12', block_shift, '12']
+- [block_BLE_source, '13', block_shift, '13']
 - [block_BLE_source, '2', block_shift, '2']
 - [block_BLE_source, '3', block_shift, '3']
 - [block_BLE_source, '4', block_shift, '4']
@@ -574,23 +594,25 @@ connections:
 - [block_shift, '0', qtgui_freq_sink_x_0, '0']
 - [block_shift, '0', qtgui_time_sink_x_0_0, '0']
 - [block_shift, '1', blocks_add_const_vxx_0, '0']
-- [block_shift, '10', qtgui_time_sink_x_0_0_0, '3']
-- [block_shift, '11', qtgui_time_sink_x_0_0_0, '4']
-- [block_shift, '12', qtgui_time_sink_x_0_0_0, '5']
+- [block_shift, '10', qtgui_time_sink_x_0_0_0, '2']
+- [block_shift, '11', qtgui_time_sink_x_0_0_0, '3']
+- [block_shift, '12', qtgui_time_sink_x_0_0_0, '4']
+- [block_shift, '13', qtgui_time_sink_x_0_0_0, '5']
 - [block_shift, '2', blocks_add_const_vxx_0_0, '0']
 - [block_shift, '3', blocks_add_const_vxx_0_0_0, '0']
 - [block_shift, '4', blocks_add_const_vxx_0_0_0_0, '0']
 - [block_shift, '5', blocks_add_const_vxx_0_0_0_0_0, '0']
 - [block_shift, '6', blocks_add_const_vxx_0_0_0_0_0_0, '0']
-- [block_shift, '7', qtgui_time_sink_x_0_0_0, '0']
-- [block_shift, '8', qtgui_time_sink_x_0_0_0, '1']
-- [block_shift, '9', qtgui_time_sink_x_0_0_0, '2']
+- [block_shift, '7', blocks_add_const_vxx_0_0_0_0_0_0_0, '0']
+- [block_shift, '8', qtgui_time_sink_x_0_0_0, '0']
+- [block_shift, '9', qtgui_time_sink_x_0_0_0, '1']
 - [blocks_add_const_vxx_0, '0', qtgui_time_sink_x_0_0, '1']
 - [blocks_add_const_vxx_0_0, '0', qtgui_time_sink_x_0_0, '2']
 - [blocks_add_const_vxx_0_0_0, '0', qtgui_time_sink_x_0_0, '3']
 - [blocks_add_const_vxx_0_0_0_0, '0', qtgui_time_sink_x_0_0, '4']
 - [blocks_add_const_vxx_0_0_0_0_0, '0', qtgui_time_sink_x_0_0, '5']
 - [blocks_add_const_vxx_0_0_0_0_0_0, '0', qtgui_time_sink_x_0_0, '6']
+- [blocks_add_const_vxx_0_0_0_0_0_0_0, '0', qtgui_time_sink_x_0_0, '7']
 
 metadata:
   file_format: 1

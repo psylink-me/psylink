@@ -10,7 +10,7 @@ import numpy as np
 from gnuradio import gr
 
 
-CHANNELS = 13
+CHANNELS = 14
 
 
 class ShiftBlock(gr.interp_block):
