@@ -14,13 +14,18 @@ class BLEDecoder:
         self.sample_value_offset = sample_value_offset
         self.last_tick = None
 
-    def decode_packet(self, bytes_):
+    def decode_packet(self, packet):
         """
-        Takes bytes as argument, as received from the BLE characteristic of PsyLink
+        Argument: a packet as received from BLEBackend.thread_loop
+        packet = {
+            'timestamp': time.time() at the time of receiving the packet,
+            'content': bytes() as sent by the PsyLink device,
+        }
 
         returns {
             'channels': Number of channels,
             'tick': a number between 1 and 256 that gets incremented on each chraracteristic update
+            'timestamp': time.time() at the time of receiving the packet,
             'sample_count': Number of samples,
             'min_sampling_delay': The approx. minimum time in milliseconds between sample reads,
             'max_sampling_delay': The approx. maximum time in milliseconds between sample reads,
@@ -29,6 +34,9 @@ class BLEDecoder:
             'lost_packets': Number of skipped packets since last reads,
         }
         """
+        timestamp = packet['timestamp']
+        bytes_ = packet['content']
+
         if self.channels is None:
             raise Exception("Please read and decode the characteristic for the"
                 " channel count before running this method. Alternatively, set"
@@ -79,6 +87,7 @@ class BLEDecoder:
             'samples': samples,
             'is_duplicate': is_duplicate,
             'lost_packets': lost_packets,
+            'timestamp': timestamp,
         }
 
     @staticmethod

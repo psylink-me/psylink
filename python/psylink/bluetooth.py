@@ -2,6 +2,7 @@ from psylink.config import DEFAULT_BLE_ADDRESS, ASSUMED_BLE_LATENCY
 from threading import Thread, Event
 from queue import Queue
 import logging
+import time
 
 
 class BLECharacteristics:
@@ -73,7 +74,9 @@ class BLEBackend:
     def thread_loop(self, stop_event, pipe, disconnect_on_stop):
         try:
             while not stop_event.is_set():
-                pipe.put(self.read_sensor())
+                content = self.read_sensor()
+                timestamp = time.time()
+                pipe.put(dict(timestamp=timestamp, content=content))
         finally:
             if disconnect_on_stop:
                 self.disconnect()
