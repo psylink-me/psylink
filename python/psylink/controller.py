@@ -364,7 +364,7 @@ class SignalBuffer:
         """Note that this appends to the left of SignalBuffer.data"""
         sample_count = len(samples)
         self.data = np.roll(self.data, sample_count, 0)
-        self.data[:sample_count] = samples
+        self.data[:sample_count] = samples[::-1]
 
     def render_image(self, width, height):
         step_height = 2
