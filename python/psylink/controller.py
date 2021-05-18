@@ -15,7 +15,7 @@ import numpy as np
 import logging
 import threading
 import time
-from psylink.config import RECORD_EVERY_N_SAMPLES
+from psylink.config import RECORD_EVERY_N_SAMPLES, REDRAW_SIGNALS_DELAY
 
 
 AI_WORKER_RECORD_SAMPLES = 'mic-check'
@@ -216,6 +216,7 @@ class Controller:
     def signal_capture_activate(self):
         self.signal_capture_active_event.set()
         self.signal_capture_packet_arrived_event.clear()
+        self.BLE.reset()
         if self.signal_capture_thread is None:
             self.signal_capture_init()
 
@@ -265,7 +266,9 @@ class Controller:
                 packets_per_second = bytes_per_second = samples_per_second = 0
 
     def get_signal_image(self, width, height):
-        return self.signal_buffer.render_image(width, height)
+        if self.signal_capture_is_active():
+            return self.signal_buffer.render_image(width, height)
+        return None
 
     def get_recorded_samples(self):
         return self.ai.training_data.get_recorded_samples()
@@ -370,7 +373,6 @@ class SignalBuffer:
         step_height = 2
         steps = 5
         max_difference = 64.0
-        redraw_delay_ms = 100  # see after() call in gui.MyocularUIWindow.draw_signals
 
         if self.image_buffer is None or self.image_buffer.shape != (height, width):
             self.image_buffer = np.zeros((height, width))
@@ -381,7 +383,7 @@ class SignalBuffer:
         channels, total_signals = signals_by_channel.shape
 
         # Get approximately all the samples that arrived since the last redraw
-        samples_per_step = psylink.config.SAMPLE_RATE / (1000 / redraw_delay_ms) / steps
+        samples_per_step = psylink.config.SAMPLE_RATE / (1000 / REDRAW_SIGNALS_DELAY) / steps
         if samples_per_step * steps > total_signals:
             samples_per_step = int(total_signals / steps)
 

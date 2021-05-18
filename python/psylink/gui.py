@@ -211,6 +211,10 @@ class PsyLinkUIWindow(tk.Frame):
 
         # https://stackoverflow.com/questions/53308708/
         signals = self.controller.get_signal_image(CANVAS_WIDTH, CANVAS_HEIGHT)
+        if signals is None:
+            self.after(psylink.config.REDRAW_SIGNALS_DELAY, self.draw_signals)
+            return
+
         array = signals
         array = np.uint8(cm.viridis(array)*255)
         image = Image.fromarray(array, mode='RGBA')
@@ -220,7 +224,7 @@ class PsyLinkUIWindow(tk.Frame):
         if self._stop_drawing_signals:
             self._stop_drawing_signals = False
         else:
-            self.after(100, self.draw_signals)
+            self.after(psylink.config.REDRAW_SIGNALS_DELAY, self.draw_signals)
 
     def start_drawing_signals(self):
         self._stop_drawing_signals = False
