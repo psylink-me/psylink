@@ -380,6 +380,8 @@ class SignalBuffer:
         if count_new_samples == 0:
             return None
         steps = math.floor(steps * count_expected_samples / count_new_samples)
+        if steps == 0:
+            return None
 
         if self.image_buffer is None or self.image_buffer.shape != (height, width):
             self.image_buffer = np.zeros((height, width))
