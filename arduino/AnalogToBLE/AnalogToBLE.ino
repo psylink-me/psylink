@@ -1,14 +1,19 @@
+// Feature flags
+#define SEND_METRICS true
+#define USE_INTERRUPT_TIMER false
+
 #include <ArduinoBLE.h>
-//#include "NRF52_MBED_TimerInterrupt.h"
+#if USE_INTERRUPT_TIMER == true
+#include "NRF52_MBED_TimerInterrupt.h"
+#endif
 
 // Configuration
 #define SAMPLE_RATE 500 // samples per second
-#define BLE_NOTIFY_RATE 10 // updates per second
+#define BLE_NOTIFY_RATE 20 // updates per second
 #define BLE_CONNECTION_INTERVAL_MIN 8 // in steps of 1.25ms
 #define BLE_CONNECTION_INTERVAL_MAX 8 // in steps of 1.25ms
 #define CHANNELS 7
 #define BUFFERS 2 // multiple buffers help with concurrency issues, if needed
-#define SEND_METRICS true
 #define METADATA_BYTES 1
 // Metadata format:
 // Byte    |1   |2                            |
@@ -31,7 +36,9 @@ const int SAMPLES_PER_INTERVAL = SAMPLE_RATE / BLE_NOTIFY_RATE;
 const int BLE_CHARACTERISTIC_SIZE = METADATA_BYTES + CHANNELS * SAMPLES_PER_INTERVAL;
 const int NO_BUFFER = -1;
 
-//NRF52_MBED_Timer samplingTimer(NRF_TIMER_3);
+#if USE_INTERRUPT_TIMER == true
+NRF52_MBED_Timer samplingTimer(NRF_TIMER_3);
+#endif
 BLEDevice connectedDevice;
 BLEService sensorService("0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e4");
 BLEStringCharacteristic sensorCharacteristic("0a3d3fd8-2f1c-46fd-bf46-eaef2fda91e5", BLERead, BLE_CHARACTERISTIC_SIZE);
@@ -66,12 +73,14 @@ void setup() {
     digitalWrite(LEDR, LOW); // Turn on red LED
     while (1);
   }
-//  if (!samplingTimer.attachInterruptInterval(SAMPLE_INTERVAL_uS, samplingTimerHandler)) {
-//    digitalWrite(LEDR, LOW); // Turn on red LED
-//    digitalWrite(LEDG, LOW); // Turn on green LED
-//    while (1);
-//  }
-  //samplingTimer.stopTimer();
+  #if USE_INTERRUPT_TIMER == true
+  if (!samplingTimer.attachInterruptInterval(SAMPLE_INTERVAL_uS, samplingTimerHandler)) {
+    digitalWrite(LEDR, LOW); // Turn on red LED
+    digitalWrite(LEDG, LOW); // Turn on green LED
+    while (1);
+  }
+  samplingTimer.stopTimer();
+  #endif
   BLE.setLocalName("PsyLink");
   BLE.setAdvertisedService(sensorService);
   sensorService.addCharacteristic(sensorCharacteristic);
@@ -89,10 +98,15 @@ void setup() {
 
 unsigned long nextFrame = 0;
 void loop() {
-  //if (doSampling) {
+  #if USE_INTERRUPT_TIMER == true
+  if (doSampling) {
+  #else
   if (micros() >= nextFrame) {
+  #endif
     readSamples();
+    #if USE_INTERRUPT_TIMER == false
     nextFrame = micros() + 1000;
+    #endif
   }
   if (sendBuffer != NO_BUFFER) {
     updateSensorCharacteristic();
@@ -104,12 +118,17 @@ void sensorCharacteristicRead(BLEDevice central, BLECharacteristic characteristi
   updateSensorCharacteristic();
 }
 
+#if USE_INTERRUPT_TIMER == true
 void samplingTimerHandler() {
   doSampling = true;
 }
+#endif
 
 void readSamples() {
+  #if USE_INTERRUPT_TIMER == false
   doSampling = false;
+  #endif
+
   for (int channel = 0; channel < CHANNELS; channel++)
     samples[currentBuffer][channel][currentSample] = analogRead(channel);
   currentSample++;
