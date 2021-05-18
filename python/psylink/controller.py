@@ -9,7 +9,6 @@ It contains the following threads:
 - BLE's thread
 
 """
-from psylink.gui import MyocularUIWindow
 import psylink
 import tkinter as tk
 import numpy as np
@@ -273,9 +272,9 @@ class Controller:
 
     def launch_gui(self):
         root = tk.Tk()
-        self.gui = MyocularUIWindow(root, self)
+        self.gui = psylink.gui.PsyLinkUIWindow(root, self)
         root.geometry("640x480")
-        root.wm_title("MyocularUI")
+        root.wm_title("PsyLink UI")
         root.mainloop()
 
     def save_records(self, event=None):

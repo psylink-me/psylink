@@ -10,7 +10,7 @@ CANVAS_HEIGHT = 200
 CANVAS_WIDTH = 630
 
 
-class MyocularUIWindow(tk.Frame):
+class PsyLinkUIWindow(tk.Frame):
     def __init__(self, root, controller):
         tk.Frame.__init__(self, root)
         self.root = root
