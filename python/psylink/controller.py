@@ -11,6 +11,7 @@ It contains the following threads:
 
 import psylink
 import tkinter as tk
+import math
 import numpy as np
 import logging
 import threading
@@ -354,22 +355,31 @@ class SignalBuffer:
         self.signals = None
         self.data = None
         self.image_buffer = None
+        self.new_samples_since_redraw = 0
 
     def resize(self, channels, signals):
         self.channels = channels
         self.signals = signals
         self.data = np.zeros((signals, channels))
+        self.new_samples_since_redraw = 0
 
     def append(self, samples):
         """Note that this appends to the left of SignalBuffer.data"""
         sample_count = len(samples)
         self.data = np.roll(self.data, sample_count, 0)
         self.data[:sample_count] = samples[::-1]
+        self.new_samples_since_redraw += sample_count
 
     def render_image(self, width, height):
         step_height = 2
         steps = 5
         max_difference = 64.0
+
+        count_expected_samples = psylink.config.SAMPLE_RATE / (1000 / REDRAW_SIGNALS_DELAY)
+        count_new_samples = self.new_samples_since_redraw
+        if count_new_samples == 0:
+            return None
+        steps = math.floor(steps * count_expected_samples / count_new_samples)
 
         if self.image_buffer is None or self.image_buffer.shape != (height, width):
             self.image_buffer = np.zeros((height, width))
@@ -380,7 +390,7 @@ class SignalBuffer:
         channels, total_signals = signals_by_channel.shape
 
         # Get approximately all the samples that arrived since the last redraw
-        samples_per_step = psylink.config.SAMPLE_RATE / (1000 / REDRAW_SIGNALS_DELAY) / steps
+        samples_per_step = math.floor(count_new_samples / steps)
         if samples_per_step * steps > total_signals:
             samples_per_step = int(total_signals / steps)
 
@@ -408,4 +418,5 @@ class SignalBuffer:
 
                 self.image_buffer[y_start:y_end, x_start:x_end] = value
 
+        self.new_samples_since_redraw = 0
         return self.image_buffer
