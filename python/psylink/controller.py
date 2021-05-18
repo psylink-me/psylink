@@ -7,8 +7,8 @@ It contains the following threads:
 - signal_capture_thread
 - ai_worker_thread
 - BLE's thread
-
 """
+
 import psylink
 import tkinter as tk
 import numpy as np
