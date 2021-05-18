@@ -127,7 +127,6 @@ class Controller:
         self.ai_worker_thread.start()
 
     def ai_worker_loop(self, active, terminate):
-        next_action = 0
         while not terminate.is_set():
             if not active.wait(timeout=0.1):
                 continue
@@ -179,11 +178,9 @@ class Controller:
                 self.set_worker_action(None)
 
             if self.ai_worker_action in (AI_WORKER_PREDICT, AI_WORKER_PRESS_KEYS):
-                time_delay = next_action - time.time()
-                if time_delay > 0:
-                    time.sleep(time_delay)
+                if not self.signal_capture_packet_arrived_event.wait(timeout=0.1):
                     continue
-                next_action = time.time() + psylink.config.PREDICT_INTERVAL
+                self.signal_capture_packet_arrived_event.clear()
                 window_size = self.ai.training_data.get_window_size()
                 features = self.signal_buffer.data[:window_size]
                 predicted_label = self.ai.predict(features)
