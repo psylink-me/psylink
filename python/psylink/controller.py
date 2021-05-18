@@ -15,6 +15,7 @@ import numpy as np
 import logging
 import threading
 import time
+from psylink.config import RECORD_EVERY_N_SAMPLES
 
 
 AI_WORKER_RECORD_SAMPLES = 'mic-check'
@@ -33,8 +34,10 @@ class Controller:
         self.signal_capture_thread = None
         self.signal_capture_active_event = threading.Event()
         self.signal_capture_terminate_event = threading.Event()
+        self.signal_capture_packet_arrived_event = threading.Event()
         self.BLE_decoder = psylink.protocol.BLEDecoder(sample_value_offset=0)
-        self.last_decoded_packet = None
+        self.second_last_packet = None
+        self.last_packet = None
         self.min_sampling_delay = None
         self.max_sampling_delay = None
         self.channels = None
@@ -130,17 +133,27 @@ class Controller:
                 continue
 
             if self.ai_worker_action == AI_WORKER_RECORD_SAMPLES:
-                time_delay = next_action - time.time()
-                if time_delay > 0:
-                    time.sleep(time_delay)
+                if not self.signal_capture_packet_arrived_event.wait(timeout=0.1):
                     continue
-                next_action = time.time() + psylink.config.RECORD_SAMPLES_INTERVAL
-                window_size = self.ai.training_data.get_window_size()
-                features = self.signal_buffer.data[:window_size]
-                latency = self.BLE.get_latency()
-                keys = self.key_capturer.get_pressed_keys(at_time=time.time() - latency)
-                label = self.keys_to_label(keys)
-                self.ai.training_data.append(features, label)
+                self.signal_capture_packet_arrived_event.clear()
+
+                packet_new, packet_old = self.last_packet, self.second_last_packet
+                if packet_new is None or packet_old is None:
+                    continue
+
+                sample_count = packet_new['sample_count']
+                time_difference = packet_new['timestamp'] - packet_old['timestamp']
+                time_step = time_difference / sample_count
+                for index in range(sample_count):
+                    if index % RECORD_EVERY_N_SAMPLES != 0:
+                        continue
+                    window_size = self.ai.training_data.get_window_size()
+                    features = self.signal_buffer.data[index:index + window_size]
+                    latency = self.BLE.get_latency()
+                    approximate_time = time.time() - latency - time_step * index
+                    keys = self.key_capturer.get_pressed_keys(at_time=approximate_time)
+                    label = self.keys_to_label(keys)
+                    self.ai.training_data.append(features, label)
 
             if self.ai_worker_action == AI_WORKER_TRAIN:
                 signal_capture = self.signal_capture_is_active()
@@ -202,6 +215,7 @@ class Controller:
 
     def signal_capture_activate(self):
         self.signal_capture_active_event.set()
+        self.signal_capture_packet_arrived_event.clear()
         if self.signal_capture_thread is None:
             self.signal_capture_init()
 
@@ -230,13 +244,15 @@ class Controller:
             if decoded['is_duplicate']:
                 continue
 
-            self.last_decoded_packet = decoded
+            self.second_last_packet = self.last_packet
+            self.last_packet = decoded
             if not self.min_sampling_delay or self.min_sampling_delay > decoded['min_sampling_delay']:
                 self.min_sampling_delay = decoded['min_sampling_delay']
             if not self.max_sampling_delay or self.max_sampling_delay < decoded['max_sampling_delay']:
                 self.max_sampling_delay = decoded['max_sampling_delay']
 
             self.signal_buffer.append(decoded['samples'])
+            self.signal_capture_packet_arrived_event.set()
 
             packets_per_second += 1
             bytes_per_second += len(packet)
