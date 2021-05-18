@@ -345,6 +345,7 @@ class SignalBuffer:
         self.data = np.zeros((signals, channels))
 
     def append(self, samples):
+        """Note that this appends to the left of SignalBuffer.data"""
         sample_count = len(samples)
         self.data = np.roll(self.data, sample_count, 0)
         self.data[:sample_count] = samples
