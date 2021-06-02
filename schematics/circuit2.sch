@@ -51,4 +51,6 @@ Wire Wire Line
 	1250 1550 1250 2100
 Wire Wire Line
 	1250 2100 1750 2100
+Text Notes 1650 2300 0    50   ~ 0
+https://psylink.me/c2
 $EndSCHEMATC

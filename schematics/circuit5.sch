@@ -128,7 +128,7 @@ Fake a "ground" between\nthe batteries' 6V and 0V
 Text Notes 1600 2550 0    50   ~ 0
 Capacitors\nto remove\nvoltage offset\nbetween\nelectrodes
 Text Notes 4750 3800 2    50   ~ 0
-Myocular V0.5\nhttps://hut.pm/myocular.html
+https://psylink.me/c5
 $Comp
 L Device:R R?
 U 1 1 6095A52B

@@ -60,4 +60,6 @@ Wire Wire Line
 	650  1650 650  1950
 Wire Wire Line
 	650  1950 750  1950
+Text Notes 2550 2200 2    50   ~ 0
+https://psylink.me/c1
 $EndSCHEMATC

@@ -126,4 +126,6 @@ Wire Wire Line
 Connection ~ 1250 2700
 Wire Wire Line
 	1250 2700 2150 2700
+Text Notes 1750 3100 0    50   ~ 0
+https://psylink.me/c3
 $EndSCHEMATC

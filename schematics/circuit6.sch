@@ -36,7 +36,7 @@ F 3 "~" H 4400 2750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text Notes 4950 3350 2    50   ~ 0
-PsyLink V6\nhttps://hut.pm/psylink.html
+https://psylink.me/c6
 $Comp
 L MCU_Module:Arduino_Nano_v3.x A?
 U 1 1 60849281

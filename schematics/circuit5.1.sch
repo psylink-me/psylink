@@ -127,8 +127,6 @@ Text Notes 2450 3800 0    50   ~ 0
 Fake a "ground" between\nthe batteries' 6V and 0V
 Text Notes 1250 2450 0    50   ~ 0
 Capacitors\nto remove\nvoltage offset\nbetween\nelectrodes
-Text Notes 4750 3800 2    50   ~ 0
-Myocular V0.5.1\nhttps://hut.pm/myocular.html
 $Comp
 L Device:R R?
 U 1 1 6095A52B
@@ -526,4 +524,6 @@ Wire Notes Line
 	3350 950  950  950 
 Text Notes 1000 1150 0    50   ~ 0
 One of these\nper electrode pair
+Text Notes 4750 3800 2    50   ~ 0
+https://psylink.me/c5.1
 $EndSCHEMATC

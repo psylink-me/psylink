@@ -723,8 +723,6 @@ Wire Wire Line
 Connection ~ 4050 1900
 Wire Wire Line
 	4050 1900 4250 1900
-Text Notes 4850 4300 2    50   ~ 0
-Myocular V0.4\nhttps://hut.pm/myocular.html
 $Comp
 L power:+2V5 #PWR?
 U 1 1 60850F16
@@ -759,4 +757,6 @@ F 3 "" H 1650 1800 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 Connection ~ 2500 2250
+Text Notes 4850 4300 2    50   ~ 0
+https://psylink.me/c4
 $EndSCHEMATC
