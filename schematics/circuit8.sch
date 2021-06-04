@@ -50,7 +50,7 @@ Wire Wire Line
 Connection ~ 2800 3400
 Wire Wire Line
 	2800 3400 2800 3650
-Text Notes 2650 2900 0    50   ~ 0
+Text Notes 2350 2950 0    50   ~ 0
 Power supply module
 $Comp
 L Regulator_Switching:TPS61220DCK U1
@@ -198,14 +198,8 @@ Entry Bus Bus
 	3950 2700 4050 2800
 Entry Bus Bus
 	1700 2600 1800 2700
-Wire Wire Line
-	1800 1550 2000 1550
-Entry Wire Line
-	1800 1550 1700 1650
 Text Label 3150 1450 0    50   ~ 0
 Vref
-Text Label 1850 1550 0    50   ~ 0
-D6
 Text Label 3150 1350 0    50   ~ 0
 Vref
 Wire Wire Line
@@ -236,18 +230,12 @@ Entry Wire Line
 	1800 1850 1700 1950
 Entry Wire Line
 	1800 1950 1700 2050
-Wire Wire Line
-	1800 1650 2000 1650
 Text Label 1850 1950 0    50   ~ 0
 D2
 Text Label 1850 1850 0    50   ~ 0
 D3
 Text Label 1850 1750 0    50   ~ 0
 D4
-Text Label 1850 1650 0    50   ~ 0
-D5
-Entry Wire Line
-	1800 1650 1700 1750
 Text Label 3150 1750 0    50   ~ 0
 D2
 Text Label 3150 1850 0    50   ~ 0
@@ -395,7 +383,7 @@ L Connector:Conn_01x15_Female J1
 U 1 1 60BC79E1
 P 1150 1650
 F 0 "J1" V 1223 1630 50  0000 C CNN
-F 1 "Arduino Left Pin Strip" V 1300 1650 50  0000 C CNN
+F 1 "Left Pin Strip" V 1300 1650 50  0000 C CNN
 F 2 "Connector_PinSocket_2.54mm:PinSocket_1x15_P2.54mm_Vertical" H 1150 1650 50  0001 C CNN
 F 3 "~" H 1150 1650 50  0001 C CNN
 	1    1150 1650
@@ -406,7 +394,7 @@ L Connector:Conn_01x15_Female J2
 U 1 1 60C041A0
 P 2200 1650
 F 0 "J2" V 2273 1630 50  0000 C CNN
-F 1 "Arduino Right Pin Strip" V 2350 1650 50  0000 C CNN
+F 1 "Right Pin Strip" V 2350 1650 50  0000 C CNN
 F 2 "Connector_PinSocket_2.54mm:PinSocket_1x15_P2.54mm_Vertical" H 2200 1650 50  0001 C CNN
 F 3 "~" H 2200 1650 50  0001 C CNN
 	1    2200 1650
@@ -417,7 +405,7 @@ L Connector:Conn_01x17_Female J3
 U 1 1 60D14FD7
 P 3550 1750
 F 0 "J3" V 3650 1750 50  0000 L CNN
-F 1 "Output Pin Strip" V 3750 1450 50  0000 L CNN
+F 1 "Pass-through Output Pin Strip" V 3750 1200 50  0000 L CNN
 F 2 "Connector_PinSocket_2.54mm:PinSocket_1x17_P2.54mm_Vertical" H 3550 1750 50  0001 C CNN
 F 3 "~" H 3550 1750 50  0001 C CNN
 	1    3550 1750
@@ -490,6 +478,12 @@ F 3 "http://www.ti.com/lit/ds/symlink/lm321.pdf" H 3300 3500 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Connection ~ 3600 3500
+Text Notes 3800 3000 0    50   ~ 0
+5V
+Text Notes 3750 3400 0    50   ~ 0
+2.5V
+Text Notes 1250 2650 0    50   ~ 0
+Arduino\nNano 33\nBLE Sense
 Wire Bus Line
 	4050 2800 4050 3800
 Wire Bus Line
