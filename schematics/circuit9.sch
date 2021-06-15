@@ -33,107 +33,107 @@ Wire Wire Line
 Text Label 5150 3950 0    50   ~ 0
 Vref
 Entry Bus Bus
-	4450 2900 4550 2800
+	4400 2900 4500 2800
 Entry Bus Bus
-	1750 2800 1850 2900
+	1700 2800 1800 2900
 Wire Wire Line
-	1850 1950 2050 1950
+	1800 1950 2000 1950
 Wire Wire Line
-	1850 2050 2050 2050
+	1800 2050 2000 2050
 Wire Wire Line
-	1850 2150 2050 2150
+	1800 2150 2000 2150
 Entry Wire Line
-	1850 1950 1750 2050
+	1800 1950 1700 2050
 Entry Wire Line
-	1850 2050 1750 2150
+	1800 2050 1700 2150
 Entry Wire Line
-	1850 2150 1750 2250
-Text Label 1900 2150 0    50   ~ 0
+	1800 2150 1700 2250
+Text Label 1850 2150 0    50   ~ 0
 D2
-Text Label 1900 2050 0    50   ~ 0
+Text Label 1850 2050 0    50   ~ 0
 D3
-Text Label 1900 1950 0    50   ~ 0
+Text Label 1850 1950 0    50   ~ 0
 D4
 Entry Wire Line
-	1650 2450 1750 2550
+	1600 2450 1700 2550
 Entry Wire Line
-	1650 1250 1750 1350
+	1600 1250 1700 1350
 Entry Wire Line
-	1650 1450 1750 1550
+	1600 1450 1700 1550
 Entry Wire Line
-	1650 1550 1750 1650
+	1600 1550 1700 1650
 Entry Wire Line
-	1650 1650 1750 1750
+	1600 1650 1700 1750
 Entry Wire Line
-	1650 1750 1750 1850
+	1600 1750 1700 1850
 Entry Wire Line
-	1650 1850 1750 1950
+	1600 1850 1700 1950
 Entry Wire Line
-	1650 1950 1750 2050
+	1600 1950 1700 2050
 Entry Wire Line
-	1650 2050 1750 2150
+	1600 2050 1700 2150
 Entry Wire Line
-	1650 2150 1750 2250
+	1600 2150 1700 2250
 Wire Wire Line
-	1400 2050 1650 2050
-Text Label 1450 2150 0    50   ~ 0
+	1350 2050 1600 2050
+Text Label 1400 2150 0    50   ~ 0
 A7
-Text Label 1450 2050 0    50   ~ 0
+Text Label 1400 2050 0    50   ~ 0
 A6
-Text Label 1450 1950 0    50   ~ 0
+Text Label 1400 1950 0    50   ~ 0
 A5
-Text Label 1450 1850 0    50   ~ 0
+Text Label 1400 1850 0    50   ~ 0
 A4
-Text Label 1450 1750 0    50   ~ 0
+Text Label 1400 1750 0    50   ~ 0
 A3
-Text Label 1450 1650 0    50   ~ 0
+Text Label 1400 1650 0    50   ~ 0
 A2
-Text Label 1450 1550 0    50   ~ 0
+Text Label 1400 1550 0    50   ~ 0
 A1
-Text Label 1450 1450 0    50   ~ 0
+Text Label 1400 1450 0    50   ~ 0
 A0
-Text Label 1450 2450 0    50   ~ 0
+Text Label 1400 2450 0    50   ~ 0
 GND2
-Text Label 1450 1250 0    50   ~ 0
+Text Label 1400 1250 0    50   ~ 0
 V+
 Wire Wire Line
-	1400 1450 1650 1450
+	1350 1450 1600 1450
 Wire Wire Line
-	1400 1550 1650 1550
+	1350 1550 1600 1550
 Wire Wire Line
-	1400 1750 1650 1750
+	1350 1750 1600 1750
 Wire Wire Line
-	1400 1850 1650 1850
+	1350 1850 1600 1850
 Wire Wire Line
-	1400 1950 1650 1950
+	1350 1950 1600 1950
 Wire Wire Line
-	1400 2150 1650 2150
+	1350 2150 1600 2150
 Wire Wire Line
-	1400 1250 1650 1250
+	1350 1250 1600 1250
 Wire Wire Line
-	1400 2450 1650 2450
+	1350 2450 1600 2450
 Wire Wire Line
-	1400 1650 1650 1650
+	1350 1650 1600 1650
 $Comp
 L Connector:Conn_01x15_Female J2
 U 1 1 60BC79E1
-P 2250 1850
-F 0 "J2" H 2150 1050 50  0000 C CNN
-F 1 "Right Pin Strip" H 2074 2674 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x15_P2.54mm_Vertical" H 2250 1850 50  0001 C CNN
-F 3 "~" H 2250 1850 50  0001 C CNN
-	1    2250 1850
+P 2200 1850
+F 0 "J2" H 2100 1050 50  0000 C CNN
+F 1 "Right Pin Strip" H 2024 2674 50  0000 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x15_P2.54mm_Vertical" H 2200 1850 50  0001 C CNN
+F 3 "~" H 2200 1850 50  0001 C CNN
+	1    2200 1850
 	1    0    0    -1  
 $EndComp
 $Comp
 L Connector:Conn_01x15_Female J1
 U 1 1 60C041A0
-P 1200 1850
-F 0 "J1" H 1100 1050 50  0000 C CNN
-F 1 "Left Pin Strip" H 1023 2676 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x15_P2.54mm_Vertical" H 1200 1850 50  0001 C CNN
-F 3 "~" H 1200 1850 50  0001 C CNN
-	1    1200 1850
+P 1150 1850
+F 0 "J1" H 1050 1050 50  0000 C CNN
+F 1 "Left Pin Strip" H 973 2676 50  0000 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x15_P2.54mm_Vertical" H 1150 1850 50  0001 C CNN
+F 3 "~" H 1150 1850 50  0001 C CNN
+	1    1150 1850
 	-1   0    0    -1  
 $EndComp
 $Comp
@@ -153,7 +153,7 @@ Text Notes 5200 3450 0    50   ~ 0
 5V
 Text Notes 5150 3850 0    50   ~ 0
 2.5V
-Text Notes 1350 3100 0    50   ~ 0
+Text Notes 1300 3100 0    50   ~ 0
 Connector to Arduino\nNano 33 BLE Sense
 Wire Wire Line
 	4650 3950 4650 4300
@@ -336,106 +336,106 @@ F 3 "~" H 4900 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Entry Wire Line
-	1650 1150 1750 1250
+	1600 1150 1700 1250
 Entry Wire Line
-	1650 1350 1750 1450
+	1600 1350 1700 1450
 Entry Wire Line
-	1650 2250 1750 2350
+	1600 2250 1700 2350
 Entry Wire Line
-	1650 2350 1750 2450
+	1600 2350 1700 2450
 Entry Wire Line
-	1650 2550 1750 2650
+	1600 2550 1700 2650
 Entry Wire Line
-	1850 2550 1750 2650
+	1800 2550 1700 2650
 Entry Wire Line
-	1850 2450 1750 2550
+	1800 2450 1700 2550
 Entry Wire Line
-	1850 2350 1750 2450
+	1800 2350 1700 2450
 Entry Wire Line
-	1850 2250 1750 2350
+	1800 2250 1700 2350
 Entry Wire Line
-	1850 1850 1750 1950
+	1800 1850 1700 1950
 Entry Wire Line
-	1850 1750 1750 1850
+	1800 1750 1700 1850
 Entry Wire Line
-	1850 1650 1750 1750
+	1800 1650 1700 1750
 Entry Wire Line
-	1850 1550 1750 1650
+	1800 1550 1700 1650
 Entry Wire Line
-	1850 1450 1750 1550
+	1800 1450 1700 1550
 Entry Wire Line
-	1850 1350 1750 1450
+	1800 1350 1700 1450
 Entry Wire Line
-	1850 1250 1750 1350
+	1800 1250 1700 1350
 Entry Wire Line
-	1850 1150 1750 1250
+	1800 1150 1700 1250
 Wire Wire Line
-	1850 1150 2050 1150
+	1800 1150 2000 1150
 Wire Wire Line
-	2050 1250 1850 1250
+	2000 1250 1800 1250
 Wire Wire Line
-	1850 1350 2050 1350
+	1800 1350 2000 1350
 Wire Wire Line
-	2050 1450 1850 1450
+	2000 1450 1800 1450
 Wire Wire Line
-	1850 1550 2050 1550
+	1800 1550 2000 1550
 Wire Wire Line
-	2050 1650 1850 1650
+	2000 1650 1800 1650
 Wire Wire Line
-	1850 1750 2050 1750
+	1800 1750 2000 1750
 Wire Wire Line
-	2050 1850 1850 1850
+	2000 1850 1800 1850
 Wire Wire Line
-	1850 2250 2050 2250
+	1800 2250 2000 2250
 Wire Wire Line
-	1850 2350 2050 2350
+	1800 2350 2000 2350
 Wire Wire Line
-	1850 2450 2050 2450
+	1800 2450 2000 2450
 Wire Wire Line
-	1850 2550 2050 2550
+	1800 2550 2000 2550
 Wire Wire Line
-	1650 2550 1400 2550
+	1600 2550 1350 2550
 Wire Wire Line
-	1400 2350 1650 2350
+	1350 2350 1600 2350
 Wire Wire Line
-	1650 2250 1400 2250
+	1600 2250 1350 2250
 Wire Wire Line
-	1400 1350 1650 1350
+	1350 1350 1600 1350
 Wire Wire Line
-	1650 1150 1400 1150
-Text Label 1450 2350 0    50   ~ 0
+	1600 1150 1350 1150
+Text Label 1400 2350 0    50   ~ 0
 RST2
-Text Label 1900 2350 0    50   ~ 0
+Text Label 1850 2350 0    50   ~ 0
 RST
-Text Label 1900 2450 0    50   ~ 0
+Text Label 1850 2450 0    50   ~ 0
 RX
-Text Label 1900 2550 0    50   ~ 0
+Text Label 1850 2550 0    50   ~ 0
 TX
-Text Label 1450 2550 0    50   ~ 0
+Text Label 1400 2550 0    50   ~ 0
 VIN
-Text Label 1450 2250 0    50   ~ 0
+Text Label 1400 2250 0    50   ~ 0
 +5V
-Text Label 1450 1350 0    50   ~ 0
+Text Label 1400 1350 0    50   ~ 0
 AREF
-Text Label 1450 1150 0    50   ~ 0
+Text Label 1400 1150 0    50   ~ 0
 D13
-Text Label 1900 2250 0    50   ~ 0
+Text Label 1850 2250 0    50   ~ 0
 GND
-Text Label 1900 1750 0    50   ~ 0
+Text Label 1850 1750 0    50   ~ 0
 D6
-Text Label 1900 1850 0    50   ~ 0
+Text Label 1850 1850 0    50   ~ 0
 D5
-Text Label 1900 1650 0    50   ~ 0
+Text Label 1850 1650 0    50   ~ 0
 D7
-Text Label 1900 1550 0    50   ~ 0
+Text Label 1850 1550 0    50   ~ 0
 D8
-Text Label 1900 1450 0    50   ~ 0
+Text Label 1850 1450 0    50   ~ 0
 D9
-Text Label 1900 1350 0    50   ~ 0
+Text Label 1850 1350 0    50   ~ 0
 D10
-Text Label 1900 1250 0    50   ~ 0
+Text Label 1850 1250 0    50   ~ 0
 D11
-Text Label 1900 1150 0    50   ~ 0
+Text Label 1850 1150 0    50   ~ 0
 D12
 $Comp
 L Switch:SW_DPST_x2 SW1
@@ -453,21 +453,21 @@ Vbat
 Text Notes 5150 3200 0    50   ~ 0
 1.2V
 Entry Bus Bus
-	3600 2800 3700 2900
+	3550 2800 3650 2900
 Wire Wire Line
-	4450 2350 4200 2350
-Text Label 3900 2350 2    50   ~ 0
+	4400 2350 4150 2350
+Text Label 3850 2350 2    50   ~ 0
 Vbat
-Text Label 4400 2350 2    50   ~ 0
+Text Label 4350 2350 2    50   ~ 0
 A7
 Wire Wire Line
-	3900 2350 3700 2350
+	3850 2350 3650 2350
 Entry Bus Bus
 	5350 2900 5450 3000
 Entry Wire Line
-	4450 2350 4550 2450
+	4400 2350 4500 2450
 Entry Wire Line
-	3600 2450 3700 2350
+	3550 2450 3650 2350
 Connection ~ 4900 3950
 Connection ~ 4900 4350
 $Comp
@@ -511,7 +511,7 @@ F 3 "~" H 3300 4000 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	1250 3300 1250 3650
-Text Notes 3750 2700 0    50   ~ 0
+Text Notes 3700 2700 0    50   ~ 0
 Allows measuring\nbattery charge via\nanalog pin A7
 Wire Wire Line
 	1550 3650 1750 3650
@@ -532,115 +532,115 @@ Reference Voltage\nGenerator
 $Comp
 L Connector:Conn_01x17_Female J3
 U 1 1 60D14FD7
-P 3250 1950
-F 0 "J3" H 3091 1079 50  0000 L CNN
-F 1 "I/O Pin Strip" H 2693 2876 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x17_P2.54mm_Horizontal" H 3250 1950 50  0001 C CNN
-F 3 "~" H 3250 1950 50  0001 C CNN
-	1    3250 1950
+P 3200 1950
+F 0 "J3" H 3041 1079 50  0000 L CNN
+F 1 "I/O Pin Strip" H 2643 2876 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x17_P2.54mm_Horizontal" H 3200 1950 50  0001 C CNN
+F 3 "~" H 3200 1950 50  0001 C CNN
+	1    3200 1950
 	1    0    0    -1  
 $EndComp
 Entry Wire Line
-	2800 1150 2700 1250
+	2750 1150 2650 1250
 Entry Wire Line
-	2800 1250 2700 1350
+	2750 1250 2650 1350
 Entry Wire Line
-	2800 1350 2700 1450
+	2750 1350 2650 1450
 Entry Wire Line
-	2800 1450 2700 1550
+	2750 1450 2650 1550
 Entry Wire Line
-	2800 1750 2700 1850
+	2750 1750 2650 1850
 Entry Wire Line
-	2800 1850 2700 1950
+	2750 1850 2650 1950
 Entry Wire Line
-	2800 1950 2700 2050
+	2750 1950 2650 2050
 Entry Wire Line
-	2800 2050 2700 2150
+	2750 2050 2650 2150
 Entry Wire Line
-	2800 2150 2700 2250
+	2750 2150 2650 2250
 Entry Wire Line
-	2800 2250 2700 2350
+	2750 2250 2650 2350
 Entry Wire Line
-	2800 2350 2700 2450
+	2750 2350 2650 2450
 Entry Wire Line
-	2800 2450 2700 2550
+	2750 2450 2650 2550
 Entry Wire Line
-	2800 2550 2700 2650
+	2750 2550 2650 2650
 Entry Wire Line
-	2800 2650 2700 2750
+	2750 2650 2650 2750
 Entry Wire Line
-	2800 2750 2700 2850
-Text Label 2850 1150 0    50   ~ 0
+	2750 2750 2650 2850
+Text Label 2800 1150 0    50   ~ 0
 GND
 Wire Wire Line
-	2800 2450 3050 2450
+	2750 2450 3000 2450
 Wire Wire Line
-	2800 2350 3050 2350
+	2750 2350 3000 2350
 Wire Wire Line
-	2800 2250 3050 2250
+	2750 2250 3000 2250
 Wire Wire Line
-	2800 2150 3050 2150
+	2750 2150 3000 2150
 Wire Wire Line
-	2800 2050 3050 2050
+	2750 2050 3000 2050
 Wire Wire Line
-	2800 1950 3050 1950
+	2750 1950 3000 1950
 Wire Wire Line
-	2800 1850 3050 1850
+	2750 1850 3000 1850
 Wire Wire Line
-	2800 1750 3050 1750
+	2750 1750 3000 1750
 Wire Wire Line
-	2800 2550 3050 2550
+	2750 2550 3000 2550
 Wire Wire Line
-	2800 2750 3050 2750
+	2750 2750 3000 2750
 Wire Wire Line
-	2800 2650 3050 2650
+	2750 2650 3000 2650
 Wire Wire Line
-	2800 1450 3050 1450
+	2750 1450 3000 1450
 Wire Wire Line
-	2800 1350 3050 1350
+	2750 1350 3000 1350
 Wire Wire Line
-	2800 1250 3050 1250
+	2750 1250 3000 1250
 Wire Wire Line
-	2800 1150 3050 1150
-Text Label 2850 1250 0    50   ~ 0
+	2750 1150 3000 1150
+Text Label 2800 1250 0    50   ~ 0
 GND
-Text Label 2850 2450 0    50   ~ 0
+Text Label 2800 2450 0    50   ~ 0
 A0
-Text Label 2850 2350 0    50   ~ 0
+Text Label 2800 2350 0    50   ~ 0
 A1
-Text Label 2850 2250 0    50   ~ 0
+Text Label 2800 2250 0    50   ~ 0
 A2
-Text Label 2850 2150 0    50   ~ 0
+Text Label 2800 2150 0    50   ~ 0
 A3
-Text Label 2850 2050 0    50   ~ 0
+Text Label 2800 2050 0    50   ~ 0
 A4
-Text Label 2850 1950 0    50   ~ 0
+Text Label 2800 1950 0    50   ~ 0
 A5
-Text Label 2850 1850 0    50   ~ 0
+Text Label 2800 1850 0    50   ~ 0
 A6
-Text Label 2850 1750 0    50   ~ 0
+Text Label 2800 1750 0    50   ~ 0
 A7
-Text Label 2850 2750 0    50   ~ 0
+Text Label 2800 2750 0    50   ~ 0
 D2
-Text Label 2850 2650 0    50   ~ 0
+Text Label 2800 2650 0    50   ~ 0
 D3
-Text Label 2850 2550 0    50   ~ 0
+Text Label 2800 2550 0    50   ~ 0
 D4
-Text Label 2850 1350 0    50   ~ 0
+Text Label 2800 1350 0    50   ~ 0
 V+
-Text Label 2850 1450 0    50   ~ 0
+Text Label 2800 1450 0    50   ~ 0
 V+
 Wire Wire Line
-	3050 1650 2800 1650
+	3000 1650 2750 1650
 Entry Wire Line
-	2700 1650 2800 1550
+	2650 1650 2750 1550
 Entry Wire Line
-	2700 1750 2800 1650
+	2650 1750 2750 1650
 Wire Wire Line
-	2800 1550 3050 1550
-Text Label 2850 1550 0    50   ~ 0
+	2750 1550 3000 1550
+Text Label 2800 1550 0    50   ~ 0
 Vref
-Text Label 2850 1650 0    50   ~ 0
+Text Label 2800 1650 0    50   ~ 0
 Vref
 $Comp
 L Device:C_Small C10
@@ -658,12 +658,12 @@ https://psylink.me/c9
 $Comp
 L Jumper:SolderJumper_2_Open JP2
 U 1 1 60F6BC38
-P 4050 2350
-F 0 "JP2" H 4100 2100 50  0000 R CNN
-F 1 "Solder Jumper" H 4350 2200 50  0000 R CNN
-F 2 "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm" H 4050 2350 50  0001 C CNN
-F 3 "~" H 4050 2350 50  0001 C CNN
-	1    4050 2350
+P 4000 2350
+F 0 "JP2" H 4050 2100 50  0000 R CNN
+F 1 "Solder Jumper" H 4300 2200 50  0000 R CNN
+F 2 "Jumper:SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm" H 4000 2350 50  0001 C CNN
+F 3 "~" H 4000 2350 50  0001 C CNN
+	1    4000 2350
 	1    0    0    1   
 $EndComp
 $Comp
@@ -710,69 +710,69 @@ Wire Notes Line
 Wire Notes Line
 	1050 4550 1100 4550
 Wire Bus Line
-	1850 2900 2700 2900
-Connection ~ 2700 2900
+	1800 2900 2650 2900
+Connection ~ 2650 2900
 Wire Notes Line
-	1300 3050 1100 3050
+	1250 3050 1050 3050
 Wire Notes Line
-	1100 3050 1100 950 
+	1050 3050 1050 950 
 Wire Notes Line
-	2400 950  2400 3050
+	2350 950  2350 3050
 Wire Notes Line
-	2400 3050 2150 3050
+	2350 3050 2100 3050
 Wire Notes Line
-	1100 950  2400 950 
-Text Notes 2750 3100 0    50   ~ 0
+	1050 950  2350 950 
+Text Notes 2700 3100 0    50   ~ 0
 Input/Output\nPin Strip
 Wire Notes Line
-	2600 3050 2600 950 
+	2550 3050 2550 950 
 Wire Notes Line
-	2600 950  3350 950 
+	2550 950  3300 950 
 Wire Notes Line
-	3350 950  3350 3050
-Text Label 4300 1500 0    50   ~ 0
+	3300 950  3300 3050
+Text Label 4250 1500 0    50   ~ 0
 D6
-Text Label 3750 1500 0    50   ~ 0
+Text Label 3700 1500 0    50   ~ 0
 D5
-Text Label 3750 1650 0    50   ~ 0
+Text Label 3700 1650 0    50   ~ 0
 GND
 Entry Wire Line
-	3600 1750 3700 1650
+	3550 1750 3650 1650
 Entry Wire Line
-	3600 1600 3700 1500
+	3550 1600 3650 1500
 Entry Wire Line
-	4450 1500 4550 1600
+	4400 1500 4500 1600
 Wire Wire Line
-	3700 1650 4050 1650
+	3650 1650 4000 1650
 Wire Wire Line
-	4300 1500 4450 1500
+	4250 1500 4400 1500
 Wire Wire Line
-	3700 1500 3800 1500
+	3650 1500 3750 1500
 $Comp
 L Jumper:Jumper_3_Open JP1
 U 1 1 6112D134
-P 4050 1500
-F 0 "JP1" H 4050 1724 50  0000 C CNN
-F 1 "Configuration Jumper" H 4050 1633 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 4050 1500 50  0001 C CNN
-F 3 "~" H 4050 1500 50  0001 C CNN
-	1    4050 1500
+P 4000 1500
+F 0 "JP1" H 4000 1724 50  0000 C CNN
+F 1 "Configuration Jumper" H 4000 1633 50  0000 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x03_P2.54mm_Vertical" H 4000 1500 50  0001 C CNN
+F 3 "~" H 4000 1500 50  0001 C CNN
+	1    4000 1500
 	1    0    0    -1  
 $EndComp
-Text Notes 3650 1900 0    50   ~ 0
+Text Notes 3600 1900 0    50   ~ 0
 Multipurpose jumpers,\nsoftware-configurable
 Wire Notes Line
-	3500 1200 4650 1200
+	3450 1200 4600 1200
 Wire Notes Line
-	3500 1200 3500 3050
+	3450 1200 3450 3050
 Wire Notes Line
-	4650 1200 4650 3050
-Text Notes 3900 3100 0    50   ~ 0
+	4600 1200 4600 3050
+Text Notes 3850 3100 0    50   ~ 0
 Jumpers
 Wire Notes Line
-	3500 3050 3900 3050
+	3450 3050 3850 3050
 Wire Notes Line
-	4250 3050 4650 3050
+	4200 3050 4600 3050
 Connection ~ 3300 3550
 $Comp
 L Device:R_Small R4
@@ -836,9 +836,9 @@ Wire Notes Line
 Wire Notes Line
 	4250 4550 4950 4550
 Wire Notes Line
-	3100 3050 3350 3050
+	3050 3050 3300 3050
 Wire Notes Line
-	2750 3050 2600 3050
+	2700 3050 2550 3050
 Wire Wire Line
 	3300 3400 3300 3550
 Entry Wire Line
@@ -885,15 +885,15 @@ $EndComp
 Wire Wire Line
 	1250 3300 5350 3300
 Wire Bus Line
-	4550 1600 4550 2800
+	4500 1600 4500 2800
 Wire Bus Line
-	2700 2900 5350 2900
+	2650 2900 5350 2900
 Wire Bus Line
-	3600 1600 3600 2800
+	3550 1600 3550 2800
 Wire Bus Line
 	5450 3000 5450 4250
 Wire Bus Line
-	1750 1250 1750 2800
+	1700 1250 1700 2800
 Wire Bus Line
-	2700 1250 2700 2900
+	2650 1250 2650 2900
 $EndSCHEMATC
