@@ -231,9 +231,6 @@ F 3 "~" H 1450 4000 50  0001 C CNN
 	1    1450 4000
 	-1   0    0    1   
 $EndComp
-Wire Wire Line
-	2000 4350 2400 4350
-Connection ~ 2000 3750
 $Comp
 L Device:C_Small C2
 U 1 1 60CBE5F6
@@ -651,21 +648,16 @@ Wire Wire Line
 	1200 3300 1200 3650
 Text Notes 4600 2750 0    50   ~ 0
 Allows measuring\nbattery charge via\nanalog pin A7
-Wire Wire Line
-	4550 3650 4550 3950
-Text Notes 5450 1200 2    50   ~ 0
+Text Notes 5450 1150 2    50   ~ 0
 https://psylink.me/c9
 Wire Wire Line
 	1450 3650 1650 3650
-Wire Wire Line
-	2000 3750 2000 4350
 Wire Wire Line
 	1650 3900 1650 3650
 Connection ~ 1650 3650
 Wire Wire Line
 	1650 4100 1650 4350
 Connection ~ 1650 4350
-Connection ~ 2000 4350
 $Comp
 L Device:R_Small R5
 U 1 1 60CB6FA7
@@ -695,8 +687,6 @@ Wire Wire Line
 Wire Wire Line
 	1850 4250 1850 4350
 Wire Wire Line
-	1850 4350 2000 4350
-Wire Wire Line
 	1650 3550 1850 3550
 Connection ~ 1850 3550
 Wire Wire Line
@@ -713,8 +703,6 @@ Wire Notes Line
 	1950 4400 1950 3500
 Wire Wire Line
 	1850 3900 1850 4050
-Wire Wire Line
-	1250 3300 5350 3300
 Wire Notes Line
 	1750 3500 1950 3500
 Text Notes 2150 4600 0    50   ~ 0
@@ -729,9 +717,6 @@ Wire Notes Line
 	3650 3250 3650 4550
 Wire Notes Line
 	3650 4550 2800 4550
-Connection ~ 4550 3950
-Wire Wire Line
-	4550 3950 4550 4050
 Wire Wire Line
 	3550 3550 3750 3550
 Connection ~ 3550 3550
@@ -887,6 +872,10 @@ Wire Notes Line
 	5000 3900 5000 4550
 Wire Notes Line
 	4850 3500 4850 3900
+Wire Wire Line
+	4550 3650 4550 4050
+Wire Wire Line
+	1200 3300 5350 3300
 Wire Bus Line
 	5450 1900 5450 2800
 Wire Bus Line
@@ -899,4 +888,6 @@ Wire Bus Line
 	1850 1250 1850 2800
 Wire Bus Line
 	2900 1250 2900 2900
+Wire Wire Line
+	1850 4350 2400 4350
 $EndSCHEMATC
