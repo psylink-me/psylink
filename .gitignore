@@ -3,6 +3,7 @@ __pycache__
 .idea
 extra
 venv
+www
 
 # Calibrator tool
 records.csv
@@ -22,6 +23,10 @@ _autosave-*.sch
 _autosave-*.kicad_pcb
 *.pro
 fp-info-cache
+schematics/*.svg
+schematics/*.png
+schematics/*.net
+schematics/fp-lib-table
 
 # GNURadio
 gnuradio/*_0.py
