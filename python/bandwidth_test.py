@@ -19,7 +19,12 @@ except IndexError:
     name, BackendClass = list(psylink.bluetooth.BACKENDS.items())[0]
     print("Warning: Using default BLE backend %s." % name)
 
-backend = psylink.bluetooth.BLEGATTBackend()
+if len(sys.argv) > 2:
+    address = sys.argv[2]
+    backend = BackendClass(address=address)
+else:
+    backend = BackendClass()
+
 backend.connect()
 backend.thread_start(disconnect_on_stop=True)
 
