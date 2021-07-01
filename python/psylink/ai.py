@@ -178,11 +178,19 @@ class AI:
 
     def train(self, epochs=psylink.config.DEFAULT_TRAINING_EPOCHS):
         logging.info("Starting to train")
+        early_stopping = keras.callbacks.EarlyStopping(
+            monitor='val_loss',
+            mode='min',
+            verbose=1,
+            patience=3,
+            min_delta=0.01,
+        )
         history = self.model.fit(
             self.samples_train,
             self.labels_train,
             batch_size=psylink.config.BATCH_SIZE,
             epochs=epochs,
+            callbacks=[early_stopping],
             validation_data=(self.samples_validate, self.labels_validate),
         )
 
