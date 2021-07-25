@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # This is a script to estimate BLE bandwith for the psylink device.
 # Usages:
-#     python3 bandwidth_test.py [bluetooth_backend]
+#     python3 bandwidth_test.py [bluetooth_backend] [address]
 #     python3 bandwithh_test.py list
 
 import psylink
