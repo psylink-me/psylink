@@ -2,8 +2,8 @@
 #define SEND_METRICS true
 #define USE_INTERRUPT_TIMER false
 
-#include <ArduinoBLE.h>
-#include <Arduino_LSM9DS1.h>
+#include <ArduinoBLE.h>       // Bluetooth Low Energy
+#include <Arduino_LSM9DS1.h>  // Inertial Measurement Unit
 #if USE_INTERRUPT_TIMER == true
 #include "NRF52_MBED_TimerInterrupt.h"
 #endif
