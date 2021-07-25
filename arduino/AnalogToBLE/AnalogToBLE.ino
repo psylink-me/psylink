@@ -13,6 +13,7 @@
 #define BLE_NOTIFY_RATE 20 // updates per second
 #define BLE_CONNECTION_INTERVAL_MIN 8 // in steps of 1.25ms
 #define BLE_CONNECTION_INTERVAL_MAX 8 // in steps of 1.25ms
+#define JUMPER_PIN_TO_DISABLE_IMU D2
 #define CHANNELS 8
 #define BUFFERS 2 // multiple buffers help with concurrency issues, if needed
 #define METADATA_BYTES 1
@@ -66,6 +67,7 @@ void setup() {
   pinMode(LEDR, OUTPUT);
   pinMode(LEDG, OUTPUT);
   pinMode(LEDB, OUTPUT);
+  pinMode(JUMPER_PIN_TO_DISABLE_IMU, INPUT_PULLUP);  // HIGH by default. IMU disabled on LOW.
   digitalWrite(LEDR, HIGH); // The LED is LOW-activated, let's turn it off.
   digitalWrite(LEDG, HIGH); // The LED is LOW-activated, let's turn it off.
   //digitalWrite(LEDB, HIGH); // The LED is LOW-activated, let's turn it off.
@@ -165,6 +167,9 @@ void updateSensorCharacteristic() {
   char currentChar;
   float x, y, z;
 
+  // Read configuration pins
+  bool enableIMU = digitalRead(JUMPER_PIN_TO_DISABLE_IMU);
+
   // Metadata
   bleString[pos++] = tick;
   #if SEND_METRICS == true
@@ -172,7 +177,7 @@ void updateSensorCharacteristic() {
   #else
   bleString[pos++] = 0xFF;
   #endif
-  if (IMU.gyroscopeAvailable()) {
+  if (enableIMU == HIGH && IMU.gyroscopeAvailable()) {
     IMU.readGyroscope(x, y, z);
     bleString[pos++] = min(255, max(1, x+127));
     bleString[pos++] = min(255, max(1, y+127));
@@ -183,7 +188,7 @@ void updateSensorCharacteristic() {
     bleString[pos++] = 128;
     bleString[pos++] = 128;
   }
-  if (IMU.accelerationAvailable()) {
+  if (enableIMU == HIGH && IMU.accelerationAvailable()) {
     IMU.readAcceleration(x, y, z);
     bleString[pos++] = min(255, max(1, 128*x+127));
     bleString[pos++] = min(255, max(1, 128*y+127));
