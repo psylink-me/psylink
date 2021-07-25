@@ -8,7 +8,7 @@ import psylink
 import time
 import sys
 
-RUN_SECONDS = 6
+RUN_SECONDS = 60000000
 
 if 'list' in sys.argv[1:]:
     print('\n'.join(psylink.bluetooth.BACKENDS))
