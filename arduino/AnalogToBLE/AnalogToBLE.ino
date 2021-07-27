@@ -16,7 +16,7 @@
 #define JUMPER_PIN_TO_DISABLE_IMU D2
 #define CHANNELS 8
 #define BUFFERS 2 // multiple buffers help with concurrency issues, if needed
-#define METADATA_BYTES 1
+#define METADATA_BYTES 8
 // Metadata format:
 // Bytes   |1   |2                            |3-5             |6-8                 |
 // Bits    |all |1-4           |5-8           |all             |all                 |
