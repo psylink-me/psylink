@@ -34,7 +34,7 @@
 const int SAMPLE_INTERVAL_uS = 1000000 / SAMPLE_RATE;
 const int BLE_NOTIFY_INTERVAL_MS = 1000 / BLE_NOTIFY_RATE;
 const int SAMPLES_PER_NOTIFY = SAMPLE_RATE / BLE_NOTIFY_RATE;
-// Ensure that BLE_CHARACTERISTICS_SIZE does not exceed BLE characteristic length limit of 512 (255?) bytes
+// Ensure that BLE_CHARACTERISTICS_SIZE does not exceed BLE characteristic length limit of 512 bytes
 const int BLE_CHARACTERISTIC_SIZE = METADATA_BYTES + CHANNELS * SAMPLES_PER_NOTIFY;
 const int NO_BUFFER = -1;
 
