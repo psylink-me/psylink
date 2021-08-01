@@ -35,8 +35,10 @@ const int SAMPLE_INTERVAL_uS = 1000000 / SAMPLE_RATE;
 const int BLE_NOTIFY_INTERVAL_MS = 1000 / BLE_NOTIFY_RATE;
 const int SAMPLES_PER_NOTIFY = SAMPLE_RATE / BLE_NOTIFY_RATE;
 // Ensure that BLE_CHARACTERISTICS_SIZE does not exceed BLE characteristic length limit of 512 bytes
-const int BLE_CHARACTERISTIC_SIZE = METADATA_BYTES + CHANNELS * SAMPLES_PER_NOTIFY;
+const int BLE_CHARACTERISTIC_SIZE = 1 + METADATA_BYTES + (CHANNELS * SAMPLES_PER_NOTIFY) * 2;
 const int NO_BUFFER = -1;
+#define DATA_FRAME (1<<7)
+#define KEY_FRAME 0
 
 #if USE_INTERRUPT_TIMER == true
 NRF52_MBED_Timer samplingTimer(NRF_TIMER_3);
@@ -101,7 +103,8 @@ void setup() {
   channelCountCharacteristic.writeValue(CHANNELS);
   BLE.setConnectionInterval(BLE_CONNECTION_INTERVAL_MIN, BLE_CONNECTION_INTERVAL_MAX);
   BLE.advertise();
-  for (int i = 0; i < BLE_CHARACTERISTIC_SIZE; i++) { bleString[i] = i+1; }
+  for (int i = 0; i < BLE_CHARACTERISTIC_SIZE; i++) { bleString[i] = 0; }
+  Serial.begin(115200);
 }
 
 unsigned long nextFrame = 0;
@@ -166,6 +169,11 @@ void updateSensorCharacteristic() {
   int pos = 0;
   char currentChar;
   float x, y, z;
+  int keyframes[CHANNELS][SAMPLES_PER_NOTIFY] = {0};
+  int keyframe_start, keyframe_min, keyframe_max, current_keyframe;
+  int sample_value;
+  int keyframe_offset[CHANNELS] = {0};
+  int keyframe_value = 0;
 
   // Read configuration pins
   bool enableIMU = digitalRead(JUMPER_PIN_TO_DISABLE_IMU);
@@ -200,16 +208,66 @@ void updateSensorCharacteristic() {
     bleString[pos++] = 128;
   }
 
+
   // Sample data
+  // 1. Determine key frames
+  for (int channel = 0; channel < CHANNELS; channel++) {
+    current_keyframe = 0;
+    keyframe_max = keyframe_min = keyframe_start = samples[sendBuffer][channel][0];
+    for (int sample = 0; sample < SAMPLES_PER_NOTIFY; sample++) {
+      sample_value = samples[sendBuffer][channel][sample];
+      if (sample_value < keyframe_min) {
+        keyframe_min = sample_value;
+      }
+      if (sample_value > keyframe_max) {
+        keyframe_max = sample_value;
+      }
+      if (keyframe_max - keyframe_min > 127 - 32) {
+        // When we can't represent a value in 7 bit relative to the current
+        // keyframe anymore, we know the proper keyframe_start of the old key
+        // frame and can begin to determine the range for the new key frame.
+        keyframes[channel][current_keyframe] = keyframe_start + 1;
+        current_keyframe = sample;
+        keyframe_max = keyframe_min = keyframe_start = sample_value;
+      }
+      else {
+        keyframe_start = keyframe_min;
+      }
+    }
+  }
+
+  // 2. Write Sample data relative to keyframes
   for (int sample = 0; sample < SAMPLES_PER_NOTIFY; sample++) {
     for (int channel = 0; channel < CHANNELS; channel++) {
-      // Avoid writing 0x00 since that denotes the end of the string
-      currentChar = map(samples[sendBuffer][channel][sample], 1921, 2176, 1, 255);
-      bleString[pos++] = max(1, min(currentChar, 255));
+      // NOTE: the value range for key frames is 1-127 (incl.) and for data
+      // frames 0-127 (incl.) because we need to avoid writing 0x00 since that
+      // denotes the end of the BLE characteristic string. For data frames the
+      // most significant bit is 1, so a data frame value of 0 will still be
+      // 0x80.  A key frame value of 0 would result in 0x00, so we avoid it.
+      // If you change DATA_FRAME or KEY_FRAME, update the value ranges!
+
+      // Write key frame if necessary
+      keyframe_value = keyframes[channel][sample];
+      if (keyframe_value != 0) {
+        keyframe_offset[channel] = keyframe_value - 1;
+        bleString[pos++] = KEY_FRAME | max(1, min((keyframe_value - 1) >> 5, 127));
+      }
+      else {
+        bleString[pos++] = KEY_FRAME | 1;
+      }
+
+      // Write data frame
+      currentChar = samples[sendBuffer][channel][sample] - keyframe_offset[channel];
+      bleString[pos++] = DATA_FRAME | max(0, min(currentChar, 127));
     }
   }
 
   bleString[pos] = 0;  // End the string with 0x00
+//  for (int i = 0; i<sizeof(bleString)-1; i++)
+//  {
+//    Serial.print(bleString[i], HEX);//excludes NULL byte
+//  }
+//  Serial.println();
   sensorCharacteristic.writeValue(bleString);
 
   // Reset values
@@ -218,6 +276,7 @@ void updateSensorCharacteristic() {
   minSampleDelay = 999999999;
   maxSampleDelay = 0;
   lastSampleMicroSeconds = micros();
+  for (int i = 0; i < BLE_CHARACTERISTIC_SIZE; i++) { bleString[i] = 0; }
   #endif
 }
 
