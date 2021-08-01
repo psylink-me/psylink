@@ -117,7 +117,7 @@ blocks:
       \            self.BLE = None\n        return True\n"
     affinity: ''
     alias: ''
-    ble_mac: '''A6:B7:D0:AE:C2:76'''
+    ble_mac: '"2E:A9:71:D7:65:95"'
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
