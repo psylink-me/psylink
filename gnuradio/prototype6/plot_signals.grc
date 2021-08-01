@@ -328,7 +328,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [919, 433]
+    coordinate: [1025, 491]
     rotation: 0
     state: true
 - name: blocks_multiply_const_vxx_0_0
@@ -346,7 +346,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [920, 507]
+    coordinate: [1026, 565]
     rotation: 0
     state: true
 - name: blocks_multiply_const_vxx_0_0_0
@@ -364,7 +364,43 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [936, 580]
+    coordinate: [1042, 638]
+    rotation: 0
+    state: true
+- name: blocks_multiply_const_vxx_0_0_0_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: diff_gain
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1040, 691]
+    rotation: 0
+    state: true
+- name: blocks_multiply_const_vxx_0_0_0_0_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: diff_gain
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1030, 755]
     rotation: 0
     state: true
 - name: blocks_sub_xx_0
@@ -382,7 +418,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [771, 421]
+    coordinate: [877, 460]
     rotation: 0
     state: true
 - name: blocks_sub_xx_0_0
@@ -400,7 +436,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [774, 510]
+    coordinate: [880, 537]
     rotation: 0
     state: true
 - name: blocks_sub_xx_0_0_0
@@ -418,7 +454,43 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [771, 594]
+    coordinate: [882, 614]
+    rotation: 0
+    state: true
+- name: blocks_sub_xx_0_0_0_0
+  id: blocks_sub_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [882, 693]
+    rotation: 0
+    state: true
+- name: blocks_sub_xx_0_0_0_0_0
+  id: blocks_sub_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [881, 771]
     rotation: 0
     state: true
 - name: qtgui_time_sink_x_0_0
@@ -637,7 +709,7 @@ blocks:
     color2: red
     color3: green
     color4: black
-    color5: dark red
+    color5: yellow
     color6: dark green
     color7: dark blue
     color8: dark red
@@ -649,10 +721,10 @@ blocks:
     gui_hint: ''
     label1: A0-A7
     label10: Signal 10
-    label2: A3-A5
-    label3: A1-A6
-    label4: Thumb
-    label5: Index Finger
+    label2: A2-A6
+    label3: A4-A5
+    label4: A0-A5
+    label5: A1-A5
     label6: Middle Finger
     label7: Ring Finger
     label8: Front To Back
@@ -669,7 +741,7 @@ blocks:
     marker8: '-1'
     marker9: '-1'
     name: '""'
-    nconnections: '3'
+    nconnections: '5'
     size: points
     srate: samp_rate
     stemplot: 'False'
@@ -709,7 +781,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1124, 457]
+    coordinate: [1268, 527]
     rotation: 0
     state: enabled
 
@@ -729,21 +801,25 @@ connections:
 - [block_BLE_source, '8', block_shift, '8']
 - [block_BLE_source, '9', block_shift, '9']
 - [block_shift, '0', blocks_sub_xx_0, '0']
+- [block_shift, '0', blocks_sub_xx_0_0_0_0, '0']
 - [block_shift, '0', qtgui_time_sink_x_0_0, '0']
 - [block_shift, '1', blocks_add_const_vxx_0, '0']
-- [block_shift, '1', blocks_sub_xx_0_0_0, '0']
+- [block_shift, '1', blocks_sub_xx_0_0_0_0_0, '0']
 - [block_shift, '10', qtgui_time_sink_x_0_0_0, '2']
 - [block_shift, '11', qtgui_time_sink_x_0_0_0, '3']
 - [block_shift, '12', qtgui_time_sink_x_0_0_0, '4']
 - [block_shift, '13', qtgui_time_sink_x_0_0_0, '5']
 - [block_shift, '2', blocks_add_const_vxx_0_0, '0']
+- [block_shift, '2', blocks_sub_xx_0_0, '0']
 - [block_shift, '3', blocks_add_const_vxx_0_0_0, '0']
-- [block_shift, '3', blocks_sub_xx_0_0, '0']
 - [block_shift, '4', blocks_add_const_vxx_0_0_0_0, '0']
+- [block_shift, '4', blocks_sub_xx_0_0_0, '0']
+- [block_shift, '4', blocks_sub_xx_0_0_0_0, '1']
 - [block_shift, '5', blocks_add_const_vxx_0_0_0_0_0, '0']
-- [block_shift, '5', blocks_sub_xx_0_0, '1']
+- [block_shift, '5', blocks_sub_xx_0_0_0, '1']
 - [block_shift, '6', blocks_add_const_vxx_0_0_0_0_0_0, '0']
-- [block_shift, '6', blocks_sub_xx_0_0_0, '1']
+- [block_shift, '6', blocks_sub_xx_0_0, '1']
+- [block_shift, '6', blocks_sub_xx_0_0_0_0_0, '1']
 - [block_shift, '7', blocks_add_const_vxx_0_0_0_0_0_0_0, '0']
 - [block_shift, '7', blocks_sub_xx_0, '1']
 - [block_shift, '8', qtgui_time_sink_x_0_0_0, '0']
@@ -758,9 +834,13 @@ connections:
 - [blocks_multiply_const_vxx_0, '0', qtgui_time_sink_x_0_0_1, '0']
 - [blocks_multiply_const_vxx_0_0, '0', qtgui_time_sink_x_0_0_1, '1']
 - [blocks_multiply_const_vxx_0_0_0, '0', qtgui_time_sink_x_0_0_1, '2']
+- [blocks_multiply_const_vxx_0_0_0_0, '0', qtgui_time_sink_x_0_0_1, '3']
+- [blocks_multiply_const_vxx_0_0_0_0_0, '0', qtgui_time_sink_x_0_0_1, '4']
 - [blocks_sub_xx_0, '0', blocks_multiply_const_vxx_0, '0']
 - [blocks_sub_xx_0_0, '0', blocks_multiply_const_vxx_0_0, '0']
 - [blocks_sub_xx_0_0_0, '0', blocks_multiply_const_vxx_0_0_0, '0']
+- [blocks_sub_xx_0_0_0_0, '0', blocks_multiply_const_vxx_0_0_0_0, '0']
+- [blocks_sub_xx_0_0_0_0_0, '0', blocks_multiply_const_vxx_0_0_0_0_0, '0']
 
 metadata:
   file_format: 1
