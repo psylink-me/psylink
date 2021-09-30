@@ -762,11 +762,11 @@ Entry Wire Line
 Text Label 3650 3150 0    50   ~ 0
 out1
 Text Label 3650 3250 0    50   ~ 0
-out3
-Text Label 3650 3350 0    50   ~ 0
-out4
-Text Label 3650 3450 0    50   ~ 0
 out2
+Text Label 3650 3350 0    50   ~ 0
+out3
+Text Label 3650 3450 0    50   ~ 0
+out4
 $Comp
 L Connector_Generic:Conn_01x04 J3
 U 1 1 6150DD4D
