@@ -13,8 +13,6 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text Notes 4650 5400 2    50   ~ 0
-https://psylink.me/c10
 Wire Wire Line
 	1500 1850 1750 1850
 Connection ~ 1500 1850
@@ -698,114 +696,100 @@ Entry Bus Bus
 Entry Bus Bus
 	3150 5400 3250 5300
 Entry Wire Line
-	3250 4700 3350 4600
-Entry Wire Line
-	3250 4900 3350 4800
-Entry Wire Line
-	3250 5100 3350 5000
-Entry Wire Line
-	3250 5300 3350 5200
-Wire Wire Line
-	3900 4600 3350 4600
-Wire Wire Line
-	3350 4800 3900 4800
-Wire Wire Line
-	3350 5200 3900 5200
-Text Label 3650 4600 0    50   ~ 0
-in5
-Text Label 3650 4000 0    50   ~ 0
-in2
-Text Label 3650 4200 0    50   ~ 0
-in3
-Text Label 3650 4400 0    50   ~ 0
-in4
-Wire Wire Line
-	3350 3800 3900 3800
-Wire Wire Line
-	3350 4000 3900 4000
-Wire Wire Line
-	3350 4200 3900 4200
-Wire Wire Line
-	3350 4400 3900 4400
-Entry Wire Line
-	3250 3900 3350 3800
-Entry Wire Line
 	3250 4100 3350 4000
 Entry Wire Line
-	3250 4300 3350 4200
+	3250 4450 3350 4350
 Entry Wire Line
-	3250 4500 3350 4400
-Text Label 3650 3800 0    50   ~ 0
+	3250 4800 3350 4700
+Entry Wire Line
+	3250 5150 3350 5050
+Text Label 3350 4000 0    50   ~ 0
+in5
+Text Label 3350 2950 0    50   ~ 0
+in2
+Text Label 3350 3300 0    50   ~ 0
+in3
+Text Label 3350 3650 0    50   ~ 0
+in4
+Entry Wire Line
+	3250 2700 3350 2600
+Entry Wire Line
+	3250 3050 3350 2950
+Entry Wire Line
+	3250 3400 3350 3300
+Entry Wire Line
+	3250 3750 3350 3650
+Text Label 3350 2600 0    50   ~ 0
 in1
-Text Label 3650 4800 0    50   ~ 0
+Text Label 3350 4350 0    50   ~ 0
 in6
-Text Label 3650 5000 0    50   ~ 0
+Text Label 3350 4700 0    50   ~ 0
 in7
-Text Label 3650 5200 0    50   ~ 0
+Text Label 3350 5050 0    50   ~ 0
 in8
 Wire Wire Line
-	3350 3150 3900 3150
+	3350 2100 3900 2100
 Wire Wire Line
-	3350 3250 3900 3250
+	3350 2200 3900 2200
 Wire Wire Line
-	3350 3350 3900 3350
+	3350 2300 3900 2300
 Wire Wire Line
-	3350 3450 3900 3450
+	3350 2400 3900 2400
 Entry Wire Line
-	3250 3250 3350 3150
+	3250 2200 3350 2100
 Entry Wire Line
-	3250 3350 3350 3250
+	3250 2300 3350 2200
 Entry Wire Line
-	3250 3450 3350 3350
+	3250 2400 3350 2300
 Entry Wire Line
-	3250 3550 3350 3450
-Text Label 3650 3150 0    50   ~ 0
+	3250 2500 3350 2400
+Text Label 3650 2100 0    50   ~ 0
 out1
-Text Label 3650 3250 0    50   ~ 0
+Text Label 3650 2200 0    50   ~ 0
 out2
-Text Label 3650 3350 0    50   ~ 0
+Text Label 3650 2300 0    50   ~ 0
 out3
-Text Label 3650 3450 0    50   ~ 0
+Text Label 3650 2400 0    50   ~ 0
 out4
 $Comp
 L Connector_Generic:Conn_01x04 J3
 U 1 1 6150DD4D
-P 4100 3250
-F 0 "J3" H 4180 3242 50  0000 L CNN
-F 1 "OutputPins" H 4180 3151 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 4100 3250 50  0001 C CNN
-F 3 "~" H 4100 3250 50  0001 C CNN
-	1    4100 3250
+P 4100 2200
+F 0 "J3" H 4180 2192 50  0000 L CNN
+F 1 "OutputPins" H 4180 2101 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 4100 2200 50  0001 C CNN
+F 3 "~" H 4100 2200 50  0001 C CNN
+	1    4100 2200
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:Earth #PWR028
 U 1 1 6151A45F
-P 3300 2250
-F 0 "#PWR028" H 3300 2000 50  0001 C CNN
-F 1 "Earth" H 3300 2100 50  0001 C CNN
-F 2 "" H 3300 2250 50  0001 C CNN
-F 3 "~" H 3300 2250 50  0001 C CNN
-	1    3300 2250
+P 3300 1200
+F 0 "#PWR028" H 3300 950 50  0001 C CNN
+F 1 "Earth" H 3300 1050 50  0001 C CNN
+F 2 "" H 3300 1200 50  0001 C CNN
+F 3 "~" H 3300 1200 50  0001 C CNN
+	1    3300 1200
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3750 2350 3900 2350
+	3750 1300 3900 1300
 Wire Wire Line
-	3750 2450 3900 2450
+	3750 1400 3900 1400
 Text Notes 1300 1100 0    50   ~ 0
 Differential Amplifiers x4
-Text Notes 3450 1850 0    50   ~ 0
+Text Notes 3450 1100 0    50   ~ 0
 Connectors
 $Comp
 L power:VCC #PWR027
 U 1 1 6151AB70
-P 3750 2350
-F 0 "#PWR027" H 3750 2200 50  0001 C CNN
-F 1 "VCC" V 3750 2500 50  0000 L CNN
-F 2 "" H 3750 2350 50  0001 C CNN
-F 3 "" H 3750 2350 50  0001 C CNN
-	1    3750 2350
+P 3750 1300
+F 0 "#PWR027" H 3750 1150 50  0001 C CNN
+F 1 "VCC" V 3750 1450 50  0000 L CNN
+F 2 "" H 3750 1300 50  0001 C CNN
+F 3 "" H 3750 1300 50  0001 C CNN
+	1    3750 1300
 	0    -1   -1   0   
 $EndComp
 Text Label 1100 2900 0    50   ~ 0
@@ -818,48 +802,79 @@ Text Label 1100 3950 0    50   ~ 0
 in5
 Text Label 1100 5000 0    50   ~ 0
 in7
-Wire Wire Line
-	3900 5000 3350 5000
 $Comp
 L Connector:Screw_Terminal_01x01 EL1
 U 1 1 6157FCEA
-P 4100 3800
-F 0 "EL1" H 4180 3842 50  0000 L CNN
-F 1 "Electrode" H 4180 3751 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 3800 50  0001 C CNN
-F 3 "~" H 4100 3800 50  0001 C CNN
-	1    4100 3800
+P 4100 2600
+F 0 "EL1" H 4180 2642 50  0000 L CNN
+F 1 "Electrode" H 4180 2551 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 2600 50  0001 C CNN
+F 3 "~" H 4100 2600 50  0001 C CNN
+	1    4100 2600
 	1    0    0    -1  
 $EndComp
 $Comp
 L Connector_Generic:Conn_01x03 J1
 U 1 1 61581386
-P 4100 2350
-F 0 "J1" H 4180 2392 50  0000 L CNN
-F 1 "PowerInput" H 4180 2301 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 4100 2350 50  0001 C CNN
-F 3 "~" H 4100 2350 50  0001 C CNN
-	1    4100 2350
+P 4100 1300
+F 0 "J1" H 4180 1342 50  0000 L CNN
+F 1 "PowerInput" H 4180 1251 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 4100 1300 50  0001 C CNN
+F 3 "~" H 4100 1300 50  0001 C CNN
+	1    4100 1300
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3300 2250 3900 2250
+	3300 1200 3900 1200
 $Comp
 L power:GNDS #PWR021
 U 1 1 61586120
-P 3750 2450
-F 0 "#PWR021" H 3750 2200 50  0001 C CNN
-F 1 "GNDS" V 3750 2200 50  0000 C CNN
-F 2 "" H 3750 2450 50  0001 C CNN
-F 3 "" H 3750 2450 50  0001 C CNN
-	1    3750 2450
+P 3750 1400
+F 0 "#PWR021" H 3750 1150 50  0001 C CNN
+F 1 "GNDS" V 3750 1150 50  0000 C CNN
+F 2 "" H 3750 1400 50  0001 C CNN
+F 3 "" H 3750 1400 50  0001 C CNN
+	1    3750 1400
 	0    1    1    0   
 $EndComp
 $Comp
 L Connector:Screw_Terminal_01x01 EL2
 U 1 1 61587D23
+P 4100 2950
+F 0 "EL2" H 4180 2992 50  0000 L CNN
+F 1 "Electrode" H 4180 2901 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 2950 50  0001 C CNN
+F 3 "~" H 4100 2950 50  0001 C CNN
+	1    4100 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x01 EL3
+U 1 1 61588080
+P 4100 3300
+F 0 "EL3" H 4180 3342 50  0000 L CNN
+F 1 "Electrode" H 4180 3251 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 3300 50  0001 C CNN
+F 3 "~" H 4100 3300 50  0001 C CNN
+	1    4100 3300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x01 EL4
+U 1 1 61588310
+P 4100 3650
+F 0 "EL4" H 4180 3692 50  0000 L CNN
+F 1 "Electrode" H 4180 3601 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 3650 50  0001 C CNN
+F 3 "~" H 4100 3650 50  0001 C CNN
+	1    4100 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x01 EL5
+U 1 1 6158876C
 P 4100 4000
-F 0 "EL2" H 4180 4042 50  0000 L CNN
+F 0 "EL5" H 4180 4042 50  0000 L CNN
 F 1 "Electrode" H 4180 3951 50  0000 L CNN
 F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 4000 50  0001 C CNN
 F 3 "~" H 4100 4000 50  0001 C CNN
@@ -867,69 +882,36 @@ F 3 "~" H 4100 4000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:Screw_Terminal_01x01 EL3
-U 1 1 61588080
-P 4100 4200
-F 0 "EL3" H 4180 4242 50  0000 L CNN
-F 1 "Electrode" H 4180 4151 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 4200 50  0001 C CNN
-F 3 "~" H 4100 4200 50  0001 C CNN
-	1    4100 4200
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:Screw_Terminal_01x01 EL4
-U 1 1 61588310
-P 4100 4400
-F 0 "EL4" H 4180 4442 50  0000 L CNN
-F 1 "Electrode" H 4180 4351 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 4400 50  0001 C CNN
-F 3 "~" H 4100 4400 50  0001 C CNN
-	1    4100 4400
-	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:Screw_Terminal_01x01 EL5
-U 1 1 6158876C
-P 4100 4600
-F 0 "EL5" H 4180 4642 50  0000 L CNN
-F 1 "Electrode" H 4180 4551 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 4600 50  0001 C CNN
-F 3 "~" H 4100 4600 50  0001 C CNN
-	1    4100 4600
-	1    0    0    -1  
-$EndComp
-$Comp
 L Connector:Screw_Terminal_01x01 EL6
 U 1 1 61588AD3
-P 4100 4800
-F 0 "EL6" H 4180 4842 50  0000 L CNN
-F 1 "Electrode" H 4180 4751 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 4800 50  0001 C CNN
-F 3 "~" H 4100 4800 50  0001 C CNN
-	1    4100 4800
+P 4100 4350
+F 0 "EL6" H 4180 4392 50  0000 L CNN
+F 1 "Electrode" H 4180 4301 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 4350 50  0001 C CNN
+F 3 "~" H 4100 4350 50  0001 C CNN
+	1    4100 4350
 	1    0    0    -1  
 $EndComp
 $Comp
 L Connector:Screw_Terminal_01x01 EL7
 U 1 1 61588D63
-P 4100 5000
-F 0 "EL7" H 4180 5042 50  0000 L CNN
-F 1 "Electrode" H 4180 4951 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 5000 50  0001 C CNN
-F 3 "~" H 4100 5000 50  0001 C CNN
-	1    4100 5000
+P 4100 4700
+F 0 "EL7" H 4180 4742 50  0000 L CNN
+F 1 "Electrode" H 4180 4651 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 4700 50  0001 C CNN
+F 3 "~" H 4100 4700 50  0001 C CNN
+	1    4100 4700
 	1    0    0    -1  
 $EndComp
 $Comp
 L Connector:Screw_Terminal_01x01 EL8
 U 1 1 61589066
-P 4100 5200
-F 0 "EL8" H 4180 5242 50  0000 L CNN
-F 1 "Electrode" H 4180 5151 50  0000 L CNN
-F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 5200 50  0001 C CNN
-F 3 "~" H 4100 5200 50  0001 C CNN
-	1    4100 5200
+P 4100 5050
+F 0 "EL8" H 4180 5092 50  0000 L CNN
+F 1 "Electrode" H 4180 5001 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.7mm_Pad" H 4100 5050 50  0001 C CNN
+F 3 "~" H 4100 5050 50  0001 C CNN
+	1    4100 5050
 	1    0    0    -1  
 $EndComp
 Text Label 1100 3550 0    50   ~ 0
@@ -937,53 +919,199 @@ in6
 $Comp
 L power:Earth #PWR0101
 U 1 1 61593CF0
-P 3300 2700
-F 0 "#PWR0101" H 3300 2450 50  0001 C CNN
-F 1 "Earth" H 3300 2550 50  0001 C CNN
-F 2 "" H 3300 2700 50  0001 C CNN
-F 3 "~" H 3300 2700 50  0001 C CNN
-	1    3300 2700
+P 3300 1650
+F 0 "#PWR0101" H 3300 1400 50  0001 C CNN
+F 1 "Earth" H 3300 1500 50  0001 C CNN
+F 2 "" H 3300 1650 50  0001 C CNN
+F 3 "~" H 3300 1650 50  0001 C CNN
+	1    3300 1650
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3750 2800 3900 2800
+	3750 1750 3900 1750
 Wire Wire Line
-	3750 2900 3900 2900
+	3750 1850 3900 1850
 $Comp
 L power:VCC #PWR0102
 U 1 1 61593CF8
-P 3750 2800
-F 0 "#PWR0102" H 3750 2650 50  0001 C CNN
-F 1 "VCC" V 3750 2950 50  0000 L CNN
-F 2 "" H 3750 2800 50  0001 C CNN
-F 3 "" H 3750 2800 50  0001 C CNN
-	1    3750 2800
+P 3750 1750
+F 0 "#PWR0102" H 3750 1600 50  0001 C CNN
+F 1 "VCC" V 3750 1900 50  0000 L CNN
+F 2 "" H 3750 1750 50  0001 C CNN
+F 3 "" H 3750 1750 50  0001 C CNN
+	1    3750 1750
 	0    -1   -1   0   
 $EndComp
 $Comp
 L Connector_Generic:Conn_01x03 J2
 U 1 1 61593CFE
-P 4100 2800
-F 0 "J2" H 4180 2842 50  0000 L CNN
-F 1 "PowerPassThru" H 4180 2751 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 4100 2800 50  0001 C CNN
-F 3 "~" H 4100 2800 50  0001 C CNN
-	1    4100 2800
+P 4100 1750
+F 0 "J2" H 4180 1792 50  0000 L CNN
+F 1 "PowerPassThru" H 4180 1701 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 4100 1750 50  0001 C CNN
+F 3 "~" H 4100 1750 50  0001 C CNN
+	1    4100 1750
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3300 2700 3900 2700
+	3300 1650 3900 1650
 $Comp
 L power:GNDS #PWR0103
 U 1 1 61593D05
-P 3750 2900
-F 0 "#PWR0103" H 3750 2650 50  0001 C CNN
-F 1 "GNDS" V 3750 2650 50  0000 C CNN
-F 2 "" H 3750 2900 50  0001 C CNN
-F 3 "" H 3750 2900 50  0001 C CNN
-	1    3750 2900
+P 3750 1850
+F 0 "#PWR0103" H 3750 1600 50  0001 C CNN
+F 1 "GNDS" V 3750 1600 50  0000 C CNN
+F 2 "" H 3750 1850 50  0001 C CNN
+F 3 "" H 3750 1850 50  0001 C CNN
+	1    3750 1850
 	0    1    1    0   
 $EndComp
+$Comp
+L Connector_Generic:Conn_01x01 EX1
+U 1 1 61554949
+P 3700 2700
+F 0 "EX1" H 3780 2742 50  0000 L CNN
+F 1 "ElectrodeTestPin" H 3780 2651 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 3700 2700 50  0001 C CNN
+F 3 "~" H 3700 2700 50  0001 C CNN
+	1    3700 2700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 EX2
+U 1 1 6155C4B7
+P 3700 3050
+F 0 "EX2" H 3780 3092 50  0000 L CNN
+F 1 "ElectrodeTestPin" H 3780 3001 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 3700 3050 50  0001 C CNN
+F 3 "~" H 3700 3050 50  0001 C CNN
+	1    3700 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 EX4
+U 1 1 6156AB00
+P 3700 3750
+F 0 "EX4" H 3780 3792 50  0000 L CNN
+F 1 "ElectrodeTestPin" H 3780 3701 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 3700 3750 50  0001 C CNN
+F 3 "~" H 3700 3750 50  0001 C CNN
+	1    3700 3750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 EX5
+U 1 1 6156D80B
+P 3700 4100
+F 0 "EX5" H 3780 4142 50  0000 L CNN
+F 1 "ElectrodeTestPin" H 3780 4051 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 3700 4100 50  0001 C CNN
+F 3 "~" H 3700 4100 50  0001 C CNN
+	1    3700 4100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 EX6
+U 1 1 61570C12
+P 3700 4450
+F 0 "EX6" H 3780 4492 50  0000 L CNN
+F 1 "ElectrodeTestPin" H 3780 4401 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 3700 4450 50  0001 C CNN
+F 3 "~" H 3700 4450 50  0001 C CNN
+	1    3700 4450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 EX7
+U 1 1 61573D6F
+P 3700 4800
+F 0 "EX7" H 3780 4842 50  0000 L CNN
+F 1 "ElectrodeTestPin" H 3780 4751 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 3700 4800 50  0001 C CNN
+F 3 "~" H 3700 4800 50  0001 C CNN
+	1    3700 4800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 EX8
+U 1 1 61577101
+P 3700 5150
+F 0 "EX8" H 3780 5192 50  0000 L CNN
+F 1 "ElectrodeTestPin" H 3780 5101 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 3700 5150 50  0001 C CNN
+F 3 "~" H 3700 5150 50  0001 C CNN
+	1    3700 5150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3350 3650 3500 3650
+$Comp
+L Connector_Generic:Conn_01x01 EX3
+U 1 1 6156365E
+P 3700 3400
+F 0 "EX3" H 3780 3442 50  0000 L CNN
+F 1 "ElectrodeTestPin" H 3780 3351 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 3700 3400 50  0001 C CNN
+F 3 "~" H 3700 3400 50  0001 C CNN
+	1    3700 3400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3350 3300 3500 3300
+Wire Wire Line
+	3500 3400 3500 3300
+Connection ~ 3500 3300
+Wire Wire Line
+	3500 3300 3900 3300
+Wire Wire Line
+	3350 2950 3500 2950
+Wire Wire Line
+	3350 2600 3500 2600
+Wire Wire Line
+	3500 2700 3500 2600
+Connection ~ 3500 2600
+Wire Wire Line
+	3500 2600 3900 2600
+Wire Wire Line
+	3500 3050 3500 2950
+Connection ~ 3500 2950
+Wire Wire Line
+	3500 2950 3900 2950
+Wire Wire Line
+	3500 3750 3500 3650
+Connection ~ 3500 3650
+Wire Wire Line
+	3500 3650 3900 3650
+Wire Wire Line
+	3350 4000 3500 4000
+Wire Wire Line
+	3500 4100 3500 4000
+Connection ~ 3500 4000
+Wire Wire Line
+	3500 4000 3900 4000
+Wire Wire Line
+	3350 4350 3500 4350
+Wire Wire Line
+	3500 4450 3500 4350
+Connection ~ 3500 4350
+Wire Wire Line
+	3500 4350 3900 4350
+Wire Wire Line
+	3350 4700 3500 4700
+Wire Wire Line
+	3500 4800 3500 4700
+Connection ~ 3500 4700
+Wire Wire Line
+	3500 4700 3900 4700
+Wire Wire Line
+	3350 5050 3500 5050
+Wire Wire Line
+	3500 5150 3500 5050
+Connection ~ 3500 5050
+Wire Wire Line
+	3500 5050 3900 5050
+Text Notes 4500 5400 2    50   ~ 0
+https://psylink.me/c10
 Wire Bus Line
 	1100 5400 3150 5400
 Wire Bus Line
@@ -991,5 +1119,5 @@ Wire Bus Line
 Wire Bus Line
 	1000 1550 1000 5300
 Wire Bus Line
-	3250 3250 3250 5300
+	3250 2200 3250 5300
 $EndSCHEMATC
