@@ -1,0 +1,272 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Simulation_SPICE:VSIN V2
+U 1 1 6151278D
+P 2650 2400
+F 0 "V2" V 2293 2400 50  0000 C CNN
+F 1 "VSIN" V 2384 2400 50  0000 C CNN
+F 2 "" H 2650 2400 50  0001 C CNN
+F 3 "~" H 2650 2400 50  0001 C CNN
+F 4 "Y" H 2650 2400 50  0001 L CNN "Spice_Netlist_Enabled"
+F 5 "V" H 2650 2400 50  0001 L CNN "Spice_Primitive"
+F 6 "sin(0 200m 5)" V 2475 2400 50  0000 C CNN "Spice_Model"
+	1    2650 2400
+	0    1    1    0   
+$EndComp
+$Comp
+L Simulation_SPICE:VSIN V3
+U 1 1 61514AFF
+P 4750 2400
+F 0 "V3" V 4393 2400 50  0000 C CNN
+F 1 "VSIN" V 4484 2400 50  0000 C CNN
+F 2 "" H 4750 2400 50  0001 C CNN
+F 3 "~" H 4750 2400 50  0001 C CNN
+F 4 "Y" H 4750 2400 50  0001 L CNN "Spice_Netlist_Enabled"
+F 5 "V" H 4750 2400 50  0001 L CNN "Spice_Primitive"
+F 6 "sin(0 100m 60)" V 4575 2400 50  0000 C CNN "Spice_Model"
+	1    4750 2400
+	0    1    1    0   
+$EndComp
+$Comp
+L pspice:0 #GND02
+U 1 1 6151601E
+P 2250 3450
+F 0 "#GND02" H 2250 3350 50  0001 C CNN
+F 1 "0" H 2250 3539 50  0000 C CNN
+F 2 "" H 2250 3450 50  0001 C CNN
+F 3 "~" H 2250 3450 50  0001 C CNN
+	1    2250 3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:VCC #PWR01
+U 1 1 61517003
+P 5150 3350
+F 0 "#PWR01" H 5150 3200 50  0001 C CNN
+F 1 "VCC" H 5167 3523 50  0000 C CNN
+F 2 "" H 5150 3350 50  0001 C CNN
+F 3 "" H 5150 3350 50  0001 C CNN
+	1    5150 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:VCC #PWR02
+U 1 1 615197B3
+P 2850 4100
+F 0 "#PWR02" H 2850 3950 50  0001 C CNN
+F 1 "VCC" V 2868 4227 50  0000 L CNN
+F 2 "" H 2850 4100 50  0001 C CNN
+F 3 "" H 2850 4100 50  0001 C CNN
+	1    2850 4100
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	3150 2400 2850 2400
+$Comp
+L pspice:0 #GND04
+U 1 1 615204D7
+P 5700 4800
+F 0 "#GND04" H 5700 4700 50  0001 C CNN
+F 1 "0" H 5700 4889 50  0000 C CNN
+F 2 "" H 5700 4800 50  0001 C CNN
+F 3 "~" H 5700 4800 50  0001 C CNN
+	1    5700 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2450 2400 2250 2400
+$Comp
+L Simulation_SPICE:VSIN V5
+U 1 1 61525B34
+P 3350 2400
+F 0 "V5" V 2993 2400 50  0000 C CNN
+F 1 "VSIN" V 3084 2400 50  0000 C CNN
+F 2 "" H 3350 2400 50  0001 C CNN
+F 3 "~" H 3350 2400 50  0001 C CNN
+F 4 "Y" H 3350 2400 50  0001 L CNN "Spice_Netlist_Enabled"
+F 5 "V" H 3350 2400 50  0001 L CNN "Spice_Primitive"
+F 6 "sin(0 100m 20)" V 3175 2400 50  0000 C CNN "Spice_Model"
+	1    3350 2400
+	0    1    1    0   
+$EndComp
+$Comp
+L Simulation_SPICE:VSIN V6
+U 1 1 61525FFC
+P 4050 2400
+F 0 "V6" V 3693 2400 50  0000 C CNN
+F 1 "VSIN" V 3784 2400 50  0000 C CNN
+F 2 "" H 4050 2400 50  0001 C CNN
+F 3 "~" H 4050 2400 50  0001 C CNN
+F 4 "Y" H 4050 2400 50  0001 L CNN "Spice_Netlist_Enabled"
+F 5 "V" H 4050 2400 50  0001 L CNN "Spice_Primitive"
+F 6 "sin(0 100m 40)" V 3875 2400 50  0000 C CNN "Spice_Model"
+	1    4050 2400
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3850 2400 3550 2400
+Wire Wire Line
+	4250 2400 4550 2400
+Wire Wire Line
+	3700 3350 3950 3350
+Wire Wire Line
+	2250 2400 2250 3450
+Wire Wire Line
+	5900 2400 5900 2900
+Wire Wire Line
+	2650 2900 2650 3350
+Wire Wire Line
+	4950 2400 5900 2400
+Wire Wire Line
+	2650 3350 3300 3350
+$Comp
+L power:HT #PWR04
+U 1 1 6152D856
+P 5900 2400
+F 0 "#PWR04" H 5900 2520 50  0001 C CNN
+F 1 "HT" H 5920 2543 50  0000 C CNN
+F 2 "" H 5900 2400 50  0001 C CNN
+F 3 "" H 5900 2400 50  0001 C CNN
+	1    5900 2400
+	1    0    0    -1  
+$EndComp
+Connection ~ 5900 2400
+$Comp
+L Simulation_SPICE:VSIN V1
+U 1 1 6151109B
+P 3500 3350
+F 0 "V1" V 3143 3350 50  0000 C CNN
+F 1 "VSIN" V 3234 3350 50  0000 C CNN
+F 2 "" H 3500 3350 50  0001 C CNN
+F 3 "~" H 3500 3350 50  0001 C CNN
+F 4 "Y" H 3500 3350 50  0001 L CNN "Spice_Netlist_Enabled"
+F 5 "V" H 3500 3350 50  0001 L CNN "Spice_Primitive"
+F 6 "sin(0 1 10)" V 3325 3350 50  0000 C CNN "Spice_Model"
+	1    3500 3350
+	0    1    1    0   
+$EndComp
+$Comp
+L Simulation_SPICE:VSIN V4
+U 1 1 61515296
+P 4150 3350
+F 0 "V4" V 3793 3350 50  0000 C CNN
+F 1 "VSIN" V 3884 3350 50  0000 C CNN
+F 2 "" H 4150 3350 50  0001 C CNN
+F 3 "~" H 4150 3350 50  0001 C CNN
+F 4 "Y" H 4150 3350 50  0001 L CNN "Spice_Netlist_Enabled"
+F 5 "V" H 4150 3350 50  0001 L CNN "Spice_Primitive"
+F 6 "sin(0 200m 350)" V 3975 3350 50  0000 C CNN "Spice_Model"
+	1    4150 3350
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5900 2900 2650 2900
+Wire Wire Line
+	4350 3350 5150 3350
+Wire Wire Line
+	3050 4100 2850 4100
+$Comp
+L power:AC #PWR03
+U 1 1 61533700
+P 5700 4100
+F 0 "#PWR03" H 5700 4000 50  0001 C CNN
+F 1 "AC" H 5700 4375 50  0000 C CNN
+F 2 "" H 5700 4100 50  0001 C CNN
+F 3 "" H 5700 4100 50  0001 C CNN
+	1    5700 4100
+	1    0    0    -1  
+$EndComp
+$Comp
+L pspice:R R2
+U 1 1 61532FA1
+P 5700 4550
+F 0 "R2" H 5632 4504 50  0000 R CNN
+F 1 "100Meg" H 5632 4595 50  0000 R CNN
+F 2 "" H 5700 4550 50  0001 C CNN
+F 3 "~" H 5700 4550 50  0001 C CNN
+F 4 "R" H 5700 4550 50  0001 C CNN "Spice_Primitive"
+F 5 "100Meg" H 5700 4550 50  0001 C CNN "Spice_Model"
+F 6 "Y" H 5700 4550 50  0001 C CNN "Spice_Netlist_Enabled"
+	1    5700 4550
+	-1   0    0    1   
+$EndComp
+$Comp
+L pspice:R R1
+U 1 1 615328F8
+P 3300 4100
+F 0 "R1" V 3095 4100 50  0000 C CNN
+F 1 "1Meg" V 3186 4100 50  0000 C CNN
+F 2 "" H 3300 4100 50  0001 C CNN
+F 3 "~" H 3300 4100 50  0001 C CNN
+F 4 "R" H 3300 4100 50  0001 C CNN "Spice_Primitive"
+F 5 "1Meg" H 3300 4100 50  0001 C CNN "Spice_Model"
+F 6 "Y" H 3300 4100 50  0001 C CNN "Spice_Netlist_Enabled"
+	1    3300 4100
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5700 4100 5700 4300
+Wire Wire Line
+	3550 4100 3650 4100
+Connection ~ 5700 4100
+$Comp
+L pspice:CAP C1
+U 1 1 61535F7C
+P 3900 4100
+F 0 "C1" V 3585 4100 50  0000 C CNN
+F 1 "100p" V 3676 4100 50  0000 C CNN
+F 2 "" H 3900 4100 50  0001 C CNN
+F 3 "~" H 3900 4100 50  0001 C CNN
+F 4 "C" H 3900 4100 50  0001 C CNN "Spice_Primitive"
+F 5 "100p" H 3900 4100 50  0001 C CNN "Spice_Model"
+F 6 "Y" H 3900 4100 50  0001 C CNN "Spice_Netlist_Enabled"
+	1    3900 4100
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	4150 4100 4350 4100
+$Comp
+L pspice:R R3
+U 1 1 61536D0A
+P 4350 4350
+F 0 "R3" H 4282 4304 50  0000 R CNN
+F 1 "1Meg" H 4282 4395 50  0000 R CNN
+F 2 "" H 4350 4350 50  0001 C CNN
+F 3 "~" H 4350 4350 50  0001 C CNN
+F 4 "R" H 4350 4350 50  0001 C CNN "Spice_Primitive"
+F 5 "1Meg" H 4350 4350 50  0001 C CNN "Spice_Model"
+F 6 "Y" H 4350 4350 50  0001 C CNN "Spice_Netlist_Enabled"
+	1    4350 4350
+	-1   0    0    1   
+$EndComp
+Connection ~ 4350 4100
+Wire Wire Line
+	4350 4100 5700 4100
+$Comp
+L pspice:0 #GND01
+U 1 1 615372B7
+P 4350 4800
+F 0 "#GND01" H 4350 4700 50  0001 C CNN
+F 1 "0" H 4350 4889 50  0000 C CNN
+F 2 "" H 4350 4800 50  0001 C CNN
+F 3 "~" H 4350 4800 50  0001 C CNN
+	1    4350 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4350 4800 4350 4600
+$EndSCHEMATC
