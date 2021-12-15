@@ -680,8 +680,8 @@ Text Label 2600 2100 0    50   ~ 0
 A7
 Text Label 3400 3200 0    50   ~ 0
 Vref
-Text Notes 5650 5250 2    50   ~ 0
-https://psylink.me/c9.2
+Text Notes 6450 5250 2    50   ~ 0
+https://psylink.me/c11
 Wire Wire Line
 	5050 4050 5050 4200
 Wire Wire Line
@@ -784,10 +784,6 @@ F 3 "~" H 4550 4400 50  0001 C CNN
 	1    4550 4400
 	1    0    0    -1  
 $EndComp
-Wire Notes Line
-	4950 3900 4950 5150
-Wire Notes Line
-	4250 5200 4650 5200
 Entry Bus Bus
 	4900 3550 5000 3450
 Entry Bus Bus
@@ -848,8 +844,6 @@ F 3 "~" H 4500 2350 50  0001 C CNN
 $EndComp
 Text Notes 4100 2750 0    50   ~ 0
 Multipurpose jumpers,\nsoftware-configurable
-Text Notes 4100 3750 0    50   ~ 0
-Jumpers, Screws
 $Comp
 L Connector:Conn_01x12_Female J3
 U 1 1 61B6B37A
@@ -1126,7 +1120,11 @@ Wire Notes Line
 Wire Notes Line
 	4100 3700 3950 3700
 Wire Notes Line
-	6400 3700 4750 3700
+	4950 3900 4950 5200
+Wire Notes Line
+	4950 5200 4250 5200
+Wire Notes Line
+	6400 3700 5500 3700
 Wire Bus Line
 	4050 2450 4050 3450
 Wire Bus Line
@@ -1141,4 +1139,6 @@ Wire Bus Line
 	2450 2200 2450 3450
 Wire Bus Line
 	1700 1900 1700 3450
+Text Notes 4100 3750 0    50   ~ 0
+Jumpers, Electrode Mounting Screws
 $EndSCHEMATC
