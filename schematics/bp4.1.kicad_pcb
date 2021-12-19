@@ -2,7 +2,7 @@
 
   (general
     (thickness 1.6)
-    (drawings 92)
+    (drawings 93)
     (tracks 306)
     (zones 0)
     (modules 39)
@@ -1709,6 +1709,9 @@
     )
   )
 
+  (gr_text "(voltage setter)" (at 100.711 38.4175) (layer F.SilkS)
+    (effects (font (size 0.5 0.5) (thickness 0.1)))
+  )
   (gr_text "D3 GND D2" (at 59.309 28.7655) (layer F.SilkS)
     (effects (font (size 1 1) (thickness 0.15)))
   )
