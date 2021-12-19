@@ -850,7 +850,7 @@ U 1 1 61B6B37A
 P 3000 2600
 F 0 "J3" H 2850 1900 50  0000 L CNN
 F 1 "I/O Pin Strip" H 2450 3250 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x12_P2.54mm_Horizontal" H 3000 2600 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x12_P2.54mm_Vertical" H 3000 2600 50  0001 C CNN
 F 3 "~" H 3000 2600 50  0001 C CNN
 	1    3000 2600
 	1    0    0    -1  
@@ -901,7 +901,7 @@ U 1 1 61C0B729
 P 3800 3100
 F 0 "J6" H 3650 2900 50  0000 L CNN
 F 1 "Power Pins C" H 3300 3350 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal" H 3800 3100 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 3800 3100 50  0001 C CNN
 F 3 "~" H 3800 3100 50  0001 C CNN
 	1    3800 3100
 	1    0    0    -1  
@@ -912,7 +912,7 @@ U 1 1 61C0B2DC
 P 3800 2500
 F 0 "J5" H 3650 2350 50  0000 L CNN
 F 1 "Power Pins B" H 3300 2750 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal" H 3800 2500 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 3800 2500 50  0001 C CNN
 F 3 "~" H 3800 2500 50  0001 C CNN
 	1    3800 2500
 	1    0    0    -1  
@@ -923,7 +923,7 @@ U 1 1 61C0A3E5
 P 3800 1900
 F 0 "J4" H 3650 1750 50  0000 L CNN
 F 1 "Power Pins A" H 3300 2150 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Horizontal" H 3800 1900 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 3800 1900 50  0001 C CNN
 F 3 "~" H 3800 1900 50  0001 C CNN
 	1    3800 1900
 	1    0    0    -1  
@@ -1125,6 +1125,8 @@ Wire Notes Line
 	4950 5200 4250 5200
 Wire Notes Line
 	6400 3700 5500 3700
+Text Notes 4100 3750 0    50   ~ 0
+Jumpers, Electrode Mounting Screws
 Wire Bus Line
 	4050 2450 4050 3450
 Wire Bus Line
@@ -1139,6 +1141,4 @@ Wire Bus Line
 	2450 2200 2450 3450
 Wire Bus Line
 	1700 1900 1700 3450
-Text Notes 4100 3750 0    50   ~ 0
-Jumpers, Electrode Mounting Screws
 $EndSCHEMATC
