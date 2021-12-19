@@ -1788,7 +1788,7 @@
   (gr_line (start 115.3795 25.4) (end 115.3795 57.9755) (layer Dwgs.User) (width 0.15) (tstamp 61B39EFB))
   (gr_line (start 25.4 57.9755) (end 115.3795 57.9755) (layer Dwgs.User) (width 0.15) (tstamp 61B39E56))
   (gr_line (start 25.4 25.4) (end 115.3795 25.4) (layer Dwgs.User) (width 0.15))
-  (gr_text psylink.me/bp4 (at 70.4215 52.578) (layer F.SilkS) (tstamp 61B503B8)
+  (gr_text psylink.me/bp4.1 (at 70.4215 52.578) (layer F.SilkS) (tstamp 61B503B8)
     (effects (font (size 1.8 1.8) (thickness 0.35)))
   )
   (gr_arc (start 53.213 28.3845) (end 53.213 28.8925) (angle -90) (layer Edge.Cuts) (width 0.1) (tstamp 61B503B5))
