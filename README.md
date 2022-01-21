@@ -11,6 +11,16 @@ signals and intended keys, and can press them for you.
 - [Video demos @ PeerTube](https://peertube.linuxrocks.online/video-channels/psylink/videos)
 - [Development Log](https://psylink.me/blog)
 
+# Software used to create/edit/run these files
+
+- Schematics, PCB Layouts: KiCad 5.1.5
+- Arduino IDE 1.8.19
+    - ArduinoBLE 1.2.1
+    - Arduino\_LSM9DS1 1.1.0
+- Python 3.8
+    - For library versions, see the respective requirements.txt file
+- GnuRadio 3.8.1.0
+
 # Datasheet
 
 This describes [prototype 4](https://psylink.me/p4).
