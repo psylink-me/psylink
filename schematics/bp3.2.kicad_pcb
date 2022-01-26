@@ -2,7 +2,7 @@
 
   (general
     (thickness 1.6)
-    (drawings 108)
+    (drawings 104)
     (tracks 402)
     (zones 0)
     (modules 56)
@@ -2269,11 +2269,7 @@
   (gr_text "signal2\nsignal4" (at 67.564 37.846) (layer F.SilkS) (tstamp 61F24843)
     (effects (font (size 1 1) (thickness 0.15)) (justify left))
   )
-  (gr_line (start 82.4865 35.7505) (end 25.019 41.2115) (layer Cmts.User) (width 0.15))
-  (gr_line (start 72.9615 40.767) (end 25.146 41.5925) (layer Cmts.User) (width 0.15))
-  (gr_line (start 42.545 36.2585) (end 24.0665 40.513) (layer Cmts.User) (width 0.15))
-  (gr_line (start 32.8295 39.8145) (end 23.8125 41.021) (layer Cmts.User) (width 0.15))
-  (gr_text "rectangles\nindicate gain\nresistors" (at 17.8435 42.164) (layer Cmts.User)
+  (gr_text "rectangles around R9-R12\nindicate gain resistors" (at 37.2745 20.7645) (layer Cmts.User)
     (effects (font (size 1 1) (thickness 0.15)))
   )
   (gr_line (start 83.693 34.6075) (end 87.376 34.6075) (layer F.SilkS) (width 0.15) (tstamp 61F1EF40))
@@ -2785,7 +2781,7 @@
   (segment (start 90.424 45.9105) (end 90.805 46.2915) (width 0.4) (layer F.Cu) (net 39))
   (segment (start 85.5345 45.9105) (end 90.424 45.9105) (width 0.4) (layer F.Cu) (net 39))
 
-  (zone (net 17) (net_name Earth) (layer B.Cu) (tstamp 61F2874A) (hatch edge 0.508)
+  (zone (net 17) (net_name Earth) (layer B.Cu) (tstamp 61F309E9) (hatch edge 0.508)
     (connect_pads (clearance 0.508))
     (min_thickness 0.254)
     (fill yes (arc_segments 32) (thermal_gap 0.508) (thermal_bridge_width 0.508))
