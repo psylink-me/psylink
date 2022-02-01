@@ -346,7 +346,7 @@ blocks:
     color8: dark red
     color9: dark green
     comment: ''
-    ctrlpanel: 'True'
+    ctrlpanel: 'False'
     entags: 'False'
     grid: 'True'
     gui_hint: ''
@@ -447,13 +447,13 @@ blocks:
     entags: 'False'
     grid: 'True'
     gui_hint: ''
-    label1: Arm Right
+    label1: Gyroscope X
     label10: Signal 10
-    label2: Arm Left
-    label3: Wrist
-    label4: Thumb
-    label5: Index Finger
-    label6: Middle Finger
+    label2: Gyroscope Y
+    label3: Gyroscope Z
+    label4: Accelerometer X
+    label5: Accelerometer Y
+    label6: Accelerometer Z
     label7: Ring Finger
     label8: Signal 8
     label9: Signal 9
