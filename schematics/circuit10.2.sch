@@ -1053,7 +1053,7 @@ Wire Wire Line
 	3350 5050 3500 5050
 Wire Wire Line
 	3500 5150 3500 5050
-Text Notes 4800 5400 2    50   ~ 0
+Text Notes 4900 5400 2    50   ~ 0
 https://psylink.me/c10.2
 $Comp
 L Connector:Screw_Terminal_01x01 EL8
