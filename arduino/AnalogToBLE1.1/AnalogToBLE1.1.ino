@@ -1,3 +1,7 @@
+// Dependencies: (Install in ArduinoIDE by clicking on Tools -> Manage Libraries...)
+// 1. ArduinoBLE
+// 2. Arduino_LSM9DS1
+
 // Feature flags
 #define SEND_METRICS true
 #define USE_INTERRUPT_TIMER false
