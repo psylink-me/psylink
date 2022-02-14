@@ -3,7 +3,7 @@ import json
 import logging
 import math
 import numpy as np
-import psylink
+import psylink.config
 import tensorflow as tf
 import os.path
 

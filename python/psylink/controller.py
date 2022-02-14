@@ -9,7 +9,12 @@ It contains the following threads:
 - BLE's thread
 """
 
-import psylink
+import psylink.ai
+import psylink.bluetooth
+import psylink.config
+import psylink.gui
+import psylink.keycapturer
+import psylink.protocol
 import tkinter as tk
 import math
 import numpy as np

@@ -4,7 +4,8 @@
 #     python3 bandwidth_test.py [bluetooth_backend] [address]
 #     python3 bandwithh_test.py list
 
-import psylink
+import psylink.bluetooth
+import psylink.protocol
 import time
 import sys
 
