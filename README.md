@@ -48,6 +48,7 @@ This describes [prototype 4](https://psylink.me/p4).
         - [matplotlib](https://matplotlib.org/)
         - [pynput](https://pypi.org/project/pynput/)
         - [tensorflow](https://www.tensorflow.org/)
+        - [Pillow](https://python-pillow.org)
         - possibly the `python3-pil.imagetk` package
     - ArduinoIDE
         - [ArduinoBLE](https://www.arduino.cc/en/Reference/ArduinoBLE)
