@@ -267,6 +267,8 @@ class Controller:
                 channels = decoded['channels']
                 print(f"FPS: {packets_per_second}, BPS: {bytes_per_second}, SPS: {samples_per_second} * {channels} = {samples_per_second * channels}")
                 t_next += 1
+                if t_next <= time.time() + 0.5:
+                    t_next = time.time() + 1
                 packets_per_second = bytes_per_second = samples_per_second = 0
 
     def get_signal_image(self, width, height):
