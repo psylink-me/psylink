@@ -83,6 +83,7 @@ class Controller:
 
     def stop_current_process(self, event=None):
         self.set_worker_action(None)
+        self.gui.root.focus()
 
     def _start_ai_key_prediction_common(self):
         if self.BLE and self.BLE.is_connected():
