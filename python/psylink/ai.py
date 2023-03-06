@@ -207,7 +207,7 @@ class AI:
 
     @staticmethod
     def _run_name_to_signals_file_name(run_name):
-        return f'save_{run_name}/signals.npy'
+        return f'save_{run_name}/signals.npz'
 
     @staticmethod
     def _run_name_to_labels_file_name(run_name):
@@ -226,7 +226,7 @@ class AI:
         labels_fname = self._run_name_to_labels_file_name(run_name)
 
         samples, _ = self.training_data.compile()
-        np.save(signals_fname, samples, allow_pickle=False)
+        np.savez_compressed(signals_fname, samples)
 
         labels = self.training_data.labels
         with open(labels_fname, 'w') as f:
@@ -237,7 +237,8 @@ class AI:
         signals_fname = self._run_name_to_signals_file_name(run_name)
         labels_fname = self._run_name_to_labels_file_name(run_name)
 
-        samples = np.load(signals_fname, allow_pickle=False)
+        npz_files = np.load(signals_fname, allow_pickle=False)
+        samples = npz_files['arr_0']
         with open(labels_fname, 'r') as f:
             labels = json.load(f)
         label_order = self.load_label_order(run_name)
