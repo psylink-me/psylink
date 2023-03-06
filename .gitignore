@@ -22,6 +22,7 @@ model.tf.labels
 _autosave-*.sch
 _autosave-*.kicad_pcb
 *.pro
+*-backups
 fp-info-cache
 schematics/*.svg
 schematics/*.png
