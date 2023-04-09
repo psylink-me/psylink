@@ -8,15 +8,12 @@ import sys
 import numpy as np
 from gnuradio import gr
 
-try:
-    import psylink.bluetooth
-    import psylink.protocol
-except ImportError:
-    # NOTE: You may need to change this path to where you downloaded psyink to:
-    libpath = os.path.expanduser('~/repos/psylink/python')
-    sys.path.insert(0, libpath)
-    import psylink.bluetooth
-    import psylink.protocol
+# NOTE: PsyLink's "python" folder needs to be in $PYTHONPATH so that the "psylink" module can be imported.
+# Alternatively, uncomment the following line and change the path to the location of the "python" folder:
+#sys.path.insert(0, os.path.expanduser('~/psylink/python'))
+
+import psylink.bluetooth
+import psylink.protocol
 
 DEFAULT_BLE_ADDRESS = 'A6:B7:D0:AE:C2:76'
 EMG_CHANNELS = 8
