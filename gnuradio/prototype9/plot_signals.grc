@@ -1,6 +1,7 @@
 options:
   parameters:
     author: ''
+    catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
     comment: ''
@@ -190,7 +191,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [537, 119]
+    coordinate: [488, 164.0]
     rotation: 0
     state: enabled
 - name: blocks_add_const_vxx_0_0
@@ -208,7 +209,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [537, 169]
+    coordinate: [608, 196.0]
     rotation: 0
     state: enabled
 - name: blocks_add_const_vxx_0_0_0
@@ -226,7 +227,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [536, 219]
+    coordinate: [488, 228.0]
     rotation: 0
     state: enabled
 - name: blocks_add_const_vxx_0_0_0_0
@@ -244,7 +245,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [536, 270]
+    coordinate: [608, 260.0]
     rotation: 0
     state: enabled
 - name: blocks_add_const_vxx_0_0_0_0_0
@@ -262,7 +263,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [536, 320]
+    coordinate: [488, 292.0]
     rotation: 0
     state: enabled
 - name: blocks_add_const_vxx_0_0_0_0_0_0
@@ -280,7 +281,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [536, 372]
+    coordinate: [608, 324.0]
     rotation: 0
     state: enabled
 - name: blocks_add_const_vxx_0_0_0_0_0_0_0
@@ -298,7 +299,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [534, 424]
+    coordinate: [488, 356.0]
     rotation: 0
     state: enabled
 - name: blocks_null_sink_0
@@ -315,7 +316,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [596, 515]
+    coordinate: [616, 456.0]
     rotation: 0
     state: true
 - name: qtgui_time_sink_x_0_0
@@ -412,7 +413,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [808, 102]
+    coordinate: [768, 136.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0_0_0
@@ -509,7 +510,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [843, 455]
+    coordinate: [768, 400.0]
     rotation: 0
     state: disabled
 
