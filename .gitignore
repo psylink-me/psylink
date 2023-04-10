@@ -30,5 +30,4 @@ schematics/*.net
 schematics/fp-lib-table
 
 # GNURadio
-gnuradio/*/*_0.py
-gnuradio/*/plot_signals.py
+gnuradio/*/*.py
