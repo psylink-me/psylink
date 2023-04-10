@@ -13,7 +13,7 @@ signals and intended keys, and can press them for you.
 
 # Software used to create/edit/run these files
 
-- Schematics, PCB Layouts: KiCad 5.1.5
+- Schematics, PCB Layouts: KiCad 6.0 (some archived ones used 5.1.5)
 - Arduino IDE 1.8.19
     - ArduinoBLE 1.2.1
     - Arduino\_LSM9DS1 1.1.0
