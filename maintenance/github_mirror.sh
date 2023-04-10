@@ -39,8 +39,8 @@ if [ $action = initialize ]; then
     done
 elif [ $action = update ]; then
     if [ ! -d "$TARGET_PATH" ]; then
-        echo "ERROR: Target path '$TARGET_PATH' doesn't exist."
-        echo "Please run this script with the '--init' parameter first."
+        echo "ERROR: Target path '$TARGET_PATH' doesn't exist." >&2
+        echo "Please run this script with the '--init' parameter first." >&2
         exit 1
     fi
     cd "$TARGET_PATH"
