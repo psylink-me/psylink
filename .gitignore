@@ -16,13 +16,11 @@ model.tf
 model.tf.labels
 
 # KiCad
-*-cache.lib
 *.sch-bak
 *.kicad_prl
 *.kicad_pcb-bak
 _autosave-*.sch
 _autosave-*.kicad_pcb
-*.pro
 *-backups
 fp-info-cache
 schematics/*.svg
