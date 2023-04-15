@@ -90,8 +90,8 @@ blocks:
       # Alternatively, uncomment the following line and change the path to the location\
       \ of the \"python\" folder:\n#sys.path.insert(0, os.path.expanduser('~/psylink/python'))\n\
       \ntry:\n    from psylink.gnuradio_blocks import BLESource\nexcept ImportError:\n\
-      \    print(\"Please ensure that the 'psylink' python module is importable, e.g.\
-      \ by adding '/path/to/psylink/python' to $PYTHONPATH\")\n    raise\n"
+      \    raise Exception(\"Please ensure that the 'psylink' python module is importable,\
+      \ e.g. by adding '/path/to/psylink/python' to $PYTHONPATH\")\n"
     affinity: ''
     alias: ''
     ble_mac: '"2E:A9:71:D7:65:95"'
@@ -125,8 +125,8 @@ blocks:
       # Alternatively, uncomment the following line and change the path to the location\
       \ of the \"python\" folder:\n#sys.path.insert(0, os.path.expanduser('~/psylink/python'))\n\
       \ntry:\n    from psylink.gnuradio_blocks import ShiftBlock\nexcept ImportError:\n\
-      \    print(\"Please ensure that the 'psylink' python module is importable, e.g.\
-      \ by adding '/path/to/psylink/python' to $PYTHONPATH\")\n    raise\n\n"
+      \    raise Exception(\"Please ensure that the 'psylink' python module is importable,\
+      \ e.g. by adding '/path/to/psylink/python' to $PYTHONPATH\")\n\n"
     affinity: ''
     alias: ''
     comment: ''
