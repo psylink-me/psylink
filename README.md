@@ -1,8 +1,33 @@
-# PsyLink
+<p align="center">
+    <img src="https://psylink.me/favicon.ico" width=128/>
+</p>
 
-A myoelectric neural interface.
+<h1 align="center">
+    Psylink
+</h1>
 
-This is intended as a human input device (like a keyboard) that predicts your
+<p align="center">
+    Open source myoelectric neural interface. 
+    <br/>
+    <br/>
+    <a href="https://psylink.me/prototypes/"><img src="https://img.shields.io/badge/version-9.2-gold" /></a>
+    <a href="https://github.com/psylink-me/psylink"><img src="https://img.shields.io/github/commit-activity/m/psylink-me/psylink" /></a>
+    <a href="https://github.com/psylink-me/psylink/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-GPL_v3.0-blue" /></a>
+    <br/>
+    <a href="https://fosstodon.org/@psylink/media"><img src="https://img.shields.io/mastodon/follow/106535899613227044?domain=https%3A%2F%2Ffosstodon.org&style=social" /></a>
+</p>
+
+
+<p align="center">
+    <a href="https://psylink.me/">Website</a> ::
+    <a href="https://github.com/psylink-me/psylink/wiki">Documentation</a> ::
+    <a href="https://matrix.to/#/#psylink:matrix.org">Matrix Chartroom</a> ::
+    <a href="https://psylink.me/faq/">FAQ</a>
+</p>
+
+# Introduction
+
+**Psylink** is intended as a human input device (like a keyboard) that predicts your
 intention from muscle signals.  Using a neural network, trained through a
 process where you press keys at the exact same time that you make movements
 with the limb wearing the device, it learns correlations between the muscle
@@ -10,6 +35,11 @@ signals and intended keys, and can press them for you.
 
 - [Video demos @ PeerTube](https://peertube.linuxrocks.online/video-channels/psylink/videos)
 - [Development Log](https://psylink.me/blog)
+- [Whats Next?](https://github.com/psylink-me/psylink/wiki/Next-Steps)
+
+|       |   |
+| :-------------------------: | :-------------------------: |
+| ![Prototype 9.2 - Arm band](https://psylink.me/img/prototypes/p9.1.jpg)  | ![Prototype 9.2 - 8 channel](https://psylink.me/img/blog/2023-02-03_eight_electrode_modules.jpg)
 
 # Software used to create/edit/run these files
 
