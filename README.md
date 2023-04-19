@@ -1,6 +1,6 @@
-![PsyLink Logo](https://psylink.me/favicon.ico)
-
 # PsyLink
+
+![PsyLink Logo](https://psylink.me/favicon.ico)
 
 Open source myoelectric neural interface.
 <br/>
