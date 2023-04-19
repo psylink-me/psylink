@@ -21,7 +21,7 @@
 <p align="center">
     <a href="https://psylink.me/">Website</a> ::
     <a href="https://codeberg.org/psylink/psylink/wiki">Documentation</a> ::
-    <a href="https://matrix.to/#/#psylink:matrix.org">Matrix Chartroom</a> ::
+    <a href="https://matrix.to/#/#psylink:matrix.org">Matrix Chatroom</a> ::
     <a href="https://psylink.me/faq/">FAQ</a>
 </p>
 
