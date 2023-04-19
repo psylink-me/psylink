@@ -1,6 +1,6 @@
 # PsyLink
 
-![PsyLink Logo](https://psylink.me/favicon.ico)
+![Prototype 9.2 - Arm band](https://psylink.me/img/prototypes/p9.1.jpg) 
 
 Open source myoelectric neural interface.
 <br/>
@@ -26,10 +26,6 @@ signals and intended keys, and can press them for you.
 - [Video demos @ PeerTube](https://peertube.linuxrocks.online/video-channels/psylink/videos)
 - [Development Log](https://psylink.me/blog)
 - [Whats Next?](https://codeberg.org/psylink/psylink/wiki/Next-Steps)
-
-|       |   |
-| :-------------------------: | :-------------------------: |
-| ![Prototype 9.2 - Arm band](https://psylink.me/img/prototypes/p9.1.jpg)  | ![Prototype 9.2 - 8 channel](https://psylink.me/img/blog/2023-02-03_eight_electrode_modules.jpg)
 
 # Software used to create/edit/run these files
 
