@@ -1,29 +1,19 @@
-<p align="center">
-    <img src="https://psylink.me/favicon.ico" width=128/>
-</p>
+![PsyLink Logo](https://psylink.me/favicon.ico)
 
-<h1 align="center">
-    Psylink
-</h1>
+# PsyLink
 
-<p align="center">
-    Open source myoelectric neural interface. 
-    <br/>
-    <br/>
-    <a href="https://psylink.me/prototypes/"><img src="https://img.shields.io/badge/version-9.2-gold" /></a>
-    <a href="https://codeberg.org/psylink/psylink"><img src="https://img.shields.io/github/commit-activity/m/psylink-me/psylink" /></a>
-    <a href="https://codeberg.org/psylink/psylink/src/branch/master/LICENSE"><img src="https://img.shields.io/badge/license-GPL_v3.0-blue" /></a>
-    <br/>
-    <a href="https://fosstodon.org/@psylink/media"><img src="https://img.shields.io/mastodon/follow/106535899613227044?domain=https%3A%2F%2Ffosstodon.org&style=social" /></a>
-</p>
+Open source myoelectric neural interface.
+<br/>
+<a href="https://psylink.me/prototypes/"><img src="https://img.shields.io/badge/version-9.2-gold" /></a>
+<a href="https://codeberg.org/psylink/psylink"><img src="https://img.shields.io/github/commit-activity/m/psylink-me/psylink" /></a>
+<a href="https://codeberg.org/psylink/psylink/src/branch/master/LICENSE"><img src="https://img.shields.io/badge/license-GPL_v3.0-blue" /></a>
 
+<a href="https://fosstodon.org/@psylink/media"><img src="https://img.shields.io/mastodon/follow/106535899613227044?domain=https%3A%2F%2Ffosstodon.org&style=social" /></a>
 
-<p align="center">
-    <a href="https://psylink.me/">Website</a> ::
-    <a href="https://codeberg.org/psylink/psylink/wiki">Documentation</a> ::
-    <a href="https://matrix.to/#/#psylink:matrix.org">Matrix Chatroom</a> ::
-    <a href="https://psylink.me/faq/">FAQ</a>
-</p>
+[Website](https://psylink.me) ::
+[Documentation](https://codeberg.org/psylink/psylink/wiki) ::
+[Matrix Chatroom](https://matrix.to/#/#psylink:matrix.org) ::
+[FAQ](https://psylink.me/faq)
 
 # Introduction
 
