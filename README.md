@@ -11,8 +11,8 @@
     <br/>
     <br/>
     <a href="https://psylink.me/prototypes/"><img src="https://img.shields.io/badge/version-9.2-gold" /></a>
-    <a href="https://github.com/psylink-me/psylink"><img src="https://img.shields.io/github/commit-activity/m/psylink-me/psylink" /></a>
-    <a href="https://github.com/psylink-me/psylink/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-GPL_v3.0-blue" /></a>
+    <a href="https://codeberg.org/psylink/psylink"><img src="https://img.shields.io/github/commit-activity/m/psylink-me/psylink" /></a>
+    <a href="https://codeberg.org/psylink/psylink/src/branch/master/LICENSE"><img src="https://img.shields.io/badge/license-GPL_v3.0-blue" /></a>
     <br/>
     <a href="https://fosstodon.org/@psylink/media"><img src="https://img.shields.io/mastodon/follow/106535899613227044?domain=https%3A%2F%2Ffosstodon.org&style=social" /></a>
 </p>
@@ -20,7 +20,7 @@
 
 <p align="center">
     <a href="https://psylink.me/">Website</a> ::
-    <a href="https://github.com/psylink-me/psylink/wiki">Documentation</a> ::
+    <a href="https://codeberg.org/psylink/psylink/wiki">Documentation</a> ::
     <a href="https://matrix.to/#/#psylink:matrix.org">Matrix Chartroom</a> ::
     <a href="https://psylink.me/faq/">FAQ</a>
 </p>
@@ -35,7 +35,7 @@ signals and intended keys, and can press them for you.
 
 - [Video demos @ PeerTube](https://peertube.linuxrocks.online/video-channels/psylink/videos)
 - [Development Log](https://psylink.me/blog)
-- [Whats Next?](https://github.com/psylink-me/psylink/wiki/Next-Steps)
+- [Whats Next?](https://codeberg.org/psylink/psylink/wiki/Next-Steps)
 
 |       |   |
 | :-------------------------: | :-------------------------: |
