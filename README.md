@@ -1,19 +1,18 @@
 # PsyLink
 
-![Prototype 9.2 - Arm band](https://psylink.me/img/prototypes/p9.1.jpg) 
-
-Open source myoelectric neural interface.
-<br/>
 <a href="https://psylink.me/prototypes/"><img src="https://img.shields.io/badge/version-9.2-gold" /></a>
 <a href="https://codeberg.org/psylink/psylink"><img src="https://img.shields.io/github/commit-activity/m/psylink-me/psylink" /></a>
 <a href="https://codeberg.org/psylink/psylink/src/branch/master/LICENSE"><img src="https://img.shields.io/badge/license-GPL_v3.0-blue" /></a>
-
 <a href="https://fosstodon.org/@psylink/media"><img src="https://img.shields.io/mastodon/follow/106535899613227044?domain=https%3A%2F%2Ffosstodon.org&style=social" /></a>
+
+Open source myoelectric neural interface.
 
 [Website](https://psylink.me) ::
 [Documentation](https://codeberg.org/psylink/psylink/wiki) ::
 [Matrix Chatroom](https://matrix.to/#/#psylink:matrix.org) ::
 [FAQ](https://psylink.me/faq)
+
+![Photograph of PsyLink Prototype 9.2](https://psylink.me/img/prototypes/p9.1.jpg)
 
 # Introduction
 
