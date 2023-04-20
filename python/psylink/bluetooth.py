@@ -1,3 +1,18 @@
+"""
+The Bluetooth Low Energy backend.
+
+This file contains an abstract BLEBackend as well as two implemented backends:
+
+- BLEGATTBackend
+- BleakBackend (currently dysfunctional)
+
+which use the libraries BLE_GATT and Bleak respectively.
+
+You can add a new BLE library here by duplicating one of the implemented
+backends and replacing its methods with API calls to the new BLE library.
+Finally, add the new class to the dict at the bottom of the file.
+"""
+
 from psylink.config import DEFAULT_BLE_ADDRESS, ASSUMED_BLE_LATENCY
 from threading import Thread, Event
 from queue import Queue
@@ -117,6 +132,9 @@ class BleakBackend(BLEBackend):
                 self.client.read_gatt_char(characteristic_uuid))
 
 
+# The first class (should be BLEBackend-based) in the dict will be the default.
+# The dict keys can be used as e.g. command line parameters for dynamically
+# selecting a backend. If you add a new backend, choose any dict key you like.
 BACKENDS = dict(
     #bleak=BleakBackend,
     BLE_GATT=BLEGATTBackend,

@@ -89,9 +89,12 @@ blocks:
       \ folder needs to be in $PYTHONPATH so that the \"psylink\" module can be imported.\n\
       # Alternatively, uncomment the following line and change the path to the location\
       \ of the \"python\" folder:\n#sys.path.insert(0, os.path.expanduser('~/psylink/python'))\n\
-      \ntry:\n    from psylink.gnuradio_blocks import BLESource\nexcept ImportError:\n\
-      \    print(\"Please ensure that the 'psylink' python module is importable, e.g.\
-      \ by adding '/path/to/psylink/python' to $PYTHONPATH\")\n    raise\n"
+      \ntry:\n    import psylink.gnuradio_blocks\n    from psylink.gnuradio_blocks\
+      \ import BLESource\nexcept ImportError:\n    raise Exception(\"Please ensure\
+      \ that the 'psylink' python module is importable, e.g. by adding '/path/to/psylink/python'\
+      \ to $PYTHONPATH\")\n\nif __name__ == 'builtins':\n    # Only do this when executed\
+      \ from within GNURadio during the validation phase\n    import importlib\n \
+      \   importlib.reload(psylink.gnuradio_blocks)\n\n"
     affinity: ''
     alias: ''
     ble_mac: '"2E:A9:71:D7:65:95"'
@@ -124,9 +127,12 @@ blocks:
       \ needs to be in $PYTHONPATH so that the \"psylink\" module can be imported.\n\
       # Alternatively, uncomment the following line and change the path to the location\
       \ of the \"python\" folder:\n#sys.path.insert(0, os.path.expanduser('~/psylink/python'))\n\
-      \ntry:\n    from psylink.gnuradio_blocks import ShiftBlock\nexcept ImportError:\n\
-      \    print(\"Please ensure that the 'psylink' python module is importable, e.g.\
-      \ by adding '/path/to/psylink/python' to $PYTHONPATH\")\n    raise\n\n"
+      \ntry:\n    import psylink.gnuradio_blocks\n    from psylink.gnuradio_blocks\
+      \ import ShiftBlock\nexcept ImportError:\n    raise Exception(\"Please ensure\
+      \ that the 'psylink' python module is importable, e.g. by adding '/path/to/psylink/python'\
+      \ to $PYTHONPATH\")\n\nif __name__ == 'builtins':\n    # Only do this when executed\
+      \ from within GNURadio during the validation phase\n    import importlib\n \
+      \   importlib.reload(psylink.gnuradio_blocks)\n\n"
     affinity: ''
     alias: ''
     comment: ''
