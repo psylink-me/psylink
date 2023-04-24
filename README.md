@@ -85,7 +85,7 @@ This describes [prototype 4](https://psylink.me/p4).
 
 # License
 
-Copyright (C) 2022  Roman Zimbelmann
+Copyright (C) 2023  Roman Zimbelmann
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License version 3 as
