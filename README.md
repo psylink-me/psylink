@@ -1,11 +1,11 @@
 # PsyLink
 
-<a href="https://psylink.me/prototypes/"><img src="https://img.shields.io/badge/version-9.2-gold" /></a>
-<a href="https://codeberg.org/psylink/psylink"><img src="https://img.shields.io/github/commit-activity/m/psylink-me/psylink" /></a>
-<a href="https://codeberg.org/psylink/psylink/src/branch/master/LICENSE"><img src="https://img.shields.io/badge/license-GPL_v3.0-blue" /></a>
-<a href="https://fosstodon.org/@psylink"><img src="https://img.shields.io/mastodon/follow/106535899613227044?domain=https%3A%2F%2Ffosstodon.org&style=social" /></a>
+[![License: GPL 3.0](https://img.shields.io/badge/license-GPL_v3.0-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
+![Commit Activity](https://img.shields.io/github/commit-activity/m/psylink-me/psylink.svg)
+[![Matrix Chatroom](https://img.shields.io/matrix/psylink:matrix.org)](https://matrix.to/#/#psylink:matrix.org)
+[![Mastodon](https://img.shields.io/mastodon/follow/106535899613227044.svg?domain=https%3A%2F%2Ffosstodon.org&style=social)](https://fosstodon.org/@psylink)
 
-Open source myoelectric neural interface.
+Open source [myoelectric](https://en.wikipedia.org/wiki/Electromyography) neural interface.
 
 [Website](https://psylink.me) ::
 [Documentation](https://codeberg.org/psylink/psylink/wiki) ::
