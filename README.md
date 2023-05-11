@@ -1,11 +1,9 @@
-# PsyLink
-
 [![License: GPL 3.0](https://img.shields.io/badge/license-GPL_v3.0-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 ![Commit Activity](https://img.shields.io/github/commit-activity/m/psylink-me/psylink.svg)
 [![Matrix Chatroom](https://img.shields.io/badge/chat-join%20us-green.svg)](https://matrix.to/#/#psylink:matrix.org)
 [![Mastodon](https://img.shields.io/mastodon/follow/106535899613227044.svg?domain=https%3A%2F%2Ffosstodon.org&style=social)](https://fosstodon.org/@psylink)
 
-Open source [myoelectric](https://en.wikipedia.org/wiki/Electromyography) neural interface.
+PsyLink - an open source [myoelectric](https://en.wikipedia.org/wiki/Electromyography) neural interface.  It can be used for reading muscle signals and using them to e.g. control the computer, recognize gestures, play video games, or simulate a keyboard.
 
 [Website](https://psylink.me) ::
 [Documentation](https://codeberg.org/psylink/psylink/wiki) ::
@@ -25,6 +23,19 @@ signals and intended keys, and can press them for you.
 - [Video demos @ PeerTube](https://peertube.linuxrocks.online/video-channels/psylink/videos)
 - [Development Log](https://psylink.me/blog)
 - [Whats Next?](https://codeberg.org/psylink/psylink/wiki/Next-Steps)
+
+# Philosophy
+
+There are other neural interfaces out there, but most of them lock you out in some way.  Through patents, restrictive licenses, proprietary schematics, non-free source code, limited availability.
+
+This project was born from the frustration of how certain neural interface corporations abused their early adopters.  There were cases of
+
+- Extracting free research and engineering labor from beta testers to inflate the products value and sell out to big companies, to eventually pull the device from the market and render their work useless.
+- Implanting devices that received no support and eventually broke down, leaving users literally blind.
+
+PsyLink was designed to be immune to this by providing [free software](python/), [open hardware/schematics](schematics/), [the website source code](https://codeberg.org/psylink/psylink-web), and [open datasets](https://codeberg.org/psylink/psylink-datasets).  This can all be accessed via [git](https://git-scm.com), so the entire project can be easily be archived, studied, and extended.
+
+We believe in free and open source software and decentralized infrastructure.  Instead of centralized, for-profit, corporate-controlled media and communication channels, the PsyLink project uses decentralized free and open source platforms such as [Mastodon](https://fosstodon.org/@psylink) for public outreach, [Matrix](https://matrix.to/#/#psylink:matrix.org) for chat rooms, [Codeberg/Forgejo](https://codeberg.org/psylink) for source code distribution, and [PeerTube](https://peertube.linuxrocks.online/video-channels/psylink/videos) for video hosting, though there is a [GitHub mirror](https://github.com/psylink-me/psylink) of the project for publicity purposes.
 
 # Software used to create/edit/run these files
 
