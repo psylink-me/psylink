@@ -2,7 +2,7 @@
 
 [![License: GPL 3.0](https://img.shields.io/badge/license-GPL_v3.0-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 ![Commit Activity](https://img.shields.io/github/commit-activity/m/psylink-me/psylink.svg)
-[![Matrix Chatroom](https://img.shields.io/matrix/psylink:matrix.org)](https://matrix.to/#/#psylink:matrix.org)
+[![Matrix Chatroom](https://img.shields.io/badge/chat-join%20us-green.svg)](https://matrix.to/#/#psylink:matrix.org)
 [![Mastodon](https://img.shields.io/mastodon/follow/106535899613227044.svg?domain=https%3A%2F%2Ffosstodon.org&style=social)](https://fosstodon.org/@psylink)
 
 Open source [myoelectric](https://en.wikipedia.org/wiki/Electromyography) neural interface.
