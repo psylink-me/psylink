@@ -12,7 +12,7 @@ Open source [myoelectric](https://en.wikipedia.org/wiki/Electromyography) neural
 [Matrix Chatroom](https://matrix.to/#/#psylink:matrix.org) ::
 [FAQ](https://psylink.me/faq)
 
-![Photograph of PsyLink Prototype 9.2](https://psylink.me/img/prototypes/p9.1.jpg)
+![Photograph of PsyLink Prototype 10](https://psylink.me/img/prototypes/p10.jpg)
 
 # Introduction
 
