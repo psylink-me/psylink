@@ -83,6 +83,28 @@ This describes [prototype 4](https://psylink.me/p4).
         - Transmitting at 6-7kB/s: 92.5mW (18.0mA x 5.14V)
 - Weight: ~85g (at 9.81m/s² gravitational acceleration)
 
+# Acknowledgements
+
+Very special thanks to every contributor. You all shaped the direction of this
+project in your unique way, and we would not be at this point without you!
+
+- [Roman Zimbelmann](https://rzim.dev): Founder and maintainer of PsyLink
+- [Alex Lao](http://www.voltagedivide.com/): Consulting
+- [AntonX](https://www.linkedin.com/in/anton-x/): Consulting, hardware design
+- [Cade Brown](https://cade.site/): Testing, financial support
+- [Fabien Devaux](http://github.com/fdev31/): Consulting
+- [Farzam Khodajoo](https://www.linkedin.com/in/farzam-khodajoo): Consulting, hardware design
+- [Hackaday.com](https://hackaday.com/2022/01/07/psylink-an-open-source-neural-interface-for-non-invasive-emg/): Spreading the word, networking
+- [John Shahbazian](https://github.com/jshahbazi): Consulting, testing, software, financial support
+- keks: Consulting, testing
+- knoc: Consulting, testing
+- [ktrask](https://twitter.com/ktrask23) ([mastodon](https://chaos.social/@ktrask)): Consulting, testing
+- [PCBWay](https://pcbway.com): Sponsored production services
+- [PerlinWarp](https://twitter.com/perlinwarp): Consulting, testing, documentation, networking, financial support
+- Ricard Collins: Consulting, financial support, testing
+- [Wojciech Siewierski](https://einval.eu): Consulting
+- Thanks to all the patrons on [Liberapay](https://liberapay.com/psylink/) for financial support!
+
 # License
 
 Copyright (C) 2023  Roman Zimbelmann
