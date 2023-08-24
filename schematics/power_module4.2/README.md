@@ -18,7 +18,7 @@ Though it was designed to drive PsyLink electrode modules, it can also be used s
 
 # Main Features
 
-- Boosts the battery voltage up to 5V with a [TSP61220](https://www.ti.com/product/de-de/TPS61220) step-up converter
+- Provides 5V operating voltage for the Arduino and the rest of the circuit by boosts the battery voltage up to 5V with a [TSP61220](https://www.ti.com/product/de-de/TPS61220) step-up converter
 - Supports AAA batteries. Tested with 1.5V non-rechargeable, and 1.2V NiMH rechargeable. Plugged into "Keystone 82" battery clips
 - Generates 2.5V Reference Voltage (Vref) with a [LM321](https://www.ti.com/product/LM321) for the ground electrode and to serve as a baseline for the electrode modules
 - Exposes Arduino pins A0-A8, D2, D3, D10-D13
