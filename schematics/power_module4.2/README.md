@@ -2,6 +2,12 @@
 
 This board connects to a [Arduino Nano 33 BLE](https://docs.arduino.cc/hardware/nano-33-ble) or [BLE Sense](https://docs.arduino.cc/hardware/nano-33-ble-sense) and a AAA battery, with the purpose to power the Arduino and expose a variety of I/O pins and power pins in order to power further boards such as the PsyLink electrode modules.
 
+Though it was designed to drive PsyLink electrode modules, it can also be used stand-alone as a battery-powered break-out board for any Arduino board that is pin-compatible with the [Arduino Nano 33 BLE](https://docs.arduino.cc/hardware/nano-33-ble), for example as a mobile [water detector](https://psylink.me/blog/retro2022/#psylink-as-a-break-out-board):
+
+![Photograph of the PsyLink power module 4.2 with a speaker plugged in to D10/D13, and two wires on A0 and GND, above a cup of water. When both wires touch the water, the speaker makes some noise.](https://psylink.me/img/blog/2023-02-03_waterdetector.jpg)
+
+# Overview
+
 - Part ID: ["bp4.2"](https://psylink.me/bp4.2/)
 - Circuit ID: ["12.1"](https://psylink.me/c12.1/)
 - Dimensions: 90 x 32.6mm
