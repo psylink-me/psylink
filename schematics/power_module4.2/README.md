@@ -13,6 +13,7 @@ Though it was designed to drive PsyLink electrode modules, it can also be used s
 - Dimensions: 90 x 32.6mm
 - Finalized on: 2022-01-26
 - Tested: Yes
+- Bill of materials: [LibreOffice .ods file](https://psylink.me/tables/bom_p10.ods)
 - Known bugs:
     - Power LED (D1) drains a lot of power. Mitigate this by increasing the resistor (R5) or removing the LED entirely - there is another power LED on the Arduino anyway.
 
@@ -38,6 +39,7 @@ Though it was designed to drive PsyLink electrode modules, it can also be used s
 # IMPORTANT ASSEMBLY INSTRUCTIONS
 
 - Cover the bottom of the board with isolating tape if it is placed on the skin
+- The inductance L1 must be rated for at least 230mA
 - Before soldering on any through-hole components, their pins must be shortened with e.g. wire cutters so that they do not extend out of the board on the bottom side, to avoid scratching the skin
 - You must close the solder jumpers JP3 and (e.g.) JP4 for proper function
 - The screws connect Vref to the skin (if their resp. jumper is closed). You MUST manually connect Vref with the skin if this board is not worn on the skin directly and if you use this board along with the electrode modules for EMG purposes. Keep a distance of at least 3cm with this ground electrode from any other electrode.
